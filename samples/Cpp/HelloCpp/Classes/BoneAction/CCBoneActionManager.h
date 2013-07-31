@@ -8,12 +8,12 @@ using namespace cocos2d::extension;
 
 struct ptrCmp
 {
-    bool operator()( const char * s1, const char * s2 ) const
+    bool operator()(CCString * s1, CCString * s2 ) const
     {
-        return strcmp( s1, s2 ) < 0;
+		return strcmp(s1->getCString(), s2->getCString()) < 0;
     }
 };
-typedef std::map<const char *, Json *, ptrCmp> char_json;
+typedef std::map<CCString *, Json *, ptrCmp> char_json;
 
 class CCBoneActionManager : public threadAsync
 {
@@ -28,7 +28,7 @@ public:
     ~CCBoneActionManager(void);
 
 public:
-	void addAnimationAsync(char *name, CCNode *target, SEL_CallFunc callback);
+	void addAnimationAsync(char *name, CCCallFunc *callback);
 	void purgeSharedCache();
 	
 

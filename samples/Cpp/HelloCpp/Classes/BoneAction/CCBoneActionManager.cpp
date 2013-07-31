@@ -33,6 +33,7 @@ CCBoneActionManager::~CCBoneActionManager(void)
 		for (iter = m_pAnimationData->begin(); iter != m_pAnimationData->end();)
 		{
 			Json_dispose(iter->second);
+			CC_SAFE_RELEASE(iter->first);
 			m_pAnimationData->erase(iter++);
 		}
 	}
@@ -42,40 +43,61 @@ CCBoneActionManager::~CCBoneActionManager(void)
 Json *CCBoneActionManager::addAnimationByAsync(CCNode *target, void *data)
 {
 	char *name = (char *)data;
+	CCString *key = CCString::create(name);
+	key->retain();
 	std::string dd = std::string(name);
 	dd += ".motion";
 	std::string fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(dd.c_str());
 	
+	char_json::iterator it = m_pAnimationData->find(key);	
+	if (it != m_pAnimationData->end())
+	{
+		key->release();
+		return it->second;
+	}
+
     unsigned long size;
     char* buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
     Json* root = Json_create(buffer);
 	CC_SAFE_DELETE_ARRAY(buffer);
-	m_pAnimationData->insert(char_json::value_type(name, root));
+	
+	m_pAnimationData->insert(char_json::value_type(key, root));
 	return root;
 }
 
 Json *CCBoneActionManager::addAnimation(char *name)
 {
+	CCString *key = CCString::create(name);
+	char_json::iterator it = m_pAnimationData->find(key);
+	key->retain();
+	if (it != m_pAnimationData->end())
+	{
+		key->release();
+		return it->second;
+	}
 	std::string path = std::string(name) + ".motion";
 	std::string fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(path.c_str());
     unsigned long size;
     char* buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
     Json* root = Json_create(buffer);
 	CC_SAFE_DELETE_ARRAY(buffer);
-	m_pAnimationData->insert(char_json::value_type(name, root));
+	
+	key->retain();
+	m_pAnimationData->insert(char_json::value_type(key, root));
 	return root;
 }
 
-void CCBoneActionManager::addAnimationAsync(char *name, CCNode *target, SEL_CallFunc callback)
+void CCBoneActionManager::addAnimationAsync(char *name, CCCallFunc *callback)
 {
-	this->async(this, callfuncND_selector(CCBoneActionManager::addAnimationByAsync), NULL, name, target, callback);
+	this->async(this, callfuncND_selector(CCBoneActionManager::addAnimationByAsync), NULL, name, callback);
 }
 
 Json *CCBoneActionManager::getAnimation(char *name)
 {
 	CCAssert(name, "plist filename should not be NULL");
 	Json *tmp = NULL;
-	char_json::iterator it = m_pAnimationData->find(name);
+	CCString *key = CCString::create(name);
+	char_json::iterator it = m_pAnimationData->find(key);
 	if (it == m_pAnimationData->end())
 	{
 		tmp = this->addAnimation(name);

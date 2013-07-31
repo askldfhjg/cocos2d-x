@@ -22,11 +22,12 @@ public:
     ~CCBoneTextureManager(void);
 
 public:
-	void addTextureAsync(char *name, CCNode *target, SEL_CallFunc callback);
+	void addSklAsync(char *name, CCCallFunc *callback);
+	void addEquipAsync(char *name, CCCallFunc *callback);
 	void purgeSharedCache();
 	
 
-protected:
+private:
 	Json *addTextureByAsync(CCNode *target, void *data);
 	std::string getTextureName(char *name);
 

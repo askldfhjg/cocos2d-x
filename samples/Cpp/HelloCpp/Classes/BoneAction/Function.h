@@ -9,11 +9,10 @@
 struct asyncInfo
 {
 	cocos2d::CCObject *target;
-	cocos2d::CCObject *callbackTarget;
 	cocos2d::CCNode *param1;
 	void *param2;
 	cocos2d::SEL_CallFuncND selector;
-	cocos2d::SEL_CallFunc callback;
+	cocos2d::CCCallFunc *callback;
 
 };
 
@@ -28,7 +27,7 @@ public:
 class threadAsync : public cocos2d::CCObject
 {
 public:
-	void async(CCObject *target, cocos2d::SEL_CallFuncND selector, cocos2d::CCNode *param1, void *param2, cocos2d::CCObject *callbackTarget, cocos2d::SEL_CallFunc callback);
+	void async(CCObject *target, cocos2d::SEL_CallFuncND selector, cocos2d::CCNode *param1, void *param2, cocos2d::CCCallFunc *callback);
 	static void over();
 	
 private:

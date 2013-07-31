@@ -94,7 +94,7 @@ void threadAsync::over()
 	}
 }
 
-void threadAsync::async(CCObject *target, cocos2d::SEL_CallFuncND selector, CCNode *param1, void *param2, CCObject *callbackTarget, cocos2d::SEL_CallFunc callback)
+void threadAsync::async(CCObject *target, cocos2d::SEL_CallFuncND selector, CCNode *param1, void *param2, CCCallFunc *callback)
 {
 	if (s_pAsyncInfoQueue == NULL)
     {             
@@ -118,7 +118,7 @@ void threadAsync::async(CCObject *target, cocos2d::SEL_CallFuncND selector, CCNo
 
 	CC_SAFE_RETAIN(target);
 	CC_SAFE_RETAIN(param1);
-	CC_SAFE_RETAIN(callbackTarget);
+	CC_SAFE_RETAIN(callback);
 
     // generate async struct
     asyncInfo *data = new asyncInfo();
@@ -127,7 +127,6 @@ void threadAsync::async(CCObject *target, cocos2d::SEL_CallFuncND selector, CCNo
 	data->param2 = param2;
     data->selector = selector;
 	data->callback = callback;
-	data->callbackTarget = callbackTarget;
 
     // add async struct into queue
     pthread_mutex_lock(&s_asyncInfoMutex);
@@ -153,13 +152,14 @@ void threadAsync::asyncCallBack(float dt)
         pQueue->pop();
         pthread_mutex_unlock(&s_callbackMutex);
 
-		if (pAsyncStruct->callbackTarget && pAsyncStruct->callback)
+		if (pAsyncStruct->callback)
         {
-			((pAsyncStruct->callbackTarget)->*(pAsyncStruct->callback))();
+			pAsyncStruct->callback->execute();
         }
 
 		CC_SAFE_RELEASE(pAsyncStruct->target);
 		CC_SAFE_RELEASE(pAsyncStruct->param1);
+		CC_SAFE_RELEASE(pAsyncStruct->callback);
         delete pAsyncStruct;
 
         --s_nAsyncRefCount;

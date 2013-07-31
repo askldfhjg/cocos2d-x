@@ -27,6 +27,7 @@ public:
 protected:
 	int m_nNumberOfLoaded;
 	int m_nNumberOfSprites;
+	int m_nNumberOfSkl;
 	cocos2d::CCLabelTTF *m_pLabelLoading;
 	cocos2d::CCLabelTTF *m_pLabelPercent;
 };

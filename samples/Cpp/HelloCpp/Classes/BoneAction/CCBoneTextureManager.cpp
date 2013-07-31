@@ -41,16 +41,36 @@ CCBoneTextureManager::~CCBoneTextureManager(void)
 
 Json *CCBoneTextureManager::addTextureByAsync(CCNode *target, void *data)
 {
+	std::string item;
+	int tag = target->getTag();
+	if(tag == 1)
+	{
+		item = "skl";
+	}
+	else
+	{
+		item = "equip";
+	}
 	std::string textureName = getTextureName((char *)data);
 	std::string texturePic = "pic/" + textureName +".plist";
-	std::string path = "bone/" + textureName + ".equip";
+	std::string path = "bone/" + textureName + "."+item;
 	std::string fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(path.c_str());
-	std::string key = textureName+"_equip";
+	std::string key = textureName+"_"+item;
+	CCString *newKey = CCString::create(key);
+	newKey->retain();
+	char_json::iterator it = m_pTextureData->find(newKey);	
+	if (it != m_pTextureData->end())
+	{
+		newKey->release();
+		return it->second;
+	}
+
     unsigned long size;
     char* buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
     Json* root = Json_create(buffer);
 	CC_SAFE_DELETE_ARRAY(buffer);
-	m_pTextureData->insert(char_json::value_type(key.c_str(), root));
+	newKey->retain();
+	m_pTextureData->insert(char_json::value_type(newKey, root));
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(texturePic.c_str());
 	return root;
 }
@@ -61,12 +81,20 @@ Json *CCBoneTextureManager::addEquip(char *name)
 	std::string path = "bone/" + textureName + ".equip";
 	std::string texturePic = "pic/" + textureName +".plist";
 	std::string key = textureName+"_equip";
+	CCString *newKey = CCString::create(key);
+	newKey->retain();
+	char_json::iterator it = m_pTextureData->find(newKey);	
+	if (it != m_pTextureData->end())
+	{
+		newKey->release();
+		return it->second;
+	}
 	std::string fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(path.c_str());
     unsigned long size;
     char* buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
     Json* root = Json_create(buffer);
 	CC_SAFE_DELETE_ARRAY(buffer);
-	m_pTextureData->insert(char_json::value_type(key.c_str(), root));
+	m_pTextureData->insert(char_json::value_type(newKey, root));
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(texturePic.c_str());
 	return root;
 }
@@ -77,19 +105,35 @@ Json *CCBoneTextureManager::addSkl(char *name)
 	std::string path = "bone/" + textureName + ".skl";
 	std::string texturePic = "pic/" + textureName +".plist";
 	std::string key = textureName+"_skl";
+	CCString *newKey = CCString::create(key);
+	newKey->retain();
+	char_json::iterator it = m_pTextureData->find(newKey);	
+	if (it != m_pTextureData->end())
+	{
+		newKey->release();
+		return it->second;
+	}
 	std::string fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(path.c_str());
     unsigned long size;
     char* buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
     Json* root = Json_create(buffer);
 	CC_SAFE_DELETE_ARRAY(buffer);
-	m_pTextureData->insert(char_json::value_type(key.c_str(), root));
+	m_pTextureData->insert(char_json::value_type(newKey, root));
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(texturePic.c_str());
 	return root;
 }
 
-void CCBoneTextureManager::addTextureAsync(char *name, CCNode *target, SEL_CallFunc callback)
+void CCBoneTextureManager::addSklAsync(char *name, CCCallFunc *callback)
 {
-	this->async(this, callfuncND_selector(CCBoneTextureManager::addTextureByAsync), NULL, name, target, callback);
+	CCNode *tmp = CCNode::create();
+	tmp->setTag(1);
+	this->async(this, callfuncND_selector(CCBoneTextureManager::addTextureByAsync), tmp, name, callback);
+}
+void CCBoneTextureManager::addEquipAsync(char *name, CCCallFunc *callback)
+{
+	CCNode *tmp = CCNode::create();
+	tmp->setTag(2);
+	this->async(this, callfuncND_selector(CCBoneTextureManager::addTextureByAsync), tmp, name, callback);
 }
 
 Json *CCBoneTextureManager::getEquip(char *name)
@@ -99,7 +143,8 @@ Json *CCBoneTextureManager::getEquip(char *name)
 
 	std::string textureName = getTextureName(name);
 	std::string key = textureName+"_equip";
-	char_json::iterator it = m_pTextureData->find(key.c_str());
+	CCString *newKey = CCString::create(key);
+	char_json::iterator it = m_pTextureData->find(newKey);
 	if (it == m_pTextureData->end())
 	{
 		tmp = this->addEquip(name);
@@ -119,7 +164,8 @@ Json *CCBoneTextureManager::getSkl(char *name)
 
 	std::string textureName = getTextureName(name);
 	std::string key = textureName+"_skl";
-	char_json::iterator it = m_pTextureData->find(key.c_str());
+	CCString *newKey = CCString::create(key);
+	char_json::iterator it = m_pTextureData->find(newKey);
 	if (it == m_pTextureData->end())
 	{
 		tmp = this->addSkl(name);

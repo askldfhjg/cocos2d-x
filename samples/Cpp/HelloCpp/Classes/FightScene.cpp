@@ -35,9 +35,6 @@ bool FightScene::init()
     CCPoint origin = CCDirector::sharedDirector()->getVisibleOrigin();
 	CCSize winSize = CCEGLView::sharedOpenGLView()->getFrameSize();
 
-	CCBoneTextureManager::sharedManager()->addSkl("bone/AvatarSklM");
-	CCBoneActionManager::sharedManager()->addAnimation("bone/AvatarSklM");
-
 	def = CCBoneSpriteLayer::create("bone/AvatarSklM", "bone/AvatarSklM");
 	def->setPosition(ccp(400, 50));
 	def->setScale(0.5f);
@@ -174,14 +171,14 @@ void FightScene::checkSkl()
 					CCLog(ff->getCString());
 					equipList->addObject(ff);
 					std::string gggg = "bone/" + fggg;
-					CCBoneTextureManager::sharedManager()->addEquip(const_cast<char*>(gggg.c_str()));
+					//CCBoneTextureManager::sharedManager()->addEquip(const_cast<char*>(gggg.c_str()));
 					break;
 				}
 			}
 		}
 		while(FindNextFile(hFind,&FindFileData) != 0);
 	}
-	CCBoneActionManager::sharedManager()->addAnimation("bone/AvatarSklM");
+	//CCBoneActionManager::sharedManager()->addAnimation("bone/AvatarSklM");
 	delete []buffer;
 	FindClose(hFind);
 }

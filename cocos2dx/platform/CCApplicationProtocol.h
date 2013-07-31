@@ -47,6 +47,7 @@ public:
     */
     virtual void applicationWillEnterForeground() = 0;
 
+	virtual void applicationBeforeExit() = 0;
     /**
     @brief    Callback by CCDirector for limit FPS.
     @interval       The time, expressed in seconds, between current frame and next. 

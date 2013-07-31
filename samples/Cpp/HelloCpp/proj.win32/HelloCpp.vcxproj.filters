@@ -9,23 +9,47 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="Classes\BoneAction">
+      <UniqueIdentifier>{4890c624-2d3b-4212-b262-1178746dc6e9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\HelloWorldScene.cpp">
-      <Filter>Classes</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\FightScene.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\LoadingScene.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\TableViewTestScene.cpp">
+      <Filter>Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\BoneAction\CCBone.cpp">
+      <Filter>Classes\BoneAction</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\BoneAction\CCBoneActionManager.cpp">
+      <Filter>Classes\BoneAction</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\BoneAction\CCBoneSpriteLayer.cpp">
+      <Filter>Classes\BoneAction</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\BoneAction\CCBoneTextureManager.cpp">
+      <Filter>Classes\BoneAction</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\BoneAction\CCLayerAction.cpp">
+      <Filter>Classes\BoneAction</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\BoneAction\Function.cpp">
+      <Filter>Classes\BoneAction</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h">
-      <Filter>Classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\HelloWorldScene.h">
       <Filter>Classes</Filter>
     </ClInclude>
     <ClInclude Include="main.h">
@@ -33,6 +57,42 @@
     </ClInclude>
     <ClInclude Include="..\Classes\AppMacros.h">
       <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\FightScene.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\LoadingScene.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\TableViewTestScene.h">
+      <Filter>Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BoneAction\BoneAction.h">
+      <Filter>Classes\BoneAction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BoneAction\CCBone.h">
+      <Filter>Classes\BoneAction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BoneAction\CCBoneActionManager.h">
+      <Filter>Classes\BoneAction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BoneAction\CCBoneSpriteLayer.h">
+      <Filter>Classes\BoneAction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BoneAction\CCBoneTextureManager.h">
+      <Filter>Classes\BoneAction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BoneAction\CCLayerAction.h">
+      <Filter>Classes\BoneAction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BoneAction\ccShader_PositionTextureBrightnessColor_frag.h">
+      <Filter>Classes\BoneAction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BoneAction\ccShader_PositionTextureBrightnessColor_vert.h">
+      <Filter>Classes\BoneAction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BoneAction\Function.h">
+      <Filter>Classes\BoneAction</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

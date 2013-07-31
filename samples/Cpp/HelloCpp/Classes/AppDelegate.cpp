@@ -3,7 +3,8 @@
 #include <vector>
 #include <string>
 
-#include "HelloWorldScene.h"
+#include "LoadingScene.h"
+#include "BoneAction/BoneAction.h"
 #include "AppMacros.h"
 
 USING_NS_CC;
@@ -25,7 +26,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     pDirector->setOpenGLView(pEGLView);
 
     // Set the design resolution
-    pEGLView->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, kResolutionNoBorder);
+    pEGLView->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, kResolutionShowAll);
 
 	CCSize frameSize = pEGLView->getFrameSize();
     
@@ -37,7 +38,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // this can make sure that the resource's height could fit for the height of design resolution.
 
     // if the frame's height is larger than the height of medium resource size, select large resource.
-	if (frameSize.height > mediumResource.size.height)
+	/*if (frameSize.height > mediumResource.size.height)
 	{
         searchPath.push_back(largeResource.directory);
 
@@ -56,19 +57,22 @@ bool AppDelegate::applicationDidFinishLaunching() {
         searchPath.push_back(smallResource.directory);
 
         pDirector->setContentScaleFactor(MIN(smallResource.size.height/designResolutionSize.height, smallResource.size.width/designResolutionSize.width));
-    }
+    }*/
     
+	searchPath.push_back(mediumResource.directory);
+        
+	pDirector->setContentScaleFactor(MIN(mediumResource.size.height/designResolutionSize.height, mediumResource.size.width/designResolutionSize.width));
     // set searching path
     CCFileUtils::sharedFileUtils()->setSearchPaths(searchPath);
 	
     // turn on display FPS
-    pDirector->setDisplayStats(true);
+    //pDirector->setDisplayStats(true);
 
     // set FPS. the default value is 1.0/60 if you don't call this
     pDirector->setAnimationInterval(1.0 / 60);
 
     // create a scene. it's an autorelease object
-    CCScene *pScene = HelloWorld::scene();
+    CCScene *pScene = LoadingScene::scene();
 
     // run
     pDirector->runWithScene(pScene);
@@ -90,4 +94,9 @@ void AppDelegate::applicationWillEnterForeground() {
 
     // if you use SimpleAudioEngine, it must resume here
     // SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
+}
+
+void AppDelegate::applicationBeforeExit() {
+	CCBoneActionManager::sharedManager()->purgeSharedCache();
+	CCBoneTextureManager::sharedManager()->purgeSharedCache();
 }

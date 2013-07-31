@@ -1045,6 +1045,7 @@ void CCDisplayLinkDirector::mainLoop(void)
     if (m_bPurgeDirecotorInNextLoop)
     {
         m_bPurgeDirecotorInNextLoop = false;
+		CCApplication::sharedApplication()->applicationBeforeExit();
         purgeDirector();
     }
     else if (! m_bInvalid)

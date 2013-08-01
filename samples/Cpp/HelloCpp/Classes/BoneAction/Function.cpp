@@ -157,6 +157,7 @@ void threadAsync::asyncCallBack(float dt)
 		if(pAsyncStruct->spritePlist != NULL)
 		{
 			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(pAsyncStruct->spritePlist);
+            CC_SAFE_DELETE_ARRAY(pAsyncStruct->spritePlist);
 		}
 
 		if (pAsyncStruct->callback)

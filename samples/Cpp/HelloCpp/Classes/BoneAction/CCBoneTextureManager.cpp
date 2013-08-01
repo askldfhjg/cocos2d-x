@@ -62,8 +62,9 @@ char *CCBoneTextureManager::addTextureByAsync(CCNode *target, void *data1, void 
 	CC_SAFE_DELETE_ARRAY(buffer);
 	newKey->retain();
 	m_pTextureData->insert(char_json::value_type(newKey, root));
-	char* ret = new char;  
-	strcpy_s(ret, texturePic.size() + 1, texturePic.c_str());
+	char* ret = new char[255];
+	//strcpy_s(ret, texturePic.size() + 1, texturePic.c_str());
+    strlcpy(ret, texturePic.c_str(), texturePic.size() + 1);
 	return ret;
 }
 
@@ -117,11 +118,11 @@ Json *CCBoneTextureManager::addSkl(char *name)
 
 void CCBoneTextureManager::addSklAsync(char *name, CCCallFunc *callback)
 {
-	this->async(this, callfuncNDD_return_selector(CCBoneTextureManager::addTextureByAsync), NULL, name, "skl", callback);
+	this->async(this, callfuncNDD_return_selector(CCBoneTextureManager::addTextureByAsync), NULL, name, (void *)"skl", callback);
 }
 void CCBoneTextureManager::addEquipAsync(char *name, CCCallFunc *callback)
 {
-	this->async(this, callfuncNDD_return_selector(CCBoneTextureManager::addTextureByAsync), NULL, name, "equip", callback);
+	this->async(this, callfuncNDD_return_selector(CCBoneTextureManager::addTextureByAsync), NULL, name, (void *)"equip", callback);
 }
 
 Json *CCBoneTextureManager::getEquip(char *name)

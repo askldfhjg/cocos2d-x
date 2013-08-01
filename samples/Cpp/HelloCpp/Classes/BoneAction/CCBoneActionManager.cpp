@@ -40,9 +40,9 @@ CCBoneActionManager::~CCBoneActionManager(void)
 	CC_SAFE_DELETE(m_pAnimationData);
 }
 
-Json *CCBoneActionManager::addAnimationByAsync(CCNode *target, void *data)
+char *CCBoneActionManager::addAnimationByAsync(CCNode *target, void *data1, void *data2)
 {
-	char *name = (char *)data;
+	char *name = (char *)data1;
 	CCString *key = CCString::create(name);
 	key->retain();
 	std::string dd = std::string(name);
@@ -53,7 +53,7 @@ Json *CCBoneActionManager::addAnimationByAsync(CCNode *target, void *data)
 	if (it != m_pAnimationData->end())
 	{
 		key->release();
-		return it->second;
+		return NULL;
 	}
 
     unsigned long size;
@@ -62,7 +62,7 @@ Json *CCBoneActionManager::addAnimationByAsync(CCNode *target, void *data)
 	CC_SAFE_DELETE_ARRAY(buffer);
 	
 	m_pAnimationData->insert(char_json::value_type(key, root));
-	return root;
+	return NULL;
 }
 
 Json *CCBoneActionManager::addAnimation(char *name)
@@ -89,7 +89,7 @@ Json *CCBoneActionManager::addAnimation(char *name)
 
 void CCBoneActionManager::addAnimationAsync(char *name, CCCallFunc *callback)
 {
-	this->async(this, callfuncND_selector(CCBoneActionManager::addAnimationByAsync), NULL, name, callback);
+	this->async(this, callfuncNDD_return_selector(CCBoneActionManager::addAnimationByAsync), NULL, name, NULL, callback);
 }
 
 Json *CCBoneActionManager::getAnimation(char *name)

@@ -29,12 +29,12 @@ bool LoadingScene::init()
     this->addChild(m_pLabelLoading);
     this->addChild(m_pLabelPercent);
 
-	CCTextureCache::sharedTextureCache()->addImageAsync("pic/goldGlory_M.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
-	CCTextureCache::sharedTextureCache()->addImageAsync("pic/AvatarSklM.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
+	//CCTextureCache::sharedTextureCache()->addImageAsync("pic/goldGlory_M.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
+	//CCTextureCache::sharedTextureCache()->addImageAsync("pic/AvatarSklM.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
 	CCTextureCache::sharedTextureCache()->addImageAsync("pic/bg.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
     CCTextureCache::sharedTextureCache()->addImageAsync("pic/CloseNormal.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
     CCTextureCache::sharedTextureCache()->addImageAsync("pic/CloseSelected.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
-	m_nNumberOfSprites = 5;
+	m_nNumberOfSprites = 3;
 	m_nNumberOfSkl = 3;
     return true;
 }

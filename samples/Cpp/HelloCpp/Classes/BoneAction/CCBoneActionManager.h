@@ -33,7 +33,7 @@ public:
 	
 
 protected:
-	Json *addAnimationByAsync(CCNode *target, void *data);
+	char *addAnimationByAsync(CCNode *target, void *data1, void *data2);
 
 protected:
     CCBoneActionManager(void) {}

@@ -28,7 +28,7 @@ public:
 	
 
 private:
-	Json *addTextureByAsync(CCNode *target, void *data);
+	char *addTextureByAsync(CCNode *target, void *data1, void *data2);
 	std::string getTextureName(char *name);
 
 protected:

@@ -6,12 +6,17 @@
 #include "cocos2d.h"
 
 
+typedef char *(cocos2d::CCObject::*SEL_CallFuncNDD_return)(cocos2d::CCNode*, void*, void*);
+#define callfuncNDD_return_selector(_SELECTOR) (SEL_CallFuncNDD_return)(&_SELECTOR)
+
 struct asyncInfo
 {
 	cocos2d::CCObject *target;
 	cocos2d::CCNode *param1;
 	void *param2;
-	cocos2d::SEL_CallFuncND selector;
+	void *param3;
+	char *spritePlist;
+	SEL_CallFuncNDD_return selector;
 	cocos2d::CCCallFunc *callback;
 
 };
@@ -27,7 +32,7 @@ public:
 class threadAsync : public cocos2d::CCObject
 {
 public:
-	void async(CCObject *target, cocos2d::SEL_CallFuncND selector, cocos2d::CCNode *param1, void *param2, cocos2d::CCCallFunc *callback);
+	void async(CCObject *target, SEL_CallFuncNDD_return selector, cocos2d::CCNode *param1, void *param2, void *param3, cocos2d::CCCallFunc *callback);
 	static void over();
 	
 private:
@@ -43,4 +48,5 @@ private:
 	static std::queue<asyncInfo*>* s_pCallbackQueue;
 	static bool need_quit;
 };
+
 #endif //__FUNCTION_H__

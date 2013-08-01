@@ -61,7 +61,7 @@ void* threadAsync::loadAsync(void* data)
 
 		if (pAsyncStruct->target && pAsyncStruct->selector)
         {
-			((pAsyncStruct->target)->*(pAsyncStruct->selector))(pAsyncStruct->param1, pAsyncStruct->param2);
+			pAsyncStruct->spritePlist = ((pAsyncStruct->target)->*(pAsyncStruct->selector))(pAsyncStruct->param1, pAsyncStruct->param2, pAsyncStruct->param3);
         }
 
         pthread_mutex_lock(&s_callbackMutex);
@@ -94,7 +94,7 @@ void threadAsync::over()
 	}
 }
 
-void threadAsync::async(CCObject *target, cocos2d::SEL_CallFuncND selector, CCNode *param1, void *param2, CCCallFunc *callback)
+void threadAsync::async(CCObject *target, SEL_CallFuncNDD_return selector, cocos2d::CCNode *param1, void *param2, void *param3, cocos2d::CCCallFunc *callback)
 {
 	if (s_pAsyncInfoQueue == NULL)
     {             
@@ -125,8 +125,10 @@ void threadAsync::async(CCObject *target, cocos2d::SEL_CallFuncND selector, CCNo
     data->target = target;
 	data->param1 = param1;
 	data->param2 = param2;
+	data->param3 = param3;
     data->selector = selector;
 	data->callback = callback;
+	data->spritePlist = NULL;
 
     // add async struct into queue
     pthread_mutex_lock(&s_asyncInfoMutex);
@@ -151,6 +153,11 @@ void threadAsync::asyncCallBack(float dt)
         asyncInfo *pAsyncStruct = pQueue->front();
         pQueue->pop();
         pthread_mutex_unlock(&s_callbackMutex);
+
+		if(pAsyncStruct->spritePlist != NULL)
+		{
+			CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(pAsyncStruct->spritePlist);
+		}
 
 		if (pAsyncStruct->callback)
         {

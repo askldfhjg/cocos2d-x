@@ -39,19 +39,10 @@ CCBoneTextureManager::~CCBoneTextureManager(void)
 	CC_SAFE_DELETE(m_pTextureData);
 }
 
-Json *CCBoneTextureManager::addTextureByAsync(CCNode *target, void *data)
+char *CCBoneTextureManager::addTextureByAsync(CCNode *target, void *data1, void *data2)
 {
-	std::string item;
-	int tag = target->getTag();
-	if(tag == 1)
-	{
-		item = "skl";
-	}
-	else
-	{
-		item = "equip";
-	}
-	std::string textureName = getTextureName((char *)data);
+	std::string item = std::string((char *)data2);
+	std::string textureName = getTextureName((char *)data1);
 	std::string texturePic = "pic/" + textureName +".plist";
 	std::string path = "bone/" + textureName + "."+item;
 	std::string fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(path.c_str());
@@ -62,7 +53,7 @@ Json *CCBoneTextureManager::addTextureByAsync(CCNode *target, void *data)
 	if (it != m_pTextureData->end())
 	{
 		newKey->release();
-		return it->second;
+		return NULL;
 	}
 
     unsigned long size;
@@ -71,8 +62,9 @@ Json *CCBoneTextureManager::addTextureByAsync(CCNode *target, void *data)
 	CC_SAFE_DELETE_ARRAY(buffer);
 	newKey->retain();
 	m_pTextureData->insert(char_json::value_type(newKey, root));
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(texturePic.c_str());
-	return root;
+	char* ret = new char;  
+	strcpy_s(ret, texturePic.size() + 1, texturePic.c_str());
+	return ret;
 }
 
 Json *CCBoneTextureManager::addEquip(char *name)
@@ -125,15 +117,11 @@ Json *CCBoneTextureManager::addSkl(char *name)
 
 void CCBoneTextureManager::addSklAsync(char *name, CCCallFunc *callback)
 {
-	CCNode *tmp = CCNode::create();
-	tmp->setTag(1);
-	this->async(this, callfuncND_selector(CCBoneTextureManager::addTextureByAsync), tmp, name, callback);
+	this->async(this, callfuncNDD_return_selector(CCBoneTextureManager::addTextureByAsync), NULL, name, "skl", callback);
 }
 void CCBoneTextureManager::addEquipAsync(char *name, CCCallFunc *callback)
 {
-	CCNode *tmp = CCNode::create();
-	tmp->setTag(2);
-	this->async(this, callfuncND_selector(CCBoneTextureManager::addTextureByAsync), tmp, name, callback);
+	this->async(this, callfuncNDD_return_selector(CCBoneTextureManager::addTextureByAsync), NULL, name, "equip", callback);
 }
 
 Json *CCBoneTextureManager::getEquip(char *name)

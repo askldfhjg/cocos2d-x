@@ -3,7 +3,7 @@
 #include "BoneAction/BoneAction.h"
 #include "TableViewTestScene.h"
 #include "LoadingScene.h"
-#include "vld.h"
+
 #include <windows.h>
 #include "direct.h" 
 #include <strsafe.h>
@@ -39,6 +39,8 @@ bool FightScene::init()
 	def->setPosition(ccp(400, 50));
 	def->setScale(0.5f);
 	//def->runAction(CCRepeatForever::create(def->createAction("attack4", NULL)));
+	def->changeBoneTexture("bone/weapon", "weapon", "BallinBlade");
+	def->changeBoneTexture("bone/weapon", "weaponoff", "BallinBlade");
 	this->addChild(def, 3);
 
     CCSprite* pSprite = CCSprite::create("pic/bg.png");
@@ -132,7 +134,7 @@ void FightScene::streakMove(CCObject *dd)
 
 void FightScene::afterAttack()
 {
-	def->runAction(CCRepeatForever::create(def->createAction("idle", NULL)));
+	def->runAction(CCRepeatForever::create(def->createAction("AvatarSkelM", NULL)));
 }
 
 void FightScene::checkSkl()

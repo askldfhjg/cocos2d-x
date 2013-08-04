@@ -7,7 +7,7 @@
 			<key>backhairM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{757,960},{148,331}}</string>
+				<string>{{133,1382},{148,331}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -20,7 +20,7 @@
 			<key>backhandM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{907,960},{83,131}}</string>
+				<string>{{283,1382},{83,131}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -33,7 +33,7 @@
 			<key>backrobeM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{992,960},{222,330}}</string>
+				<string>{{368,1382},{222,330}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -46,7 +46,7 @@
 			<key>backshinM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{1216,960},{76,168}}</string>
+				<string>{{592,1382},{76,168}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -59,7 +59,7 @@
 			<key>backshoulderM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{1294,960},{46,122}}</string>
+				<string>{{670,1382},{46,122}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -72,7 +72,7 @@
 			<key>backthighM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{1342,960},{84,176}}</string>
+				<string>{{718,1382},{84,176}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -85,7 +85,7 @@
 			<key>capeM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{1428,960},{364,517}}</string>
+				<string>{{804,1382},{364,517}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -98,7 +98,7 @@
 			<key>chestM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{1794,960},{178,238}}</string>
+				<string>{{1170,1382},{178,238}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -108,10 +108,36 @@
 				<key>sourceSize</key>
 				<string>{178,238}</string>
 			</dict>
+			<key>dfdffd0000</key>
+			<dict>
+				<key>frame</key>
+				<string>{{2069,0},{233,233}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{233,233}}</string>
+				<key>sourceSize</key>
+				<string>{233,233}</string>
+			</dict>
+			<key>fdfd310000</key>
+			<dict>
+				<key>frame</key>
+				<string>{{2304,0},{264,209}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{264,209}}</string>
+				<key>sourceSize</key>
+				<string>{264,209}</string>
+			</dict>
 			<key>fgjfl20000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{100,66},{115,230}}</string>
+				<string>{{2570,0},{115,230}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -124,7 +150,7 @@
 			<key>fgknhl10000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{217,66},{242,409}}</string>
+				<string>{{2687,0},{242,409}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -137,7 +163,7 @@
 			<key>fgknhl10001</key>
 			<dict>
 				<key>frame</key>
-				<string>{{461,66},{242,405}}</string>
+				<string>{{2931,0},{242,405}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -150,7 +176,7 @@
 			<key>fgknhl10002</key>
 			<dict>
 				<key>frame</key>
-				<string>{{705,66},{242,409}}</string>
+				<string>{{3175,0},{242,409}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -163,7 +189,7 @@
 			<key>fgknhl10003</key>
 			<dict>
 				<key>frame</key>
-				<string>{{949,66},{242,409}}</string>
+				<string>{{3419,0},{242,409}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -173,10 +199,140 @@
 				<key>sourceSize</key>
 				<string>{242,409}</string>
 			</dict>
+			<key>fgknhl1 副本10000</key>
+			<dict>
+				<key>frame</key>
+				<string>{{3663,0},{261,431}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{261,431}}</string>
+				<key>sourceSize</key>
+				<string>{261,431}</string>
+			</dict>
+			<key>fgknhl1 副本10001</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,433},{259,429}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{2,2},{259,429}}</string>
+				<key>sourceSize</key>
+				<string>{259,429}</string>
+			</dict>
+			<key>fgknhl1 副本10002</key>
+			<dict>
+				<key>frame</key>
+				<string>{{261,433},{261,431}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{261,431}}</string>
+				<key>sourceSize</key>
+				<string>{261,431}</string>
+			</dict>
+			<key>fgknhl1 副本10003</key>
+			<dict>
+				<key>frame</key>
+				<string>{{524,433},{261,431}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{261,431}}</string>
+				<key>sourceSize</key>
+				<string>{261,431}</string>
+			</dict>
+			<key>fgknhl1 副本10004</key>
+			<dict>
+				<key>frame</key>
+				<string>{{787,433},{0,0}}</string>
+				<key>offset</key>
+				<string>{184,405}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{261,431},{0,0}}</string>
+				<key>sourceSize</key>
+				<string>{0,0}</string>
+			</dict>
+			<key>fgknhl1 副本10000</key>
+			<dict>
+				<key>frame</key>
+				<string>{{2602,1382},{261,431}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{261,431}}</string>
+				<key>sourceSize</key>
+				<string>{261,431}</string>
+			</dict>
+			<key>fgknhl1 副本10001</key>
+			<dict>
+				<key>frame</key>
+				<string>{{2865,1382},{259,429}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{2,2},{259,429}}</string>
+				<key>sourceSize</key>
+				<string>{259,429}</string>
+			</dict>
+			<key>fgknhl1 副本10002</key>
+			<dict>
+				<key>frame</key>
+				<string>{{3126,1382},{261,431}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{261,431}}</string>
+				<key>sourceSize</key>
+				<string>{261,431}</string>
+			</dict>
+			<key>fgknhl1 副本10003</key>
+			<dict>
+				<key>frame</key>
+				<string>{{3389,1382},{261,431}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{261,431}}</string>
+				<key>sourceSize</key>
+				<string>{261,431}</string>
+			</dict>
+			<key>fgknhl1 副本10004</key>
+			<dict>
+				<key>frame</key>
+				<string>{{3652,1382},{0,0}}</string>
+				<key>offset</key>
+				<string>{184,405}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{261,431},{0,0}}</string>
+				<key>sourceSize</key>
+				<string>{0,0}</string>
+			</dict>
 			<key>frontfootM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,1479},{96,73}}</string>
+				<string>{{1350,1382},{96,73}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -189,7 +345,7 @@
 			<key>fronthandM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{98,1479},{58,164}}</string>
+				<string>{{1448,1382},{58,164}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -202,7 +358,7 @@
 			<key>frontshinM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{158,1479},{81,176}}</string>
+				<string>{{1508,1382},{81,176}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -215,7 +371,7 @@
 			<key>frontshoulderM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{241,1479},{100,121}}</string>
+				<string>{{1591,1382},{100,121}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -228,7 +384,7 @@
 			<key>frontthighM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{343,1479},{102,171}}</string>
+				<string>{{1693,1382},{102,171}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -241,7 +397,7 @@
 			<key>gji10000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{1193,66},{58,58}}</string>
+				<string>{{789,433},{58,58}}</string>
 				<key>offset</key>
 				<string>{-25,-20}</string>
 				<key>rotated</key>
@@ -254,7 +410,7 @@
 			<key>gji10001</key>
 			<dict>
 				<key>frame</key>
-				<string>{{1253,66},{75,71}}</string>
+				<string>{{849,433},{75,71}}</string>
 				<key>offset</key>
 				<string>{-17,-13}</string>
 				<key>rotated</key>
@@ -267,7 +423,7 @@
 			<key>gji10002</key>
 			<dict>
 				<key>frame</key>
-				<string>{{1330,66},{91,84}}</string>
+				<string>{{926,433},{91,84}}</string>
 				<key>offset</key>
 				<string>{-9,-7}</string>
 				<key>rotated</key>
@@ -280,7 +436,7 @@
 			<key>gji10003</key>
 			<dict>
 				<key>frame</key>
-				<string>{{1423,66},{108,97}}</string>
+				<string>{{1019,433},{108,97}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -293,7 +449,7 @@
 			<key>gndifk120000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,477},{1357,481}}</string>
+				<string>{{1129,433},{1357,481}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -306,7 +462,7 @@
 			<key>gndifk120001</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,960},{755,456}}</string>
+				<string>{{2488,433},{755,456}}</string>
 				<key>offset</key>
 				<string>{-602,0}</string>
 				<key>rotated</key>
@@ -316,10 +472,36 @@
 				<key>sourceSize</key>
 				<string>{755,456}</string>
 			</dict>
+			<key>gndifk12 副本0000</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,916},{2580,464}}</string>
+				<key>offset</key>
+				<string>{0,-10}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,10},{2580,464}}</string>
+				<key>sourceSize</key>
+				<string>{2580,464}</string>
+			</dict>
+			<key>gndifk12 副本0001</key>
+			<dict>
+				<key>frame</key>
+				<string>{{2582,916},{971,458}}</string>
+				<key>offset</key>
+				<string>{-1609,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{1609,16},{971,458}}</string>
+				<key>sourceSize</key>
+				<string>{971,458}</string>
+			</dict>
 			<key>headM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{447,1479},{114,128}}</string>
+				<string>{{1797,1382},{114,128}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -329,10 +511,23 @@
 				<key>sourceSize</key>
 				<string>{114,128}</string>
 			</dict>
+			<key>healqiu10000</key>
+			<dict>
+				<key>frame</key>
+				<string>{{3555,916},{47,47}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{47,47}}</string>
+				<key>sourceSize</key>
+				<string>{47,47}</string>
+			</dict>
 			<key>hipM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{563,1479},{116,75}}</string>
+				<string>{{1913,1382},{116,75}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -345,7 +540,7 @@
 			<key>idlefootM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{681,1479},{59,100}}</string>
+				<string>{{2031,1382},{59,100}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -358,7 +553,7 @@
 			<key>robeM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{742,1479},{161,330}}</string>
+				<string>{{2092,1382},{161,330}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -367,6 +562,58 @@
 				<string>{{0,0},{161,330}}</string>
 				<key>sourceSize</key>
 				<string>{161,330}</string>
+			</dict>
+			<key>sprite 2130000</key>
+			<dict>
+				<key>frame</key>
+				<string>{{3604,916},{131,131}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{131,131}}</string>
+				<key>sourceSize</key>
+				<string>{131,131}</string>
+			</dict>
+			<key>sprite 2130001</key>
+			<dict>
+				<key>frame</key>
+				<string>{{3737,916},{131,131}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{131,131}}</string>
+				<key>sourceSize</key>
+				<string>{131,131}</string>
+			</dict>
+			<key>sprite 2130002</key>
+			<dict>
+				<key>frame</key>
+				<string>{{3870,916},{131,131}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{131,131}}</string>
+				<key>sourceSize</key>
+				<string>{131,131}</string>
+			</dict>
+			<key>sprite 2130003</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,1382},{131,131}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{131,131}}</string>
+				<key>sourceSize</key>
+				<string>{131,131}</string>
 			</dict>
 			<key>vertigo0000</key>
 			<dict>
@@ -618,7 +865,7 @@
 			<key>vertigo0019</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,66},{98,61}}</string>
+				<string>{{1969,0},{98,61}}</string>
 				<key>offset</key>
 				<string>{-9,-1}</string>
 				<key>rotated</key>
@@ -631,7 +878,7 @@
 			<key>weapon0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{905,1479},{345,601}}</string>
+				<string>{{2255,1382},{345,601}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -649,7 +896,7 @@
 			<key>realTextureFileName</key>
 			<string>AvatarSklM.png</string>
 			<key>size</key>
-			<string>{2048,4096}</string>
+			<string>{4096,4096}</string>
 			<key>textureFileName</key>
 			<string>AvatarSklM.png</string>
 		</dict>

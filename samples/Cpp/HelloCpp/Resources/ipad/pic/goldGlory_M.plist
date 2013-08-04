@@ -6,288 +6,197 @@
 		<dict>
 			<key>goldGloryMChest0000</key>
 			<dict>
-				<key>aliases</key>
-				<array/>
+				<key>frame</key>
+				<string>{{0,0},{193,245}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
 				<key>sourceColorRect</key>
 				<string>{{0,0},{193,245}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
+				<key>sourceSize</key>
 				<string>{193,245}</string>
-				<key>spriteSourceSize</key>
-				<string>{193,245}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{199,0},{193,245}}</string>
-				<key>textureRotated</key>
-				<false/>
 			</dict>
 			<key>goldGloryMFoot0000</key>
 			<dict>
-				<key>aliases</key>
-				<array/>
+				<key>frame</key>
+				<string>{{195,0},{102,94}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
 				<key>sourceColorRect</key>
 				<string>{{0,0},{102,94}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
+				<key>sourceSize</key>
 				<string>{102,94}</string>
-				<key>spriteSourceSize</key>
-				<string>{102,94}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{91,663},{102,94}}</string>
-				<key>textureRotated</key>
-				<false/>
 			</dict>
 			<key>goldGloryMFootIdle0000</key>
 			<dict>
-				<key>aliases</key>
-				<array/>
+				<key>frame</key>
+				<string>{{299,0},{73,128}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
 				<key>sourceColorRect</key>
 				<string>{{0,0},{73,128}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
+				<key>sourceSize</key>
 				<string>{73,128}</string>
-				<key>spriteSourceSize</key>
-				<string>{73,128}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{344,619},{73,128}}</string>
-				<key>textureRotated</key>
-				<false/>
 			</dict>
 			<key>goldGloryMHand0000</key>
 			<dict>
-				<key>aliases</key>
-				<array/>
+				<key>frame</key>
+				<string>{{374,0},{76,167}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
 				<key>sourceColorRect</key>
 				<string>{{0,0},{76,167}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
+				<key>sourceSize</key>
 				<string>{76,167}</string>
-				<key>spriteSourceSize</key>
-				<string>{76,167}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{394,0},{76,167}}</string>
-				<key>textureRotated</key>
-				<false/>
 			</dict>
 			<key>goldGloryMHandBack0000</key>
 			<dict>
-				<key>aliases</key>
-				<array/>
+				<key>frame</key>
+				<string>{{452,0},{89,139}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
 				<key>sourceColorRect</key>
 				<string>{{0,0},{89,139}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
+				<key>sourceSize</key>
 				<string>{89,139}</string>
-				<key>spriteSourceSize</key>
-				<string>{89,139}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{0,647},{89,139}}</string>
-				<key>textureRotated</key>
-				<false/>
 			</dict>
 			<key>goldGloryMHip0000</key>
 			<dict>
-				<key>aliases</key>
-				<array/>
+				<key>frame</key>
+				<string>{{543,0},{116,79}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
 				<key>sourceColorRect</key>
 				<string>{{0,0},{116,79}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
+				<key>sourceSize</key>
 				<string>{116,79}</string>
-				<key>spriteSourceSize</key>
-				<string>{116,79}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{195,668},{116,79}}</string>
-				<key>textureRotated</key>
-				<false/>
 			</dict>
 			<key>goldGloryMRobe0000</key>
 			<dict>
-				<key>aliases</key>
-				<array/>
+				<key>frame</key>
+				<string>{{661,0},{153,178}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
 				<key>sourceColorRect</key>
 				<string>{{0,0},{153,178}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
+				<key>sourceSize</key>
 				<string>{153,178}</string>
-				<key>spriteSourceSize</key>
-				<string>{153,178}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{344,439},{153,178}}</string>
-				<key>textureRotated</key>
-				<false/>
 			</dict>
 			<key>goldGloryMRobeBack0000</key>
 			<dict>
-				<key>aliases</key>
-				<array/>
+				<key>frame</key>
+				<string>{{816,0},{0,0}}</string>
+				<key>offset</key>
+				<string>{107374181,107374181}</string>
+				<key>rotated</key>
+				<false/>
 				<key>sourceColorRect</key>
 				<string>{{0,0},{0,0}}</string>
-				<key>spriteOffset</key>
-				<string>{107374181,107374181}</string>
-				<key>spriteSize</key>
+				<key>sourceSize</key>
 				<string>{0,0}</string>
-				<key>spriteSourceSize</key>
-				<string>{0,0}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{0,0},{0,0}}</string>
-				<key>textureRotated</key>
-				<false/>
 			</dict>
 			<key>goldGloryMShin0000</key>
 			<dict>
-				<key>aliases</key>
-				<array/>
+				<key>frame</key>
+				<string>{{818,0},{121,220}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
 				<key>sourceColorRect</key>
 				<string>{{0,0},{121,220}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
+				<key>sourceSize</key>
 				<string>{121,220}</string>
-				<key>spriteSourceSize</key>
-				<string>{121,220}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{0,425},{121,220}}</string>
-				<key>textureRotated</key>
-				<false/>
 			</dict>
 			<key>goldGloryMShinBack0000</key>
 			<dict>
-				<key>aliases</key>
-				<array/>
+				<key>frame</key>
+				<string>{{0,247},{143,215}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
 				<key>sourceColorRect</key>
 				<string>{{0,0},{143,215}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
+				<key>sourceSize</key>
 				<string>{143,215}</string>
-				<key>spriteSourceSize</key>
-				<string>{143,215}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{199,247},{143,215}}</string>
-				<key>textureRotated</key>
-				<false/>
 			</dict>
 			<key>goldGloryMShoulder0000</key>
 			<dict>
-				<key>aliases</key>
-				<array/>
+				<key>frame</key>
+				<string>{{145,247},{197,423}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
 				<key>sourceColorRect</key>
 				<string>{{0,0},{197,423}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
+				<key>sourceSize</key>
 				<string>{197,423}</string>
-				<key>spriteSourceSize</key>
-				<string>{197,423}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{0,0},{197,423}}</string>
-				<key>textureRotated</key>
-				<false/>
 			</dict>
 			<key>goldGloryMShoulderBack0000</key>
 			<dict>
-				<key>aliases</key>
-				<array/>
+				<key>frame</key>
+				<string>{{344,247},{117,197}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
 				<key>sourceColorRect</key>
 				<string>{{0,0},{117,197}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
+				<key>sourceSize</key>
 				<string>{117,197}</string>
-				<key>spriteSourceSize</key>
-				<string>{117,197}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{123,464},{117,197}}</string>
-				<key>textureRotated</key>
-				<false/>
 			</dict>
 			<key>goldGloryMThigh0000</key>
 			<dict>
-				<key>aliases</key>
-				<array/>
+				<key>frame</key>
+				<string>{{463,247},{100,202}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
 				<key>sourceColorRect</key>
 				<string>{{0,0},{100,202}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
+				<key>sourceSize</key>
 				<string>{100,202}</string>
-				<key>spriteSourceSize</key>
-				<string>{100,202}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{242,464},{100,202}}</string>
-				<key>textureRotated</key>
-				<false/>
 			</dict>
 			<key>goldGloryMThighBack0000</key>
 			<dict>
-				<key>aliases</key>
-				<array/>
+				<key>frame</key>
+				<string>{{565,247},{161,190}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
 				<key>sourceColorRect</key>
 				<string>{{0,0},{161,190}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
+				<key>sourceSize</key>
 				<string>{161,190}</string>
-				<key>spriteSourceSize</key>
-				<string>{161,190}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{344,247},{161,190}}</string>
-				<key>textureRotated</key>
-				<false/>
 			</dict>
 		</dict>
 		<key>metadata</key>
 		<dict>
 			<key>format</key>
-			<integer>3</integer>
+			<integer>2</integer>
+			<key>realTextureFileName</key>
+			<string>goldGlory_M.png</string>
 			<key>size</key>
-			<string>{512,1024}</string>
-			<key>target</key>
-			<dict>
-				<key>name</key>
-				<string>goldGlory_M(2).png</string>
-				<key>textureFileName</key>
-				<string>goldGlory_M(2)</string>
-				<key>textureFileExtension</key>
-				<string>png</string>
-				<key>premultipliedAlpha</key>
-				<true/>
-			</dict>
+			<string>{1024,1024}</string>
+			<key>textureFileName</key>
+			<string>goldGlory_M.png</string>
 		</dict>
 	</dict>
 </plist>

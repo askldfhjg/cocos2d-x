@@ -28,7 +28,7 @@ public:
 	CCLayerAction *createAction(const char *BoneMove, CCFiniteTimeAction *layerMove, BoneMotion boneMotionType);
 	CCLayerAction *createAction(const char *BoneMove, CCFiniteTimeAction *layerMove);
 	CCBone *getBoneByName(const char *name);
-	void changeBoneTexture(const char *textureName, const char *boneName);
+	void changeBoneTexture(const char *textureName, const char *boneName, const char* equipName = NULL);
 	void changeBoneTexture(const char *textureName);
 	void changeBoneTexture(CCDictionary *info);
 	void setAnimation(char *name);

@@ -63,8 +63,8 @@ char *CCBoneTextureManager::addTextureByAsync(CCNode *target, void *data1, void 
 	newKey->retain();
 	m_pTextureData->insert(char_json::value_type(newKey, root));
 	char* ret = new char[255];
-	//strcpy_s(ret, texturePic.size() + 1, texturePic.c_str());
-    strlcpy(ret, texturePic.c_str(), texturePic.size() + 1);
+	strcpy_s(ret, texturePic.size() + 1, texturePic.c_str());
+    //strlcpy(ret, texturePic.c_str(), texturePic.size() + 1);
 	return ret;
 }
 

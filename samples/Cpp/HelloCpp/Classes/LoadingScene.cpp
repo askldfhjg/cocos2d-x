@@ -29,13 +29,11 @@ bool LoadingScene::init()
     this->addChild(m_pLabelLoading);
     this->addChild(m_pLabelPercent);
 
-	//CCTextureCache::sharedTextureCache()->addImageAsync("pic/goldGlory_M.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
-	//CCTextureCache::sharedTextureCache()->addImageAsync("pic/AvatarSklM.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
 	CCTextureCache::sharedTextureCache()->addImageAsync("pic/bg.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
     CCTextureCache::sharedTextureCache()->addImageAsync("pic/CloseNormal.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
     CCTextureCache::sharedTextureCache()->addImageAsync("pic/CloseSelected.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
 	m_nNumberOfSprites = 3;
-	m_nNumberOfSkl = 3;
+	m_nNumberOfSkl = 4;
     return true;
 }
 
@@ -43,7 +41,7 @@ void LoadingScene::loadingCallBack(CCObject *obj)
 {
     ++m_nNumberOfLoaded;
     char tmp[10];
-    sprintf(tmp,"%%%d", (int)(((float)m_nNumberOfLoaded / m_nNumberOfSprites) * 100));
+    sprintf(tmp,"%%%d", (int)(((float)m_nNumberOfLoaded / (m_nNumberOfSprites + m_nNumberOfSkl)) * 100));
     m_pLabelPercent->setString(tmp);
 
     if (m_nNumberOfLoaded == m_nNumberOfSprites)
@@ -51,6 +49,7 @@ void LoadingScene::loadingCallBack(CCObject *obj)
 		CCBoneActionManager::sharedManager()->addAnimationAsync("bone/AvatarSklM", CCCallFunc::create(this, callfunc_selector(LoadingScene::loadingCallBack2)));
 		CCBoneTextureManager::sharedManager()->addSklAsync("bone/AvatarSklM", CCCallFunc::create(this, callfunc_selector(LoadingScene::loadingCallBack2)));
 		CCBoneTextureManager::sharedManager()->addEquipAsync("bone/goldGlory_M", CCCallFunc::create(this, callfunc_selector(LoadingScene::loadingCallBack2)));
+		CCBoneTextureManager::sharedManager()->addEquipAsync("bone/weapon", CCCallFunc::create(this, callfunc_selector(LoadingScene::loadingCallBack2)));
     }
 }
 
@@ -58,7 +57,7 @@ void LoadingScene::loadingCallBack2()
 {
     ++m_nNumberOfLoaded;
     char tmp[10];
-    sprintf(tmp,"%%%d", (int)(((float)m_nNumberOfLoaded / m_nNumberOfSprites) * 100));
+    sprintf(tmp,"%%%d", (int)(((float)m_nNumberOfLoaded / (m_nNumberOfSprites + m_nNumberOfSkl)) * 100));
     m_pLabelPercent->setString(tmp);
 	if (m_nNumberOfLoaded == (m_nNumberOfSprites + m_nNumberOfSkl))
     {

@@ -39,8 +39,8 @@ bool FightScene::init()
 	def->setPosition(ccp(400, 50));
 	def->setScale(0.5f);
 	//def->runAction(CCRepeatForever::create(def->createAction("attack4", NULL)));
-	def->changeBoneTexture("bone/weapon", "weapon", "BallinBlade");
-	def->changeBoneTexture("bone/weapon", "weaponoff", "BallinBlade");
+	//def->changeBoneTexture("bone/weapon", "weapon", "BallinBlade");
+	//def->changeBoneTexture("bone/weapon", "weaponoff", "BallinBlade");
 	this->addChild(def, 3);
 
     CCSprite* pSprite = CCSprite::create("pic/bg.png");

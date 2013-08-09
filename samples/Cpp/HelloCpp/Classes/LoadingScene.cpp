@@ -32,7 +32,8 @@ bool LoadingScene::init()
 	CCTextureCache::sharedTextureCache()->addImageAsync("pic/bg.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
     CCTextureCache::sharedTextureCache()->addImageAsync("pic/CloseNormal.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
     CCTextureCache::sharedTextureCache()->addImageAsync("pic/CloseSelected.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
-	m_nNumberOfSprites = 3;
+	    CCTextureCache::sharedTextureCache()->addImageAsync("pic/AvatarSklMeffect.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
+	m_nNumberOfSprites = 4;
 	m_nNumberOfSkl = 4;
     return true;
 }
@@ -41,7 +42,7 @@ void LoadingScene::loadingCallBack(CCObject *obj)
 {
     ++m_nNumberOfLoaded;
     char tmp[10];
-    sprintf(tmp,"%%%d", (int)(((float)m_nNumberOfLoaded / (m_nNumberOfSprites + m_nNumberOfSkl)) * 100));
+    sprintf(tmp,"%%%d", m_nNumberOfLoaded);
     m_pLabelPercent->setString(tmp);
 
     if (m_nNumberOfLoaded == m_nNumberOfSprites)
@@ -57,7 +58,7 @@ void LoadingScene::loadingCallBack2()
 {
     ++m_nNumberOfLoaded;
     char tmp[10];
-    sprintf(tmp,"%%%d", (int)(((float)m_nNumberOfLoaded / (m_nNumberOfSprites + m_nNumberOfSkl)) * 100));
+    sprintf(tmp,"%%%d", m_nNumberOfLoaded);
     m_pLabelPercent->setString(tmp);
 	if (m_nNumberOfLoaded == (m_nNumberOfSprites + m_nNumberOfSkl))
     {
@@ -68,6 +69,7 @@ void LoadingScene::loadingCallBack2()
 void LoadingScene::lastProcess()
 {
 	CCSpriteFrameCache *cache = CCSpriteFrameCache::sharedSpriteFrameCache();
+	cache->addSpriteFramesWithFile("pic/AvatarSklMeffect.plist");
 	CCScene *pScene = FightScene::scene();
 	CCDirector::sharedDirector()->replaceScene(pScene);
 	this->removeChild(m_pLabelLoading, true);

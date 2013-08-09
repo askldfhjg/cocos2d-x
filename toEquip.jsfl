@@ -14,16 +14,16 @@ fl.getDocumentDOM().setTransformationPoint({x:0, y:0});
 
 var file = fl.configURI + 'Commands/json2.jsfl';
 fl.runScript(file); 
-/*var fm = fl.getDocumentDOM().getTimeline().layers[0].frames[0];
+var fm = fl.getDocumentDOM().getTimeline().layers[0].frames[0];
 
 var elem = fm.elements[0];
 var xOffset = elem.transformX - elem.x;
 var yOffset = elem.transformY - elem.y;
 fl.getDocumentDOM().selectNone();
-elem.selected = true;*/
-//document.enterEditMode('inPlace');
+elem.selected = true;
+document.enterEditMode('inPlace');
 getActionList(0);
-//document.exitEditMode();
+document.exitEditMode();
 function getActionList(startIndex)
 {
 	var spriteList = {};
@@ -42,15 +42,14 @@ function getActionList(startIndex)
 		selectLayer(layerIndex);
 		selectFrame(0);
 		var currentFrame = frames[0];
-		var ac = elem.libraryItem.linkageClassName;
-		var tmp = getSourceXML(currentFrame.elements[0], currentLayer.name.toLowerCase(), ac, spriteList, exportPng);
+		var tmp = getSourceXML(currentFrame.elements[0], currentLayer.name.toLowerCase(), spriteList, exportPng);
 		spriteList = tmp['spriteList'];
 		exportPng = tmp['exportPng'];
 	}
 	saveMotionXML(exportPng, spriteList);
 }
 
-function getSourceXML(element, layerName, namedddd, spriteList, exportPng){
+function getSourceXML(element, layerName, spriteList, exportPng){
 
 	var matrix = element.matrix;
 	var scaleXStart = getMatrixScaleX(matrix);
@@ -65,7 +64,7 @@ function getSourceXML(element, layerName, namedddd, spriteList, exportPng){
 
 	var orgPoint = getTransformationPointForElement(element);
 	setTransformationPointForElement(element, {x:0, y:0});
-
+	fl.trace(orgPoint.x);
 	var startX = getX(element);
 	var startY = getY(element);
 	
@@ -78,7 +77,7 @@ function getSourceXML(element, layerName, namedddd, spriteList, exportPng){
 		setTransformationPointForElement(element, transPoint);
 
 	var leftOffset = roundToTwip((element.transformX - element.left));
-	var topOffset = roundToTwip((element.transformY - element.top));
+	var topOffset = roundToTwip((element.transformY - element.top)); 
 	element.matrix = matrix;
 
 	if (element.elementType != 'text')
@@ -88,10 +87,7 @@ function getSourceXML(element, layerName, namedddd, spriteList, exportPng){
 	setY(element, startY);
 
 	setTransformationPointForElement(element, orgPoint);
-	if(!spriteList.hasOwnProperty(layerName)) {
-		spriteList[layerName] = {};
-	}
-	spriteList[layerName][namedddd] = [name[name.length - 1]+"0000", scaleXStart, scaleYStart, leftOffset, topOffset];
+	spriteList[layerName] = [name[name.length - 1]+"0000", scaleXStart, scaleYStart, leftOffset, topOffset];
 	return {"exportPng":exportPng, "spriteList":spriteList};
 }
 function selectFrame(frameIndex) {
@@ -192,7 +188,7 @@ function roundToTwip(value)
 
 function inArray(ar, vl)
 {
-	for(var i=0;i<ar.length;i++)
+	for(i=0;i<ar.length;i++)
 	{
 		if(ar[i] == vl)
 		{
@@ -226,8 +222,9 @@ function saveMotionXML(png, sprite)
 	exporter.allowTrimming = true;
 	exporter.allowRotate = false;
 	exporter.shapePadding = 2;
-	exporter.algorithm = "basic";
-	exporter.layoutFormat = "cocos2D v2";
+	exporter.algorithm = "maxRects";
+	exporter.layoutFormat = "cocos2D v3";
+	exporter.format = "RGBA8888";
 
 	var index = 0;
 	for (var j = 0; j < png.length; j++) {
@@ -236,10 +233,10 @@ function saveMotionXML(png, sprite)
 	}
 	
 	var name = fl.getDocumentDOM().name.split(".")[0];
-	exporter.exportSpriteSheet(fileURL+name,{format:"png", bitDepth:32, backgroundColor:"#00000000"});
-
+	exporter.exportSpriteSheet(fileURL+"pic/"+name,{format:"png", bitDepth:32, backgroundColor:"#00000000"});
+	sprite['picture'] = name;
 	//var ret = '{"bone":'+JSON.stringify(sprite)+', "motion":'+JSON.stringify(contents)+'}';
-	if (!FLfile.write(fileURL+'bone/'+name+".equip", JSON.stringify(sprite)))
+	if (!FLfile.write(fileURL+name+".equip", JSON.stringify(sprite)))
 	{
 		alert(CopyMotionErrorStrings.SAVE_ERROR);
 		return false;

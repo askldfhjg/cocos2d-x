@@ -11,6 +11,7 @@ for (var i = elem.length - 1; i >= 0; i--) {
 };*/
 var file = fl.configURI + 'Commands/json2.jsfl';
 fl.runScript(file); 
+/*
 var fm = fl.getDocumentDOM().getTimeline().layers[0].frames[0];
 
 var elem = fm.elements[0];
@@ -18,18 +19,47 @@ var xOffset = elem.transformX - elem.x;
 var yOffset = elem.transformY - elem.y;
 fl.getDocumentDOM().selectNone();
 elem.selected = true;
+var archX = roundToTwip(-xOffset / elem.width);
+var archY = roundToTwip(yOffset / elem.height);
 document.enterEditMode('inPlace');
-getActionList(0, xOffset, yOffset);
+getActionList(0, xOffset, yOffset, archX, archY);
 document.exitEditMode();
-function getActionList(startIndex, xOffset, yOffset)
+
+*/
+
+var actionList = {};
+var spriteList = {};
+var exportPng = [];
+var startIndex = 0;
+var select = fl.getDocumentDOM().selection;
+for(var i =0;i < select.length;i++)
+{
+	var elem = select[i];
+	var xOffset = elem.transformX - elem.x;
+	var yOffset = elem.transformY - elem.y;
+	fl.getDocumentDOM().selectNone();
+	elem.selected = true;
+	var archX = roundToTwip(-xOffset / elem.width);
+	var archY = roundToTwip(yOffset / elem.height);
+	document.enterEditMode('inPlace');
+	var ddd = getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, actionList, spriteList);
+	actionList = ddd[0];
+	exportPng = ddd[1];
+	spriteList = ddd[2];
+	startIndex = ddd[3];
+	fl.trace(startIndex);
+	document.exitEditMode();
+}
+saveMotionXML(actionList, exportPng, spriteList);
+
+
+function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, actionList, spriteList)
 {
 	var lastFrameStatus;
 	var startFrameStatus;
-	var actionList = {};
-	var spriteList = {};
-	var exportPng = [];
 	var timeline = fl.getDocumentDOM().getTimeline();
 	var layers = timeline.layers;
+	var maxFrameId = 0;
 	for(var layerIndex = 0; layerIndex < layers.length; layerIndex++) {
 		var currentLayer = layers[layerIndex];
 		if(!currentLayer.visible || currentLayer.frames.length <= 0) {
@@ -37,7 +67,12 @@ function getActionList(startIndex, xOffset, yOffset)
 		}
 		var frames = currentLayer.frames;
 		if(currentLayer.name.toLowerCase() == "label") {
-			actionList = getLabelXml(frames, startIndex, actionList);
+			var tmp = getLabelXml(frames, startIndex, actionList);
+			actionList = tmp[0];
+			maxFrameId = tmp[1];
+			continue;
+		}
+		if(currentLayer.name.toLowerCase() == "shadow") {
 			continue;
 		}
 		selectLayer(layerIndex);
@@ -54,7 +89,7 @@ function getActionList(startIndex, xOffset, yOffset)
 			if(!findFirst) {
 				findFirst = true;
 				var zIndex = timeline.layers.length - layerIndex;
-				var tmp = getSourceXML(currentFrame.elements[0], zIndex, frameIndex, currentLayer.name.toLowerCase(), spriteList, exportPng, xOffset, yOffset);
+				var tmp = getSourceXML(currentFrame.elements[0], zIndex, frameIndex, currentLayer.name.toLowerCase(), spriteList, exportPng, xOffset, yOffset, endFrame+startIndex);
 				spriteList = tmp['spriteList'];
 				exportPng = tmp['exportPng'];
 				startFrameStatus = tmp['startFrameStatus'];
@@ -79,9 +114,8 @@ function getActionList(startIndex, xOffset, yOffset)
 			lastFrameStatus = tmp['lastFrameStatus'];
 		}
 	}
-	fl.trace(JSON.stringify(spriteList));
-	saveMotionXML(actionList, exportPng, spriteList);
-	return actionList;
+	//saveMotionXML(actionList, exportPng, tmp);
+	return [actionList, exportPng, spriteList, maxFrameId];
 }
 
 
@@ -101,12 +135,12 @@ function getFrameXML(frame, frameIndex, frames, startStatus, lastFrameStatus, cu
 		
 	}
 	else {
-		actionList[currentFrame.elements[0].name][end + startIndex] = createTransformInfo(endStatus, end);
+		//actionList[currentFrame.elements[0].name][end + startIndex] = createTransformInfo(endStatus, end);
 
-		/*for(var i = 1; i <= frame.duration; i++) {
+		for(var i = 1; i <= frame.duration; i++) {
 			var tt = getStatusDivise(lastFrameStatus, endStatus, frame.duration , i);
 			actionList[name][start + i + startIndex] = createTransformInfo(tt, start + i);
-		}*/
+		}
 	}
 	if(endStatus.positionY != 0)
 	{
@@ -168,7 +202,7 @@ function getColorXML(element)
 			return 1;
 	}
 }
-function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, exportPng, xOffset, yOffset){
+function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, exportPng, xOffset, yOffset, endFrame){
 
 	var matrix = element.matrix;
 	var startX = getX(element);
@@ -220,8 +254,19 @@ function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, e
 			"skewY" : skewYStart,
 			"colorMode" : getColorXML(element),
 		};
-
-	spriteList[layerName] = [name[name.length - 1]+"0000", startFrameIndex, zIndex, transXNormal, transYNormal, (startX-xOffset), (yOffset-startY), scaleXStart, scaleYStart, skewXStart, skewYStart, getColorXML(element), leftOffset, topOffset];
+	var rr = getColorXML(element);
+	if(startFrameIndex != 0)
+	{
+		rr = 0;
+	}
+	if(!spriteList.hasOwnProperty(layerName))
+	{
+		spriteList[layerName] = [name[name.length - 1]+"0000", startFrameIndex, zIndex, transXNormal, transYNormal, (startX-xOffset), (yOffset-startY), scaleXStart, scaleYStart, skewXStart, skewYStart, rr, leftOffset, topOffset, endFrame];
+	}
+	else
+	{
+		spriteList[layerName][14] = endFrame;
+	}
 	return {"exportPng":exportPng, "spriteList":spriteList, "startFrameStatus":startFrameStatus};
 }
 function getLabelXml(frames, startIndex, actionList) {
@@ -247,8 +292,8 @@ function getLabelXml(frames, startIndex, actionList) {
 		}
 	}
 	s += (f-1+startIndex)+']}';
-	actionList["label"] = JSON.parse(s);
-	return actionList;
+	actionList["label"] = objectMerge(actionList["label"], JSON.parse(s));
+	return [actionList, ccc+startIndex];
 }
 function createTransformInfo(result, frameIndex) {
 	if(result.positionY != 0) {
@@ -415,6 +460,38 @@ function inArray(ar, vl)
 	}
 	return 0;
 }
+function arrayMerge(ar1, ar2)
+{
+	var tmp = [];
+	for(var i =0;i <ar1.length;i++)
+	{
+		if(!inArray(tmp, ar1[i]))
+		{
+			tmp.push(ar1[i])
+		}
+	}
+	for(var i =0;i <ar2.length;i++)
+	{
+		if(!inArray(tmp, ar2[i]))
+		{
+			tmp.push(ar2[i])
+		}
+	}
+	return tmp;
+}
+function objectMerge(ob1, ob2)
+{
+	var tmp = {};
+	for(var i in ob1)
+	{
+		tmp[i] = ob1[i];
+	}
+	for(var i in ob2)
+	{
+		tmp[i] = ob2[i];
+	}
+	return tmp;
+}
 function stringReplace(source, find, replace)
 {
 	if (!source || !source.length)
@@ -443,7 +520,7 @@ function saveMotionXML(contents, png, sprite)
 	exporter.allowRotate = false;
 	exporter.shapePadding = 2;
 	exporter.algorithm = "maxRects";
-	exporter.layoutFormat = "cocos2D v3";
+	exporter.layoutFormat = "cocos2D v2";
 	exporter.format = "RGBA8888";
 
 	var index = 0;
@@ -452,15 +529,15 @@ function saveMotionXML(contents, png, sprite)
 	}
 
 	var name = fl.getDocumentDOM().name.split(".")[0];
-	exporter.exportSpriteSheet(fileURL+name,{format:"png", bitDepth:32, backgroundColor:"#00000000"});
+	exporter.exportSpriteSheet(fileURL+'pic/'+name,{format:"png", bitDepth:32, backgroundColor:"#00000000"});
 
 	//var ret = '{"bone":'+JSON.stringify(sprite)+', "motion":'+JSON.stringify(contents)+'}';
-	if (!FLfile.write(fileURL+name+".skl", JSON.stringify(sprite)))
+	if (!FLfile.write(fileURL+'bone/'+name+".skl", JSON.stringify(sprite)))
 	{
 		alert(CopyMotionErrorStrings.SAVE_ERROR);
 		return false;
 	}
-	if (!FLfile.write(fileURL+name+".motion", JSON.stringify(contents)))
+	if (!FLfile.write(fileURL+'bone/'+name+".motion", JSON.stringify(contents)))
 	{
 		alert(CopyMotionErrorStrings.SAVE_ERROR);
 		return false;

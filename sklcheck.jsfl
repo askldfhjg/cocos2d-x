@@ -1,8 +1,6 @@
 
 var file = fl.configURI + 'Commands/json2.jsfl';
 fl.runScript(file); 
-var file = fl.configURI + 'Commands/Output.jsfl';
-fl.runScript(file); 
 
 var boneName = ["fronthand",
 				"frontshoulder",
@@ -31,7 +29,7 @@ var startFrameStatus = {};
 var startIndex = 0;
 var select = fl.getDocumentDOM().selection;
 var lll = select.length;
-
+fl.showIdleMessage(false);
 for(var i =0;i < lll;i++)
 {
 	var elem = select[i];
@@ -45,7 +43,7 @@ for(var i =0;i < lll;i++)
 	document.exitEditMode();
 	fl.trace("-------------------------------------");
 }
-
+fl.showIdleMessage(true);
 
 function getActionList(boneName, asName)
 {
@@ -94,7 +92,7 @@ function getActionList(boneName, asName)
 	}
 	if(maxFrameId > labelEnd)
 	{
-		fl.trace("asName label 少了");
+		fl.trace(asName+" label 少了");
 	}
 }
 
@@ -134,12 +132,12 @@ function getFrameXML(labelLayerId, currentLayer, asName) {
 	var labelframes = labelLayer.frames;
 	for(var i = 0; i < keyframe.length; i++)
 	{
-		timeline.convertToKeyframes(keyframe[i]);
+		//timeline.convertToKeyframes(keyframe[i]);
 	}
 	labelframes = labelLayer.frames;
 	for(var i = 0; i < keyframe.length; i++)
 	{
-		labelframes[keyframe[i]].name = asName + "Hit" + (i+1);
+		//labelframes[keyframe[i]].name = asName + "Hit" + (i+1);
 	}
 }
 

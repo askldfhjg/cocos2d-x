@@ -27,6 +27,7 @@ public:
 
 private:
 	void checkSkl();
+	void checkMontion(CCBoneSpriteLayer *layer);
 protected:
 	CCBoneSpriteLayer *attack;
 	CCBoneSpriteLayer *def;

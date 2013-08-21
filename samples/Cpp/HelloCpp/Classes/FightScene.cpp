@@ -35,7 +35,14 @@ bool FightScene::init()
     CCPoint origin = CCDirector::sharedDirector()->getVisibleOrigin();
 	CCSize winSize = CCEGLView::sharedOpenGLView()->getFrameSize();
 
-	def = CCBoneSpriteLayer::create("bone/AvatarSklM", "bone/AvatarSklM");
+	//读取装备骨骼
+	equipList = CCArray::create();
+	equipList->retain();
+	actionList = CCArray::create();
+	actionList->retain();
+	checkSkl();
+
+	def = CCBoneSpriteLayer::create("bone/AvatarSklM");
 	def->setPosition(ccp(400, 50));
 	def->setScale(0.5f);
 
@@ -46,6 +53,8 @@ bool FightScene::init()
     CCSprite* pSprite = CCSprite::create("pic/bg.png");
     pSprite->setPosition(ccp(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
 	this->addChild(pSprite, 0);
+
+	checkMontion(def);
 
 	//btn
 	CCLabelTTF *labell = CCLabelTTF::create("refresh", "Marker Felt", 26);
@@ -76,17 +85,12 @@ bool FightScene::init()
 	pSpeedItem->setPosition(ccp(390, visibleSize.height * 13 / 14));
 	this->addChild(pMenuSpeed, 5);
 
-	//读取装备
-	equipList = CCArray::create();
-	equipList->retain();
-	checkSkl();
 	TableViewTestLayer *pLayer = TableViewTestLayer::create(equipList, this, callfuncO_selector(FightScene::streakMove));
 	pLayer->setTag(33);
 	pLayer->setAnchorPoint(ccp(0, 0));
 	pLayer->setPosition(ccp(0, 400));
 	this->addChild(pLayer);
-	actionList = def->allLabel();
-	actionList->retain();
+
 	TableViewTestLayer *actionLayer = TableViewTestLayer::create(actionList, this, callfuncO_selector(FightScene::startAttack));
 	actionLayer->setTag(44);
 	actionLayer->setAnchorPoint(ccp(0, 0));
@@ -115,8 +119,11 @@ void FightScene::menuSpeedCallback(CCObject* pSender)
 void FightScene::menuCloseCallback(CCObject* pSender)
 {
 	checkSkl();
+	checkMontion(def);
 	TableViewTestLayer *view = (TableViewTestLayer *)this->getChildByTag(33);
 	view->updateList(this->equipList);
+	view = (TableViewTestLayer *)this->getChildByTag(44);
+	view->updateList(this->actionList);
 }
 
 
@@ -135,7 +142,7 @@ void FightScene::streakMove(CCObject *dd)
 
 void FightScene::afterAttack()
 {
-	def->runAction(CCRepeatForever::create(def->createAction("AvatarSkelM", NULL)));
+	//def->runAction(CCRepeatForever::create(def->createAction("AvatarSkelM", NULL)));
 }
 
 void FightScene::checkSkl()
@@ -182,9 +189,61 @@ void FightScene::checkSkl()
 	}
 	delete []buffer;
 	FindClose(hFind);
+}
 
 
-	//std::string dirRoot = root.substr(0, root.length() - 1);
-	//dirRoot += "\\bone\\*.equip";
+void FightScene::checkMontion(CCBoneSpriteLayer *layer)
+{
+	std::vector<std::string>::const_iterator searchPathsIter = CCFileUtils::sharedFileUtils()->getSearchPaths().begin();
+	std::string root = *searchPathsIter;
+	std::string dirRoot = root.substr(0, root.length() - 1);
+	dirRoot += "\\bone\\*.motion";
+	size_t size = dirRoot.length();
+	wchar_t *buffer = new wchar_t[size+1];
+	MultiByteToWideChar( CP_ACP, 0, dirRoot.c_str(), size, buffer, size * sizeof(wchar_t) );
+	buffer[size] = 0;
+	actionList->removeAllObjects();
+	WIN32_FIND_DATA FindFileData; 
+	HANDLE hFind = FindFirstFile(buffer, &FindFileData);
+	bool found = false;
+	if(hFind != INVALID_HANDLE_VALUE)
+	{
+		do
+		{
+			if(FindFileData.cFileName[0]=='.')
+				continue;
+			if(!(FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+			{
+				char str[MAX_PATH]={0};
+				WideCharToMultiByte(CP_ACP, 0, FindFileData.cFileName, sizeof(FindFileData.cFileName) + 1, str, MAX_PATH, NULL, NULL);
+				std::string fgg = std::string(str);
+				size_t last = 0;
+				size_t index = fgg.find_first_of(".",last);
+				while (index!=std::string::npos)
+				{
+					std::string fggg = fgg.substr(last,index-last);
+					fggg = "bone/" +fggg;
+					Json *fff = CCBoneActionManager::sharedManager()->addAnimation(const_cast<char *>(fggg.c_str()));
+					fff = Json_getItem(fff, "label");
+					int count = Json_getSize(fff);
+					for(int i = 0; i< count; i++)
+					{
+						Json *tmp = Json_getItemAt(fff, i);
+						actionList->addObject(CCString::create(tmp->name));
+					}
+					found = true;
+					layer->setAnimation(const_cast<char *>(fggg.c_str()));
+					break;
+				}
+			}
+			if(found)
+			{
+				break;
+			}
+		}
+		while(FindNextFile(hFind,&FindFileData) != 0);
+	}
+	delete []buffer;
+	FindClose(hFind);
 }
 

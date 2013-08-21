@@ -46,9 +46,6 @@ char *CCBoneActionManager::addAnimationByAsync(CCNode *target, void *data1, void
 	CCString *key = CCString::create(name);
 	key->retain();
 	std::string dd = std::string(name);
-
-	std::string texturePic = dd + "effect.plist";
-	texturePic = texturePic.replace(0, 4, "pic");
 	dd += ".motion";
 
 	std::string fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(dd.c_str());
@@ -67,13 +64,7 @@ char *CCBoneActionManager::addAnimationByAsync(CCNode *target, void *data1, void
 	
 	m_pAnimationData->insert(char_json::value_type(key, root));
 
-	char* ret = new char[255];
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-	strcpy_s(ret, texturePic.size() + 1, texturePic.c_str());
-#else
-	strlcpy(ret, texturePic.c_str(), texturePic.size() + 1);
-#endif
-	return ret;
+	return NULL;
 }
 
 Json *CCBoneActionManager::addAnimation(char *name)
@@ -95,6 +86,10 @@ Json *CCBoneActionManager::addAnimation(char *name)
 	
 	key->retain();
 	m_pAnimationData->insert(char_json::value_type(key, root));
+
+	std::string texturePic = std::string(name) + "effect.plist";
+	texturePic = texturePic.replace(0, 4, "pic");
+	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(texturePic.c_str());
 	return root;
 }
 

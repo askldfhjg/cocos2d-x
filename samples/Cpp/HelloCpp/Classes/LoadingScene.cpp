@@ -34,7 +34,7 @@ bool LoadingScene::init()
     CCTextureCache::sharedTextureCache()->addImageAsync("pic/CloseSelected.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
 	    CCTextureCache::sharedTextureCache()->addImageAsync("pic/AvatarSklMeffect.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
 	m_nNumberOfSprites = 4;
-	m_nNumberOfSkl = 4;
+	m_nNumberOfSkl = 1;
     return true;
 }
 
@@ -47,9 +47,6 @@ void LoadingScene::loadingCallBack(CCObject *obj)
 
     if (m_nNumberOfLoaded == m_nNumberOfSprites)
     {
-		CCBoneActionManager::sharedManager()->addAnimationAsync("bone/AvatarSklM", CCCallFunc::create(this, callfunc_selector(LoadingScene::loadingCallBack2)));
-		CCBoneTextureManager::sharedManager()->addSklAsync("bone/AvatarSklM", CCCallFunc::create(this, callfunc_selector(LoadingScene::loadingCallBack2)));
-		CCBoneTextureManager::sharedManager()->addEquipAsync("bone/goldGlory_M", CCCallFunc::create(this, callfunc_selector(LoadingScene::loadingCallBack2)));
 		CCBoneTextureManager::sharedManager()->addEquipAsync("bone/weapon", CCCallFunc::create(this, callfunc_selector(LoadingScene::loadingCallBack2)));
     }
 }

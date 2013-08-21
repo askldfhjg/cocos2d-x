@@ -38,7 +38,7 @@ bool FightScene::init()
 	def = CCBoneSpriteLayer::create("bone/AvatarSklM", "bone/AvatarSklM");
 	def->setPosition(ccp(400, 50));
 	def->setScale(0.5f);
-	//def->runAction(CCRepeatForever::create(def->createAction("attack4", NULL)));
+
 	def->changeBoneTexture("bone/weapon", "weapon", "BallinBlade");
 	def->changeBoneTexture("bone/weapon", "weaponoff", "BallinBlade");
 	this->addChild(def, 3);
@@ -85,8 +85,9 @@ bool FightScene::init()
 	pLayer->setAnchorPoint(ccp(0, 0));
 	pLayer->setPosition(ccp(0, 400));
 	this->addChild(pLayer);
-	CCArray *fff = def->allLabel();
-	TableViewTestLayer *actionLayer = TableViewTestLayer::create(fff, this, callfuncO_selector(FightScene::startAttack));
+	actionList = def->allLabel();
+	actionList->retain();
+	TableViewTestLayer *actionLayer = TableViewTestLayer::create(actionList, this, callfuncO_selector(FightScene::startAttack));
 	actionLayer->setTag(44);
 	actionLayer->setAnchorPoint(ccp(0, 0));
 	actionLayer->setPosition(ccp(0, 0));
@@ -173,15 +174,17 @@ void FightScene::checkSkl()
 					CCLog(ff->getCString());
 					equipList->addObject(ff);
 					std::string gggg = "bone/" + fggg;
-					//CCBoneTextureManager::sharedManager()->addEquip(const_cast<char*>(gggg.c_str()));
 					break;
 				}
 			}
 		}
 		while(FindNextFile(hFind,&FindFileData) != 0);
 	}
-	//CCBoneActionManager::sharedManager()->addAnimation("bone/AvatarSklM");
 	delete []buffer;
 	FindClose(hFind);
+
+
+	//std::string dirRoot = root.substr(0, root.length() - 1);
+	//dirRoot += "\\bone\\*.equip";
 }
 

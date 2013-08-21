@@ -11,6 +11,7 @@ public:
 		:attack(NULL)
 		,def(NULL)
 		,equipList(NULL)
+		,actionList(NULL)
 	{};
     virtual bool init();  
 	~FightScene(void);
@@ -30,6 +31,7 @@ protected:
 	CCBoneSpriteLayer *attack;
 	CCBoneSpriteLayer *def;
 	CCArray *equipList;
+	CCArray *actionList;
 };
 
 #endif // __FIGHT_SCENE_H__

@@ -69,7 +69,7 @@ void LoadingScene::loadingCallBack2()
 void LoadingScene::lastProcess()
 {
 	CCSpriteFrameCache *cache = CCSpriteFrameCache::sharedSpriteFrameCache();
-	cache->addSpriteFramesWithFile("pic/AvatarSklMeffect.plist");
+	//cache->addSpriteFramesWithFile("pic/AvatarSklMeffect.plist");
 	CCScene *pScene = FightScene::scene();
 	CCDirector::sharedDirector()->replaceScene(pScene);
 	this->removeChild(m_pLabelLoading, true);

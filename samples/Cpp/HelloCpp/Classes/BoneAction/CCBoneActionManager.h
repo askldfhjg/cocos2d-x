@@ -29,6 +29,7 @@ public:
 
 public:
 	void addAnimationAsync(char *name, CCCallFunc *callback);
+	Json *replaceAnimation(char *name);
 	void purgeSharedCache();
 	
 

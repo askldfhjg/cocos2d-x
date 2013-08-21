@@ -74,6 +74,32 @@ Json *CCBoneActionManager::addAnimation(char *name)
 	key->retain();
 	if (it != m_pAnimationData->end())
 	{
+		Json_dispose(it->second);
+		CC_SAFE_RELEASE(it->first);
+		m_pAnimationData->erase(it++);
+	}
+	std::string path = std::string(name) + ".motion";
+	std::string fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(path.c_str());
+    unsigned long size;
+    char* buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
+    Json* root = Json_create(buffer);
+	CC_SAFE_DELETE_ARRAY(buffer);
+	
+	m_pAnimationData->insert(char_json::value_type(key, root));
+
+	std::string texturePic = std::string(name) + "effect.plist";
+	texturePic = texturePic.replace(0, 4, "pic");
+	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(texturePic.c_str());
+	return root;
+}
+
+Json *CCBoneActionManager::replaceAnimation(char *name)
+{
+	CCString *key = CCString::create(name);
+	char_json::iterator it = m_pAnimationData->find(key);
+	key->retain();
+	if (it != m_pAnimationData->end())
+	{
 		key->release();
 		return it->second;
 	}

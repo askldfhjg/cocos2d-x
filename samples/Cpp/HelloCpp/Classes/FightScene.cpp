@@ -223,16 +223,19 @@ void FightScene::checkMontion(CCBoneSpriteLayer *layer)
 				{
 					std::string fggg = fgg.substr(last,index-last);
 					fggg = "bone/" +fggg;
-					Json *fff = CCBoneActionManager::sharedManager()->addAnimation(const_cast<char *>(fggg.c_str()));
-					fff = Json_getItem(fff, "label");
+					CCBoneActionManager::sharedManager()->addAnimation(const_cast<char *>(fggg.c_str()));
+					/*fff = Json_getItem(fff, "label");
 					int count = Json_getSize(fff);
 					for(int i = 0; i< count; i++)
 					{
 						Json *tmp = Json_getItemAt(fff, i);
 						actionList->addObject(CCString::create(tmp->name));
-					}
+					}*/
 					found = true;
 					layer->setAnimation(const_cast<char *>(fggg.c_str()));
+					CC_SAFE_RELEASE(actionList);
+					actionList = layer->allLabel();
+					actionList->retain();
 					break;
 				}
 			}

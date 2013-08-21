@@ -42,19 +42,13 @@ bool FightScene::init()
 	actionList->retain();
 	checkSkl();
 
-	def = CCBoneSpriteLayer::create("bone/AvatarSklM");
-	def->setPosition(ccp(400, 50));
-	def->setScale(0.5f);
-
-	def->changeBoneTexture("bone/weapon", "weapon", "BallinBlade");
-	def->changeBoneTexture("bone/weapon", "weaponoff", "BallinBlade");
-	this->addChild(def, 3);
+	checkMontion();
 
     CCSprite* pSprite = CCSprite::create("pic/bg.png");
     pSprite->setPosition(ccp(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
 	this->addChild(pSprite, 0);
 
-	checkMontion(def);
+	
 
 	//btn
 	CCLabelTTF *labell = CCLabelTTF::create("refresh", "Marker Felt", 26);
@@ -118,12 +112,14 @@ void FightScene::menuSpeedCallback(CCObject* pSender)
 
 void FightScene::menuCloseCallback(CCObject* pSender)
 {
+	m_pActionManager->removeAllActionsFromTarget(def);
 	checkSkl();
-	checkMontion(def);
+	checkMontion();
 	TableViewTestLayer *view = (TableViewTestLayer *)this->getChildByTag(33);
 	view->updateList(this->equipList);
 	view = (TableViewTestLayer *)this->getChildByTag(44);
 	view->updateList(this->actionList);
+
 }
 
 
@@ -192,7 +188,7 @@ void FightScene::checkSkl()
 }
 
 
-void FightScene::checkMontion(CCBoneSpriteLayer *layer)
+void FightScene::checkMontion()
 {
 	std::vector<std::string>::const_iterator searchPathsIter = CCFileUtils::sharedFileUtils()->getSearchPaths().begin();
 	std::string root = *searchPathsIter;
@@ -223,18 +219,22 @@ void FightScene::checkMontion(CCBoneSpriteLayer *layer)
 				{
 					std::string fggg = fgg.substr(last,index-last);
 					fggg = "bone/" +fggg;
-					CCBoneActionManager::sharedManager()->addAnimation(const_cast<char *>(fggg.c_str()));
-					/*fff = Json_getItem(fff, "label");
-					int count = Json_getSize(fff);
-					for(int i = 0; i< count; i++)
-					{
-						Json *tmp = Json_getItemAt(fff, i);
-						actionList->addObject(CCString::create(tmp->name));
-					}*/
+					CCBoneActionManager::sharedManager()->replaceAnimation(const_cast<char *>(fggg.c_str()));
 					found = true;
-					layer->setAnimation(const_cast<char *>(fggg.c_str()));
+					if(def != NULL)
+					{
+						this->removeChild(def);
+					}
+					def = CCBoneSpriteLayer::create(const_cast<char *>(fggg.c_str()), const_cast<char *>(fggg.c_str()));
+					def->setPosition(ccp(400, 50));
+					def->setScale(0.5f);
+
+					def->changeBoneTexture("bone/weapon", "weapon", "BallinBlade");
+					def->changeBoneTexture("bone/weapon", "weaponoff", "BallinBlade");
+					this->addChild(def, 3);
+
 					CC_SAFE_RELEASE(actionList);
-					actionList = layer->allLabel();
+					actionList = def->allLabel();
 					actionList->retain();
 					break;
 				}

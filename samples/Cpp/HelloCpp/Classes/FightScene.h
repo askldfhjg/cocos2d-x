@@ -8,8 +8,7 @@ class FightScene : public cocos2d::CCLayer
 {
 public:
 	FightScene()
-		:attack(NULL)
-		,def(NULL)
+		:def(NULL)
 		,equipList(NULL)
 		,actionList(NULL)
 	{};
@@ -27,9 +26,8 @@ public:
 
 private:
 	void checkSkl();
-	void checkMontion(CCBoneSpriteLayer *layer);
+	void checkMontion();
 protected:
-	CCBoneSpriteLayer *attack;
 	CCBoneSpriteLayer *def;
 	CCArray *equipList;
 	CCArray *actionList;

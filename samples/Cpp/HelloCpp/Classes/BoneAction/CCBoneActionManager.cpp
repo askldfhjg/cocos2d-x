@@ -110,7 +110,6 @@ Json *CCBoneActionManager::replaceAnimation(char *name)
     Json* root = Json_create(buffer);
 	CC_SAFE_DELETE_ARRAY(buffer);
 	
-	key->retain();
 	m_pAnimationData->insert(char_json::value_type(key, root));
 
 	std::string texturePic = std::string(name) + "effect.plist";

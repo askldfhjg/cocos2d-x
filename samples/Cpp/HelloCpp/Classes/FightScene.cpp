@@ -202,6 +202,7 @@ void FightScene::checkMontion()
 	WIN32_FIND_DATA FindFileData; 
 	HANDLE hFind = FindFirstFile(buffer, &FindFileData);
 	bool found = false;
+	int sec = 0;
 	if(hFind != INVALID_HANDLE_VALUE)
 	{
 		do
@@ -210,6 +211,16 @@ void FightScene::checkMontion()
 				continue;
 			if(!(FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
 			{
+				LARGE_INTEGER date, adjust;
+				date.HighPart = FindFileData.ftLastWriteTime.dwHighDateTime;
+				date.LowPart = FindFileData.ftLastWriteTime.dwLowDateTime;
+				adjust.QuadPart = 11644473600000 * 10000;
+				date.QuadPart -= adjust.QuadPart;
+				if(date.QuadPart / 10000000 < sec)
+				{
+					continue;
+				}
+				sec = date.QuadPart / 10000000;
 				char str[MAX_PATH]={0};
 				WideCharToMultiByte(CP_ACP, 0, FindFileData.cFileName, sizeof(FindFileData.cFileName) + 1, str, MAX_PATH, NULL, NULL);
 				std::string fgg = std::string(str);
@@ -241,7 +252,7 @@ void FightScene::checkMontion()
 			}
 			if(found)
 			{
-				break;
+				//break;
 			}
 		}
 		while(FindNextFile(hFind,&FindFileData) != 0);

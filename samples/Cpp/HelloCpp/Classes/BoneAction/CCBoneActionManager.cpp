@@ -86,10 +86,6 @@ Json *CCBoneActionManager::addAnimation(char *name)
 	CC_SAFE_DELETE_ARRAY(buffer);
 	
 	m_pAnimationData->insert(char_json::value_type(key, root));
-
-	std::string texturePic = std::string(name) + "effect.plist";
-	texturePic = texturePic.replace(0, 4, "pic");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(texturePic.c_str());
 	return root;
 }
 
@@ -111,10 +107,6 @@ Json *CCBoneActionManager::replaceAnimation(char *name)
 	CC_SAFE_DELETE_ARRAY(buffer);
 	
 	m_pAnimationData->insert(char_json::value_type(key, root));
-
-	std::string texturePic = std::string(name) + "effect.plist";
-	texturePic = texturePic.replace(0, 4, "pic");
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(texturePic.c_str());
 	return root;
 }
 

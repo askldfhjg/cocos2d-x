@@ -30,6 +30,7 @@ public:
 	CCBone *getBoneByName(const char *name);
 	void changeBoneTexture(const char *textureName, const char *boneName, const char* equipName = NULL);
 	void changeBoneTexture(const char *textureName);
+	void changeBoneTexture(const char *textureName, const char *boneName);
 	void changeBoneTexture(CCDictionary *info);
 	void setAnimation(char *name);
 	void setAnimationInterval(double interval);
@@ -38,8 +39,8 @@ public:
 	CCAction *indexLayerAction(int index);
 	
 public:
-	void getLabel(const char *name, int &startFrame, int &endFrame);
-	CCAction *runAction(CCAction* action);
+	bool getLabel(const char *name, int &startFrame, int &endFrame);
+	CCAction *runAction(CCAction* action, bool stopBefore = true);
 	CCArray* allLabel();
 public:
 	Json *m_animation;

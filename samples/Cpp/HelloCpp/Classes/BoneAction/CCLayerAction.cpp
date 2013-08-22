@@ -29,7 +29,7 @@ CCLayerAction* CCLayerAction::create(const char *name, CCFiniteTimeAction *layer
     pAction->autorelease();
 	pAction->action = layerMove;
 	CC_SAFE_RETAIN(layerMove);
-	if(actionType == BoneMotionTypeSlow)
+	if(actionType == BoneMotionTypeSlow && layerMove != NULL)
 	{
 		pAction->actionTime = layerMove->getDuration();
 		pAction->setDuration(pAction->actionTime);
@@ -46,22 +46,30 @@ bool CCLayerAction::initWithFrame(const char *name, CCNode *node, double interva
     m_bFirstTick = true;
 	CC_SAFE_DELETE_ARRAY(startFrame);
 	CC_SAFE_DELETE_ARRAY(endFrame);
-	startFrame = new int[10];
-	endFrame = new int[10];
 	int count = 0;
 	int start, end;
 
 	CCBoneSpriteLayer *tmp = (CCBoneSpriteLayer *)node;
-	tmp->getLabel(name, start, end);
-	startFrame[count] = start;
-	endFrame[count] = end;
-	count++;
-	m_isDone = false;
-    totalStage = count;
-	nowStage = 0;
-	nowFrame = startFrame[0];
-	totalFrameCount = end - start + 1;
-	setDuration(totalFrameCount * interval);
+	bool hasLabel = tmp->getLabel(name, start, end);
+	if(hasLabel)
+	{
+		startFrame = new int[10];
+		endFrame = new int[10];
+		startFrame[count] = start;
+		endFrame[count] = end;
+		count++;
+		m_isDone = false;
+		totalStage = count;
+		nowStage = 0;
+		nowFrame = startFrame[0];
+		totalFrameCount = end - start + 1;
+		setDuration(totalFrameCount * interval);
+	}
+	else
+	{
+		CCLog("no label %s", name);
+	}
+
 	
 	return true;
 }

@@ -91,12 +91,16 @@ void CCBoneSpriteLayer::setAnimation(char *name)
 	}
 }
 
-void CCBoneSpriteLayer::getLabel(const char *name, int &startFrame, int &endFrame)
+bool CCBoneSpriteLayer::getLabel(const char *name, int &startFrame, int &endFrame)
 {
 	Json *tmp = Json_getItem(m_label, name);
-	CCAssert(tmp != NULL, "count error");
+	if(tmp == NULL)
+	{
+		return false;
+	}
 	startFrame = Json_getItemAt(tmp, 0)->valueint;
 	endFrame = Json_getItemAt(tmp, 1)->valueint;
+	return true;
 }
 
 CCBone *CCBoneSpriteLayer::getBoneByName(const char *name)
@@ -401,7 +405,7 @@ CCLayerAction *CCBoneSpriteLayer::createAction(const char *BoneMove, CCFiniteTim
 
 CCLayerAction *CCBoneSpriteLayer::createAction(const char *BoneMove, CCFiniteTimeAction *layerMove)
 {
-	CCLayerAction *tmp = CCLayerAction::create(BoneMove, layerMove, BoneMotionTypeNormal, this, interval);
+	CCLayerAction *tmp = CCLayerAction::create(BoneMove, layerMove, BoneMotionTypeSlow, this, interval);
 	return tmp;
 }
 
@@ -456,10 +460,13 @@ CCAction *CCBoneSpriteLayer::indexLayerAction(int index)
 	return createAction(tmp->name, NULL);
 }
 
-CCAction *CCBoneSpriteLayer::runAction(CCAction* action)
+CCAction *CCBoneSpriteLayer::runAction(CCAction* action, bool stopBefore)
 {
 	CCAssert( action != NULL, "Argument must be non-nil");
-	m_pActionManager->removeAllActionsFromTarget(this);
+	if(stopBefore)
+	{
+		m_pActionManager->removeAllActionsFromTarget(this);
+	}
     m_pActionManager->addAction(action, this, !m_bRunning);
     return action;
 }

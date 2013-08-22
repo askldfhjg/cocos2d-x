@@ -47,7 +47,6 @@ char *CCBoneActionManager::addAnimationByAsync(CCNode *target, void *data1, void
 	key->retain();
 	std::string dd = std::string(name);
 	dd += ".motion";
-
 	std::string fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(dd.c_str());
 	
 	char_json::iterator it = m_pAnimationData->find(key);	
@@ -63,7 +62,6 @@ char *CCBoneActionManager::addAnimationByAsync(CCNode *target, void *data1, void
 	CC_SAFE_DELETE_ARRAY(buffer);
 	
 	m_pAnimationData->insert(char_json::value_type(key, root));
-
 	return NULL;
 }
 

@@ -32,10 +32,11 @@ varying vec4 v_fragmentColor;				\n\
 varying vec2 v_texCoord;					\n\
 uniform sampler2D CC_Texture0;				\n\
 uniform float brightness;					\n\
+uniform float alpha;						\n\
 											\n\
 void main()									\n\
 {											\n\
 	vec4 textureColor = v_fragmentColor * texture2D(CC_Texture0, v_texCoord);			\n\
-	gl_FragColor = vec4((textureColor.rgb + vec3(brightness)), textureColor.a); \n\
+	gl_FragColor = vec4((textureColor.rgb + vec3(brightness)), textureColor.a * alpha); \n\
 }											\n\
 ";

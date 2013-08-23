@@ -379,6 +379,7 @@ bool CCBoneSpriteLayer::init(const char *spriteName, bool isBatch)
 		heads->setRotationY(skewY);
 		heads->setVisible((bool)isShow);
 		heads->setOffset(topOffset, leftOffset);
+		heads->setAlpha(1.0f);
 		heads->endFrame = endFrame;
 
 		heads->setStartStatus(false);

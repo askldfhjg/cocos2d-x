@@ -3,7 +3,6 @@
 
 USING_NS_CC;
 
-static CCGLProgram *pSharedShader = NULL;
 CCBone *CCBone::createWithSpriteFrame(CCSpriteFrame *pSpriteFrame, std::string &name)
 {
 	CCBone *pobSprite = new CCBone();
@@ -24,25 +23,27 @@ CCBone *CCBone::createWithSpriteFrame(CCSpriteFrame *pSpriteFrame, std::string &
 
 CCGLProgram *CCBone::getShader()
 {
-	if (!pSharedShader)
+	CCGLProgram *shader = CCShaderCache::sharedShaderCache()->programForKey("boneshader");
+	if (!shader)
 	{
 		const GLchar * ccPositionTextureBrightnessColor_frag =
 		#include "ccShader_PositionTextureBrightnessColor_frag.h"
-		pSharedShader = new CCGLProgram();
-		pSharedShader->initWithVertexShaderByteArray(ccPositionTextureColor_vert, ccPositionTextureBrightnessColor_frag);
-		pSharedShader->addAttribute(kCCAttributeNamePosition, kCCVertexAttrib_Position);
-		pSharedShader->addAttribute(kCCAttributeNameColor, kCCVertexAttrib_Color);
-		pSharedShader->addAttribute(kCCAttributeNameTexCoord, kCCVertexAttrib_TexCoords);
-		pSharedShader->link();
-		pSharedShader->updateUniforms();
+		shader = new CCGLProgram();
+		shader->initWithVertexShaderByteArray(ccPositionTextureColor_vert, ccPositionTextureBrightnessColor_frag);
+		shader->addAttribute(kCCAttributeNamePosition, kCCVertexAttrib_Position);
+		shader->addAttribute(kCCAttributeNameColor, kCCVertexAttrib_Color);
+		shader->addAttribute(kCCAttributeNameTexCoord, kCCVertexAttrib_TexCoords);
+		shader->link();
+		shader->updateUniforms();
 		CHECK_GL_ERROR_DEBUG();
+		CCShaderCache::sharedShaderCache()->addProgram(shader, "boneshader");
 	}
-	return pSharedShader;
+	return shader;
 }
 
 CCBone::~CCBone(void)
 {
-	CC_SAFE_RELEASE_NULL(pSharedShader);
+	
 }
 void CCBone::Reset()
 {
@@ -112,6 +113,24 @@ void CCBone::setBrightness(float brightness)
 	m_brightness = brightness;
 }
 
+void CCBone::setAlpha(float alpha)
+{
+	if(alpha > 1)
+	{
+		alpha = 1.0f;
+	}
+	if(alpha < 0)
+	{
+		alpha = 0;
+	}
+	m_alpha = alpha;
+}
+
+float CCBone::getAlpha()
+{
+	return m_alpha;
+}
+
 void CCBone::draw(void)
 {
 	CC_PROFILER_START_CATEGORY(kCCProfilerCategorySprite, "CCSprite - draw");
@@ -150,6 +169,9 @@ void CCBone::draw(void)
 
 	GLint c0 = glGetUniformLocation(getShaderProgram()->getProgram(), "brightness");
 	glUniform1f(c0, m_brightness);
+
+	GLint c1 = glGetUniformLocation(getShaderProgram()->getProgram(), "alpha");
+	glUniform1f(c1, m_alpha);
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 

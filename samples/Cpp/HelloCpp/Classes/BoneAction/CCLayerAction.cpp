@@ -128,7 +128,7 @@ void CCLayerAction::update(float frame)
 
 	int n = (int)(frame * totalFrameCount);
 	nowFrame = n + startFrame[nowStage];
-
+	//nowFrame = 17;
     char str[256]={0};
 	Func::itostr(nowFrame, str);
 	CCObject* child = NULL;
@@ -157,7 +157,6 @@ void CCLayerAction::update(float frame)
 			float skewY = Json_getItemAt(source, 5)->valuefloat;
 			float visable = Json_getItemAt(source, 6)->valuefloat;
 			float brightness = Json_getItemAt(source, 7)->valuefloat;
-			GLubyte opacity = (GLubyte)(255 * visable);
 
 			ch->setBrightness(brightness);
 			ch->setPosition(ccp(ch->m_startPosition.x + posX, ch->m_startPosition.y + posY));
@@ -167,34 +166,24 @@ void CCLayerAction::update(float frame)
 			ch->setScaleY(ch->m_fStartScaleY * scaleY);
 
 			bool vis = ch->isVisible();
-			CCRGBAProtocol *pRGBAProtocol = dynamic_cast<CCRGBAProtocol*>(ch);
 
-			GLubyte alf = pRGBAProtocol->getOpacity();
-			if(vis != (bool)(int)visable || alf != opacity)
+			float alf = ch->getAlpha();
+			if(vis != (bool)(int)visable || alf != visable)
 			{ 
 				if((bool)(int)visable)
 				{
 					ch->setVisible(true);
-					if (pRGBAProtocol)
-					{
-						pRGBAProtocol->setOpacity(255);
-					}
+					ch->setAlpha(1.0f);
 				}
 				else if(visable <= 0)
 				{
 					ch->setVisible((bool)false);
-					if (pRGBAProtocol)
-					{
-						pRGBAProtocol->setOpacity(0);
-					}
+					ch->setAlpha(0);
 				}
 				else
 				{
 					ch->setVisible(true);
-					if (pRGBAProtocol)
-					{
-						pRGBAProtocol->setOpacity((GLubyte)(255 * visable));
-					}
+					ch->setAlpha(visable);
 				}
 			}
 		}

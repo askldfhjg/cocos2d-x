@@ -27,6 +27,8 @@ public:
 	void Reset();
 	float getBrightness();
 	void setBrightness(float brightness);
+	void setAlpha(float alpha);
+	float getAlpha();
 	static CCGLProgram *getShader();
 	virtual void draw(void);
 
@@ -44,6 +46,7 @@ public:
 	CCSpriteFrame *m_pic;
 	Json *m_frame;
 	float m_brightness;
+	float m_alpha;
 	std::string name;
 };
 

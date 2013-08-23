@@ -698,6 +698,7 @@ function saveMotionXML(contents, png, effectpng, sprite)
 	}
 
 	var name = fl.getDocumentDOM().name.split(".")[0];
+
 	exporter.exportSpriteSheet(fileURL+'pic/'+name,{format:"png", bitDepth:32, backgroundColor:"#00000000"});
 	sprite['picture'] = name;
 
@@ -721,10 +722,11 @@ function saveMotionXML(contents, png, effectpng, sprite)
 		}
 	}
 
-	name = name+"effect";
-	exporter.exportSpriteSheet(fileURL+'pic/'+name,{format:"png", bitDepth:32, backgroundColor:"#00000000"});
+	var dname = name+"effect";
+	exporter.exportSpriteSheet(fileURL+'pic/'+dname,{format:"png", bitDepth:32, backgroundColor:"#00000000"});
 
 	//var ret = '{"bone":'+JSON.stringify(sprite)+', "motion":'+JSON.stringify(contents)+'}';
+
 	if (!FLfile.write(fileURL+'bone/'+name+".skl", JSON.stringify(sprite)))
 	{
 		alert(CopyMotionErrorStrings.SAVE_ERROR);
@@ -735,5 +737,6 @@ function saveMotionXML(contents, png, effectpng, sprite)
 		alert(CopyMotionErrorStrings.SAVE_ERROR);
 		return false;
 	}
+	alert("ok");
 	return true;
 }

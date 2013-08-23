@@ -21,7 +21,8 @@ var boneName = ["fronthand",
 				"backshoulder",
 				"weaponoff",
 				"cape",
-				"backhair"];
+				"backhair",
+				"shadow"];
 var actionList = {};
 var spriteList = {};
 var exportPng = [];
@@ -37,10 +38,10 @@ for(var i =0;i < lll;i++)
 	setTransformationPointForElement(elem, {x:0, y:0});
 	fl.getDocumentDOM().selectNone();
 	elem.selected = true;
-	document.enterEditMode('inPlace');
+	fl.getDocumentDOM().enterEditMode('inPlace');
 	var asName = elem.libraryItem.linkageClassName;
 	getActionList(boneName, asName);
-	document.exitEditMode();
+	fl.getDocumentDOM().exitEditMode();
 	fl.trace("-------------------------------------");
 }
 fl.showIdleMessage(true);
@@ -56,6 +57,7 @@ function getActionList(boneName, asName)
 	for(var layerIndex = 0; layerIndex < layers.length; layerIndex++) {
 		var currentLayer = layers[layerIndex];
 		var name = currentLayer.name.toLowerCase();
+		currentLayer.locked = false;
 		if(!currentLayer.visible) {
 			if(inArray(boneName, name))
 			{
@@ -83,9 +85,9 @@ function getActionList(boneName, asName)
 			
 			if(name.toLowerCase().lastIndexOf("attacklayer") != -1)
 			{
-				getFrameXML(labelLayer, currentLayer, asName);
 				currentLayer.name = asName + "attacklayer" + boneOtherLayer;
 			}
+			getFrameXML(labelLayer, currentLayer, asName);
 			boneOtherLayer++;
 		}
 		maxFrameId = frames.length - 1;
@@ -107,7 +109,7 @@ function getFrameXML(labelLayerId, currentLayer, asName) {
 		flag = true;
 		keyframe.push(0);
 	}
-	for(f=0;f<ccc;)
+	for(var f=0;f<ccc;)
 	{
 		var frame = frames[f];
 		var end = frame.startFrame + frame.duration;
@@ -139,6 +141,50 @@ function getFrameXML(labelLayerId, currentLayer, asName) {
 	{
 		//labelframes[keyframe[i]].name = asName + "Hit" + (i+1);
 	}
+
+	for(var f=0;f<ccc;)
+	{
+		var frame = frames[f];
+		var end = frame.startFrame + frame.duration;
+		if(end >= ccc)
+		{
+			break;
+		}
+		if(frames[end].elements.length > 0)
+		{
+			var elemfff = frames[end].elements[0];
+			if(elemfff.elementType != "instance")
+			{
+				fl.trace("skill no instance "+elemfff.elementType + " " + end);
+			}
+			else
+			{
+				fl.getDocumentDOM().selectNone();
+				selectFrame(end);
+				elemfff.selected = true;
+				fl.getDocumentDOM().enterEditMode('inPlace');
+				var timeline = fl.getDocumentDOM().getTimeline();
+				if(timeline.layers.length > 1)
+				{
+					fl.trace(elemfff.libraryItem.name +" layers count > 1");
+					var lllength = timeline.layers.length;
+					for(var hh = 0;hh < lllength;)
+					{
+						var la = timeline.layers[hh];
+						if(la.frames[0].elements.length <= 0)
+						{
+							timeline.deleteLayer(hh);
+							hh--;
+							lllength--;
+						}
+						hh++;
+					}
+				}
+				fl.getDocumentDOM().exitEditMode();
+			}
+		}
+		f = end;
+	}
 }
 
 
@@ -150,6 +196,10 @@ function getLabelXml(frames, asName) {
 	}
 }
 
+function getSkill()
+{
+
+}
 
 function setTransformationPointForElement(element, transPoint)
 {
@@ -159,6 +209,18 @@ function setTransformationPointForElement(element, transPoint)
 	element.selected = oldSelected;
 }
 
+function selectFrame(frameIndex) {
+	var dom = fl.getDocumentDOM();
+	var timeline = dom.getTimeline();
+	timeline.setSelectedFrames(frameIndex, frameIndex, true);
+}
+
+function selectLayer(layerIndex)
+{
+	var dom = fl.getDocumentDOM();
+	var timeline = dom.getTimeline();
+	timeline.setSelectedLayers(layerIndex, true);
+}
 
 function inArray(ar, vl)
 {

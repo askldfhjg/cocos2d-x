@@ -4,7 +4,7 @@
 #include "cocos2d.h"
 #include "BoneAction/BoneAction.h"
 
-class FightScene : public cocos2d::CCLayer
+class FightScene : public cocos2d::CCLayerColor
 {
 public:
 	FightScene()

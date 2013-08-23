@@ -25,8 +25,8 @@ FightScene::~FightScene(void)
 
 bool FightScene::init()
 {
-	//if (!CCLayerColor::initWithColor(ccc4(255, 255, 255, 255)))
-	if (!CCLayer::init())
+	if (!CCLayerColor::initWithColor(ccc4(214, 214, 214, 255)))
+	//if (!CCLayer::init())
     {
         return false;
     }
@@ -46,7 +46,7 @@ bool FightScene::init()
 
     CCSprite* pSprite = CCSprite::create("pic/bg.png");
     pSprite->setPosition(ccp(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
-	this->addChild(pSprite, 0);
+	//this->addChild(pSprite, 0);
 
 	
 

@@ -180,6 +180,16 @@ function getFrameXML(labelLayerId, currentLayer, asName) {
 						hh++;
 					}
 				}
+				var lay = timeline.layers[0];
+				var frameLength = lay.frames.length;
+				for(var i=0;i<frameLength;i++)
+				{
+					var fr = lay.frames[0].elements[0];
+					if(fr.elementType == "shape")
+					{
+						fl.trace(elemfff.libraryItem.name +" shape " + i);
+					}
+				}
 				fl.getDocumentDOM().exitEditMode();
 			}
 		}

@@ -155,7 +155,7 @@ function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, ef
 						if(!effectAction.hasOwnProperty(currentLayer.name.toLowerCase())) {
 							effectAction[currentLayer.name.toLowerCase()] = {};
 						}
-						effectAction[currentLayer.name.toLowerCase()][frameIndex+startIndex] = createTransformInfo(fff);
+						effectAction[currentLayer.name.toLowerCase()][frameIndex+startIndex] = createEffectTransformInfo(fff, null);
 					}
 				}
 				else {
@@ -209,7 +209,8 @@ function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, ef
 						if(!effectAction.hasOwnProperty(currentLayer.name.toLowerCase())) {
 							effectAction[currentLayer.name.toLowerCase()] = {};
 						}
-						effectAction[currentLayer.name.toLowerCase()][frameIndex+startIndex] = createTransformInfo(lastFrameStatus);
+						var ttt = getEffectTrans(currentFrame.elements[0]);
+						effectAction[currentLayer.name.toLowerCase()][frameIndex+startIndex] = createEffectTransformInfo(lastFrameStatus, ttt);
 					}
 				}
 			}
@@ -239,6 +240,7 @@ function getFrameXML(frame, frameIndex, frames, startStatus, lastFrameStatus, cu
 		return {"end":end, "actionList":actionList, "lastFrameStatus":lastFrameStatus, "effectList":effectList, "effectpng":effectpng, "effectAction":effectAction};
 	}
 	var endStatus = getTransform(frames[end].elements[0], startStatus);
+	var ttt = getEffectTrans(frames[end].elements[0]);
 	if(!inArray(boneName, name) && frames[end].elements.length > 0)
 	{
 		var gggg = getEffect(frames[end].elements[0], end, effectList, effectpng);
@@ -258,7 +260,7 @@ function getFrameXML(frame, frameIndex, frames, startStatus, lastFrameStatus, cu
 			if(!effectAction.hasOwnProperty(name)) {
 				effectAction[name] = {};
 			}
-			effectAction[name][end + startIndex] = createTransformInfo(endStatus);
+			effectAction[name][end + startIndex] = createEffectTransformInfo(endStatus, ttt);
 		}
 	}
 	else if(!statusEqual(endStatus, lastFrameStatus)) {
@@ -279,7 +281,7 @@ function getFrameXML(frame, frameIndex, frames, startStatus, lastFrameStatus, cu
 					if(!effectAction.hasOwnProperty(name)) {
 						effectAction[name] = {};
 					}
-					effectAction[name][start + i + startIndex] = createTransformInfo(tt);
+					effectAction[name][start + i + startIndex] = createEffectTransformInfo(tt, ttt);
 				}
 			}
 		}
@@ -478,6 +480,49 @@ function getLabelXml(frames, startIndex, actionList, asName) {
 	actionList["label"] = objectMerge(actionList["label"], JSON.parse(s));
 	return [actionList, ccc+startIndex];
 }
+function getEffectTrans(element)
+{
+	if(element == null)
+	{
+		return ["", 0, 0];
+	}
+	var matrix = element.matrix;
+	var startX = getX(element);
+	var startY = getY(element);
+	var name = element.libraryItem.name.split('/');
+	var oldRot = element.rotation;
+	element.rotation = 0;
+	var transPoint = getTransformationPointForElement(element);
+
+	//取得注入点位置
+	var x1 = element.transformX;
+	var y1 = element.transformY;
+	setTransformationPointForElement(element, {x:0, y:0});
+	var x2 = element.transformX;
+	var y2 = element.transformY;
+	setTransformationPointForElement(element, transPoint);
+	var leftOffset = roundToTwip(x1 - x2);
+	var topOffset = roundToTwip(y1 - y2);
+	
+	var identityMatrix = {a:1, b:0, c:0, d:1, tx:0, ty:0};
+	element.matrix = identityMatrix;
+
+	if (element.elementType != 'text')
+		setTransformationPointForElement(element, transPoint);
+
+	var transXNormal = roundToTwip((element.transformX - element.left) / element.width);
+	var transYNormal = roundToTwip(1 - (element.transformY - element.top) / element.height);
+	element.matrix = matrix;
+
+	if (element.elementType != 'text')
+		setTransformationPointForElement(element, transPoint);
+
+	setX(element, startX);
+	setY(element, startY);
+	element.rotation = oldRot;
+	return [name[name.length - 1], transXNormal, transYNormal];
+}
+
 function getEffect(elem, frameIndex, effectList, effectpng)
 {
 	var kk = elem.libraryItem.name.split('/');
@@ -509,6 +554,14 @@ function getEffect(elem, frameIndex, effectList, effectpng)
 
 function createTransformInfo(result) {
 	return [result.positionX, result.positionY, result.scaleX, result.scaleY, result.skewX, result.skewY, result.colorMode, result.brightness];
+}
+
+function createEffectTransformInfo(result, elemValue) {
+	if(elemValue == null)
+	{
+		elemValue = ["", 0, 0]
+	}
+	return [result.positionX, result.positionY, result.scaleX, result.scaleY, result.skewX, result.skewY, result.colorMode, result.brightness, elemValue[0], elemValue[1], elemValue[2]];
 }
 
 function statusEqual(status1, status2) {
@@ -807,7 +860,6 @@ function saveMotionXML(contents, png, effectpng, sprite, effectList, effectActio
 	//exporter.sheetWidth = 2048;
 	var addPng = [];
 	var index = 0;
-	fl.trace(effectpng);
 	for (var j = 0; j < effectpng.length; j++) {
 		if(!inArray(addPng, effectpng[j].name))
 		{

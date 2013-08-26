@@ -31,6 +31,7 @@ var startIndex = 0;
 var select = fl.getDocumentDOM().selection;
 var lll = select.length;
 fl.showIdleMessage(false);
+var skillEffectCount = 1;
 for(var i =0;i < lll;i++)
 {
 	var elem = select[i];
@@ -81,12 +82,12 @@ function getActionList(boneName, asName)
 		}
 		if(!inArray(boneName, name))
 		{
-			currentLayer.name = asName + "skill" + boneOtherLayer;
-			
-			if(name.toLowerCase().lastIndexOf("attacklayer") != -1)
+			if(boneOtherLayer >= 4)
 			{
-				currentLayer.name = asName + "attacklayer" + boneOtherLayer;
+				fl.trace(asName+" attacklayer over count");
 			}
+			currentLayer.name = "effect" + boneOtherLayer;
+			
 			getFrameXML(labelLayer, currentLayer, asName);
 			boneOtherLayer++;
 		}

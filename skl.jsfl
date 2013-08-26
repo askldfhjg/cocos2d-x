@@ -55,6 +55,7 @@ var spriteList = {};
 var exportPng = [];
 var effectpng = [];
 var effectList = {};
+var effectAction = {};
 var startFrameStatus = {};
 var startIndex = 0;
 var select = fl.getDocumentDOM().selection;
@@ -82,21 +83,22 @@ for(var i =select.length-1;i >= 0;i--)
 	var archY = roundToTwip(yOffset / elem.height);
 	document.enterEditMode('inPlace');
 	var asName = elem.libraryItem.linkageClassName;
-	var ddd = getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, effectpng, actionList, spriteList, effectList, startFrameStatus, first, asName);
+	var ddd = getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, effectpng, actionList, spriteList, effectList, effectAction, startFrameStatus, first, asName);
 	exportPng = ddd[1];
 	effectpng = ddd[2];
 	spriteList = ddd[3];
 	effectList = ddd[4];
-	startIndex = ddd[5];
-	startFrameStatus = ddd[6];
+	effectAction = ddd[5];
+	startIndex = ddd[6];
+	startFrameStatus = ddd[7];
 	document.exitEditMode();
 	first = false;
 }
 fl.showIdleMessage(true);
-saveMotionXML(actionList, exportPng, effectpng, spriteList, effectList);
+saveMotionXML(actionList, exportPng, effectpng, spriteList, effectList, effectAction);
 
 
-function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, effectpng, actionList, spriteList, effectList, startFrameStatusObject, first, asName)
+function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, effectpng, actionList, spriteList, effectList, effectAction, startFrameStatusObject, first, asName)
 {
 	var timeline = fl.getDocumentDOM().getTimeline();
 	var layers = timeline.layers;
@@ -117,7 +119,7 @@ function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, ef
 			continue;
 		}
 		if(currentLayer.name.toLowerCase() == "shadow") {
-			continue;
+			//continue;
 		}
 		selectLayer(layerIndex);
 		var findFirst = false;
@@ -131,9 +133,6 @@ function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, ef
 			selectFrame(frameIndex);
 			if(!findFirst) {
 				if(currentFrame.elements.length <= 0) {
-					if(!actionList.hasOwnProperty(currentLayer.name.toLowerCase())) {
-						actionList[currentLayer.name.toLowerCase()] = {};
-					}
 					var fff = {
 							"positionX" : 0,
 							"positionY" : 0,
@@ -144,7 +143,20 @@ function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, ef
 							"colorMode" : 0,
 							"brightness" : 0,
 						};
-					actionList[currentLayer.name.toLowerCase()][frameIndex+startIndex] = createTransformInfo(fff);
+					if(inArray(boneName, currentLayer.name.toLowerCase()))
+					{
+						if(!actionList.hasOwnProperty(currentLayer.name.toLowerCase())) {
+							actionList[currentLayer.name.toLowerCase()] = {};
+						}
+						actionList[currentLayer.name.toLowerCase()][frameIndex+startIndex] = createTransformInfo(fff);
+					}
+					else
+					{
+						if(!effectAction.hasOwnProperty(currentLayer.name.toLowerCase())) {
+							effectAction[currentLayer.name.toLowerCase()] = {};
+						}
+						effectAction[currentLayer.name.toLowerCase()][frameIndex+startIndex] = createTransformInfo(fff);
+					}
 				}
 				else {
 					findFirst = true;
@@ -170,7 +182,7 @@ function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, ef
 					}
 					startFrameStatus = startFrameStatusObject[currentLayer.name.toLowerCase()];
 					startFrame = frameIndex;
-					if(statusEqual(tmp['startFrameStatus'], startFrameStatus)) {
+					if(statusEqual(tmp['startFrameStatus'], startFrameStatus) && inArray(boneName, currentLayer.name.toLowerCase())) {
 						lastFrameStatus = {
 							"positionX" : 0,
 							"positionY" : 0,
@@ -185,35 +197,46 @@ function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, ef
 					else {
 						lastFrameStatus = getTransform(currentFrame.elements[0], startFrameStatus);
 					}
-					if(!actionList.hasOwnProperty(currentLayer.name.toLowerCase())) {
-						actionList[currentLayer.name.toLowerCase()] = {};
+					if(inArray(boneName, currentLayer.name.toLowerCase()))
+					{
+						if(!actionList.hasOwnProperty(currentLayer.name.toLowerCase())) {
+							actionList[currentLayer.name.toLowerCase()] = {};
+						}
+						actionList[currentLayer.name.toLowerCase()][frameIndex+startIndex] = createTransformInfo(lastFrameStatus);
 					}
-					actionList[currentLayer.name.toLowerCase()][frameIndex+startIndex] = createTransformInfo(lastFrameStatus);
+					else
+					{
+						if(!effectAction.hasOwnProperty(currentLayer.name.toLowerCase())) {
+							effectAction[currentLayer.name.toLowerCase()] = {};
+						}
+						effectAction[currentLayer.name.toLowerCase()][frameIndex+startIndex] = createTransformInfo(lastFrameStatus);
+					}
 				}
 			}
-			var tmp = getFrameXML(currentFrame, frameIndex, frames, startFrameStatus, lastFrameStatus, currentFrame, actionList, effectList, effectpng, startIndex, currentLayer.name.toLowerCase());
+			var tmp = getFrameXML(currentFrame, frameIndex, frames, startFrameStatus, lastFrameStatus, currentFrame, actionList, effectList, effectpng, effectAction, startIndex, currentLayer.name.toLowerCase());
 			frameIndex = tmp['end'];
 			actionList = tmp['actionList'];
 			lastFrameStatus = tmp['lastFrameStatus'];
 			effectList = tmp['effectList'];
 			effectpng = tmp['effectpng'];
+			effectAction = tmp['effectAction'];
 		}
 	}
 	//saveMotionXML(actionList, exportPng, tmp);
-	return [actionList, exportPng, effectpng, spriteList, effectList, maxFrameId, startFrameStatusObject];
+	return [actionList, exportPng, effectpng, spriteList, effectList, effectAction, maxFrameId, startFrameStatusObject];
 }
 
 
 
-function getFrameXML(frame, frameIndex, frames, startStatus, lastFrameStatus, currentFrame, actionList, effectList, effectpng, startIndex, name) {
+function getFrameXML(frame, frameIndex, frames, startStatus, lastFrameStatus, currentFrame, actionList, effectList, effectpng, effectAction, startIndex, name) {
 	if(frame.startFrame != frameIndex) {
 		alert("error55555");
-		return {"end":(frameIndex + 1), "actionList":actionList, "lastFrameStatus":lastFrameStatus, "effectList":effectList, "effectpng":effectpng};
+		return {"end":(frameIndex + 1), "actionList":actionList, "lastFrameStatus":lastFrameStatus, "effectList":effectList, "effectpng":effectpng,"effectAction":effectAction};
 	}
 	var start = frame.startFrame;
 	var end = frame.startFrame + frame.duration;
 	if(end >= frames.length) {
-		return {"end":end, "actionList":actionList, "lastFrameStatus":lastFrameStatus, "effectList":effectList, "effectpng":effectpng};
+		return {"end":end, "actionList":actionList, "lastFrameStatus":lastFrameStatus, "effectList":effectList, "effectpng":effectpng, "effectAction":effectAction};
 	}
 	var endStatus = getTransform(frames[end].elements[0], startStatus);
 	if(!inArray(boneName, name) && frames[end].elements.length > 0)
@@ -223,10 +246,20 @@ function getFrameXML(frame, frameIndex, frames, startStatus, lastFrameStatus, cu
 		effectList = gggg[0];
 	}
 	if(startStatus == null || lastFrameStatus == null) {
-		if(!actionList.hasOwnProperty(name)) {
-			actionList[name] = {};
+		if(inArray(boneName, name))
+		{
+			if(!actionList.hasOwnProperty(name)) {
+				actionList[name] = {};
+			}
+			actionList[name][end + startIndex] = createTransformInfo(endStatus);
 		}
-		actionList[name][end + startIndex] = createTransformInfo(endStatus);
+		else
+		{
+			if(!effectAction.hasOwnProperty(name)) {
+				effectAction[name] = {};
+			}
+			effectAction[name][end + startIndex] = createTransformInfo(endStatus);
+		}
 	}
 	else if(!statusEqual(endStatus, lastFrameStatus)) {
 		//actionList[currentFrame.elements[0].name][end + startIndex] = createTransformInfo(endStatus, end);
@@ -234,16 +267,25 @@ function getFrameXML(frame, frameIndex, frames, startStatus, lastFrameStatus, cu
 			var tt = getStatusDivise(frame.motionTweenRotate, lastFrameStatus, endStatus, frame.duration , i);
 			if(tt != null)
 			{
-				if(!actionList.hasOwnProperty(name)) {
-					actionList[name] = {};
+				if(inArray(boneName, name))
+				{
+					if(!actionList.hasOwnProperty(name)) {
+						actionList[name] = {};
+					}
+					actionList[name][start + i + startIndex] = createTransformInfo(tt);
 				}
-				actionList[name][start + i + startIndex] = createTransformInfo(tt);
+				else
+				{
+					if(!effectAction.hasOwnProperty(name)) {
+						effectAction[name] = {};
+					}
+					effectAction[name][start + i + startIndex] = createTransformInfo(tt);
+				}
 			}
 		}
-
 	}
 	lastFrameStatus = endStatus;
-	return {"end":end, "actionList":actionList, "lastFrameStatus":lastFrameStatus, "effectList":effectList, "effectpng":effectpng};
+	return {"end":end, "actionList":actionList, "lastFrameStatus":lastFrameStatus, "effectList":effectList, "effectpng":effectpng, "effectAction":effectAction};
 }
 function getTransform(element, startStatus)
 {
@@ -276,6 +318,7 @@ function getTransform(element, startStatus)
 	}
 	return result;
 }
+
 function getColorXML(element)
 {
 	if (!element) return 0;
@@ -379,13 +422,29 @@ function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, e
 	{
 		rr = 0;
 	}
-	if(!spriteList.hasOwnProperty(layerName))
+	if(inArray(boneName, layerName))
 	{
-		spriteList[layerName] = [name[name.length - 1]+"0000", startFrameIndex, zIndex, transXNormal, transYNormal, (startX-xOffset), (yOffset-startY), scaleXStart, scaleYStart, skewXStart, skewYStart, rr, leftOffset, topOffset, endFrame, brightness];
+		if(!spriteList.hasOwnProperty(layerName))
+		{
+			spriteList[layerName] = [name[name.length - 1]+"0000", startFrameIndex, zIndex, transXNormal, transYNormal, (startX-xOffset), (yOffset-startY), scaleXStart, scaleYStart, skewXStart, skewYStart, rr, leftOffset, topOffset, endFrame, brightness, true];
+		}
+		else
+		{
+			spriteList[layerName][14] = endFrame;
+		}
 	}
 	else
 	{
-		spriteList[layerName][14] = endFrame;
+		startFrameStatus = {
+				"positionX" : 0,
+				"positionY" : 0,
+				"scaleX" : 1,
+				"scaleY" : 1,
+				"skewX" : 0,
+				"skewY" : 0,
+				"colorMode" : 0,
+				"brightness" : 0,
+			};
 	}
 	return {"exportPng":exportPng, "spriteList":spriteList, "startFrameStatus":startFrameStatus, "effectpng": effectpng};
 }
@@ -698,7 +757,7 @@ function rotInfo(rot1, rot2, divice, id)
 	}
 }
 
-function saveMotionXML(contents, png, effectpng, sprite, effectList)
+function saveMotionXML(contents, png, effectpng, sprite, effectList, effectAction)
 {
 	if (!contents) {
 		return false;
@@ -780,6 +839,11 @@ function saveMotionXML(contents, png, effectpng, sprite, effectList)
 		return false;
 	}
 	if (!FLfile.write(fileURL+'bone/'+name+".effect", JSON.stringify(effectList)))
+	{
+		alert(CopyMotionErrorStrings.SAVE_ERROR);
+		return false;
+	}
+	if (!FLfile.write(fileURL+'bone/'+name+".effectmotion", JSON.stringify(effectAction)))
 	{
 		alert(CopyMotionErrorStrings.SAVE_ERROR);
 		return false;

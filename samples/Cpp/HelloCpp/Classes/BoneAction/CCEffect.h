@@ -20,7 +20,7 @@ public:
 public:
     /** creates the action */
 	static CCEffect *create(std::string &name);
-	bool CCEffect::setAnimatime(std::string name, bool show, int index);
+	bool setAnimatime(std::string name, bool show, int index);
 	bool getAdd();
 	void setAdd(bool add);
 public:

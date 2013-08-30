@@ -4,10 +4,13 @@
 #include "TableViewTestScene.h"
 #include "LoadingScene.h"
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 #include <windows.h>
 #include "direct.h" 
 #include <strsafe.h>
 #include "vld.h"
+#endif
+
 USING_NS_CC;
 
 CCScene* FightScene::scene()
@@ -145,6 +148,7 @@ void FightScene::afterAttack()
 void FightScene::checkSkl()
 {
 	CCSpriteFrameCache *cache = CCSpriteFrameCache::sharedSpriteFrameCache();
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	std::vector<std::string>::const_iterator searchPathsIter = CCFileUtils::sharedFileUtils()->getSearchPaths().begin();
 	std::string root = *searchPathsIter;
 	std::string dirRoot = root.substr(0, root.length() - 1);
@@ -186,11 +190,19 @@ void FightScene::checkSkl()
 	}
 	delete []buffer;
 	FindClose(hFind);
+#else
+    equipList->removeAllObjects();
+    CCString *ff = CCString::create("weapon");
+    equipList->addObject(ff);
+    ff = CCString::create("goldGlory_M");
+    equipList->addObject(ff);
+#endif
 }
 
 
 void FightScene::checkMontion()
 {
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	std::vector<std::string>::const_iterator searchPathsIter = CCFileUtils::sharedFileUtils()->getSearchPaths().begin();
 	std::string root = *searchPathsIter;
 	std::string dirRoot = root.substr(0, root.length() - 1);
@@ -260,5 +272,27 @@ void FightScene::checkMontion()
 	}
 	delete []buffer;
 	FindClose(hFind);
+#else
+    CCBoneTextureManager::sharedManager()->addEquip("bone/weapon");
+    actionList->removeAllObjects();
+    std::string fggg = std::string("AvatarSklM");
+    fggg = "bone/" +fggg;
+    CCBoneActionManager::sharedManager()->replaceAnimation(const_cast<char *>(fggg.c_str()));
+    if(def != NULL)
+    {
+        this->removeChild(def);
+    }
+    def = CCBoneSpriteLayer::create(const_cast<char *>(fggg.c_str()), const_cast<char *>(fggg.c_str()));
+    def->setPosition(ccp(400, 50));
+    def->setScale(0.5f);
+    
+    def->changeBoneTexture("bone/weapon", "weapon", "BallinBlade");
+    def->changeBoneTexture("bone/weapon", "weaponoff", "BallinBlade");
+    this->addChild(def, 3);
+    
+    CC_SAFE_RELEASE(actionList);
+    actionList = def->allLabel();
+    actionList->retain();
+#endif
 }
 

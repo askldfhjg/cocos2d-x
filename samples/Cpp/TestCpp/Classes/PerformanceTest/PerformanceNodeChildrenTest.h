@@ -9,6 +9,11 @@ class NodeChildrenMenuLayer : public PerformBasicLayer
 public:
     NodeChildrenMenuLayer(bool bControlMenuVisible, int nMaxCases = 0, int nCurCase = 0);
     virtual void showCurrentTest();
+    void dumpProfilerInfo(float dt);
+    
+    // overrides
+    virtual void onExitTransitionDidStart();
+    virtual void onEnterTransitionDidFinish();
 };
 
 class NodeChildrenMainScene : public CCScene
@@ -64,6 +69,16 @@ public:
     virtual const char* profilerName();
 };
 
+class CallFuncsSpriteSheetCMacro : public IterateSpriteSheet
+{
+public:
+    virtual void update(float dt);
+    
+    virtual std::string title();
+    virtual std::string subtitle();
+    virtual const char* profilerName();
+};
+
 class AddRemoveSpriteSheet : public NodeChildrenMainScene
 {
 public:
@@ -79,6 +94,16 @@ protected:
 #if CC_ENABLE_PROFILERS
     CCProfilingTimer* _profilingTimer;
 #endif
+};
+
+class GetSpriteSheet : public AddRemoveSpriteSheet
+{
+public:
+    virtual void update(float dt);
+    
+    virtual std::string title();
+    virtual std::string subtitle();
+    virtual const char* profilerName();
 };
 
 class AddSpriteSheet : public AddRemoveSpriteSheet
@@ -106,6 +131,16 @@ class ReorderSpriteSheet : public AddRemoveSpriteSheet
 public:
     virtual void update(float dt);
 
+    virtual std::string title();
+    virtual std::string subtitle();
+    virtual const char* profilerName();
+};
+
+class SortAllChildrenSpriteSheet : public AddRemoveSpriteSheet
+{
+public:
+    virtual void update(float dt);
+    
     virtual std::string title();
     virtual std::string subtitle();
     virtual const char* profilerName();

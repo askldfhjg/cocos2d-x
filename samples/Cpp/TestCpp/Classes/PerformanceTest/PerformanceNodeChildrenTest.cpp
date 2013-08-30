@@ -1,5 +1,34 @@
 #include "PerformanceNodeChildrenTest.h"
 
+using namespace cocos2d;
+
+// Enable profiles for this file
+#undef CC_PROFILER_DISPLAY_TIMERS
+#define CC_PROFILER_DISPLAY_TIMERS() CCProfiler::sharedProfiler()->displayTimers()
+#undef CC_PROFILER_PURGE_ALL
+#define CC_PROFILER_PURGE_ALL() CCProfiler::sharedProfiler()->releaseAllTimers()
+
+#undef CC_PROFILER_START
+#define CC_PROFILER_START(__name__) CCProfilingBeginTimingBlock(__name__)
+#undef CC_PROFILER_STOP
+#define CC_PROFILER_STOP(__name__) CCProfilingEndTimingBlock(__name__)
+#undef CC_PROFILER_RESET
+#define CC_PROFILER_RESET(__name__) CCProfilingResetTimingBlock(__name__)
+
+#undef CC_PROFILER_START_CATEGORY
+#define CC_PROFILER_START_CATEGORY(__cat__, __name__) do{ if(__cat__) CCProfilingBeginTimingBlock(__name__); } while(0)
+#undef CC_PROFILER_STOP_CATEGORY
+#define CC_PROFILER_STOP_CATEGORY(__cat__, __name__) do{ if(__cat__) CCProfilingEndTimingBlock(__name__); } while(0)
+#undef CC_PROFILER_RESET_CATEGORY
+#define CC_PROFILER_RESET_CATEGORY(__cat__, __name__) do{ if(__cat__) CCProfilingResetTimingBlock(__name__); } while(0)
+
+#undef CC_PROFILER_START_INSTANCE
+#define CC_PROFILER_START_INSTANCE(__id__, __name__) do{ CCProfilingBeginTimingBlock( CCString::createWithFormat("%08X - %s", __id__, __name__)->getCString() ); } while(0)
+#undef CC_PROFILER_STOP_INSTANCE
+#define CC_PROFILER_STOP_INSTANCE(__id__, __name__) do{ CCProfilingEndTimingBlock(    CCString::createWithFormat("%08X - %s", __id__, __name__)->getCString() ); } while(0)
+#undef CC_PROFILER_RESET_INSTANCE
+#define CC_PROFILER_RESET_INSTANCE(__id__, __name__) do{ CCProfilingResetTimingBlock( CCString::createWithFormat("%08X - %s", __id__, __name__)->getCString() ); } while(0)
+
 enum {
     kTagInfoLayer = 1,
     kTagMainLayer = 2,
@@ -7,7 +36,7 @@ enum {
 
     kTagBase = 20000,
 
-    TEST_COUNT = 4,
+    TEST_COUNT = 7,
 };
 
 enum {
@@ -28,6 +57,28 @@ NodeChildrenMenuLayer::NodeChildrenMenuLayer(bool bControlMenuVisible, int nMaxC
 
 }
 
+void NodeChildrenMenuLayer::onExitTransitionDidStart()
+{
+    CCDirector* director = CCDirector::sharedDirector();
+    CCScheduler* sched = director->getScheduler();
+    
+    sched->unscheduleSelector(SEL_SCHEDULE(&NodeChildrenMenuLayer::dumpProfilerInfo), this);
+}
+
+void NodeChildrenMenuLayer::onEnterTransitionDidFinish()
+{
+    CCDirector* director = CCDirector::sharedDirector();
+    CCScheduler* sched = director->getScheduler();
+    
+    CC_PROFILER_PURGE_ALL();
+    sched->scheduleSelector(SEL_SCHEDULE(&NodeChildrenMenuLayer::dumpProfilerInfo), this, 2, false);
+}
+
+void NodeChildrenMenuLayer::dumpProfilerInfo(float dt)
+{
+	CC_PROFILER_DISPLAY_TIMERS();
+}
+
 void NodeChildrenMenuLayer::showCurrentTest()
 {
     int nNodes = ((NodeChildrenMainScene*)getParent())->getQuantityOfNodes();
@@ -35,21 +86,30 @@ void NodeChildrenMenuLayer::showCurrentTest()
 
     switch (m_nCurCase)
     {
-//     case 0:
-//         pScene = new IterateSpriteSheetFastEnum();
-//         break;
-    case 0:
-        pScene = new IterateSpriteSheetCArray();
-        break;
-    case 1:
-        pScene = new AddSpriteSheet();
-        break;
-    case 2:
-        pScene = new RemoveSpriteSheet();
-        break;
-    case 3:
-        pScene = new ReorderSpriteSheet();
-        break;
+        //case 0:
+        //    pScene = new IterateSpriteSheetFastEnum();
+        //    break;
+        case 0:
+            pScene = new IterateSpriteSheetCArray();
+            break;
+        case 1:
+            pScene = new CallFuncsSpriteSheetCMacro();
+            break;
+        case 2:
+            pScene = new AddSpriteSheet();
+            break;
+        case 3:
+            pScene = new GetSpriteSheet();
+            break;
+        case 4:
+            pScene = new RemoveSpriteSheet();
+            break;
+        case 5:
+            pScene = new ReorderSpriteSheet();
+            break;
+        case 6:
+            pScene = new SortAllChildrenSpriteSheet();
+            break;
     }
     s_nCurCase = m_nCurCase;
 
@@ -73,9 +133,9 @@ void NodeChildrenMainScene::initWithQuantityOfNodes(unsigned int nNodes)
     CCSize s = CCDirector::sharedDirector()->getWinSize();
 
     // Title
-    CCLabelTTF *label = CCLabelTTF::create(title().c_str(), "Arial", 40);
+    CCLabelTTF *label = CCLabelTTF::create(title().c_str(), "Arial", 28);
     addChild(label, 1);
-    label->setPosition(ccp(s.width/2, s.height-32));
+    label->setPosition(ccp(s.width/2, s.height-40));
     label->setColor(ccc3(255,255,40));
 
     // Subtitle
@@ -179,6 +239,7 @@ void IterateSpriteSheet::updateQuantityOfNodes()
         {
             CCSprite *sprite = CCSprite::createWithTexture(batchNode->getTexture(), CCRectMake(0, 0, 32, 32));
             batchNode->addChild(sprite);
+            sprite->setVisible(false);
             sprite->setPosition(ccp( CCRANDOM_0_1()*s.width, CCRANDOM_0_1()*s.height));
         }
     }
@@ -222,7 +283,7 @@ void IterateSpriteSheetFastEnum::update(float dt)
     CCArray* pChildren = batchNode->getChildren();
     CCObject* pObject = NULL;
 
-    CC_PROFILER_START_INSTANCE(this, this->profilerName());
+    CC_PROFILER_START_INSTANCE((unsigned int)((unsigned long long)(this)), this->profilerName());
 
     CCARRAY_FOREACH(pChildren, pObject)
     {
@@ -230,7 +291,7 @@ void IterateSpriteSheetFastEnum::update(float dt)
         pSprite->setVisible(false);
     }
 
-    CC_PROFILER_STOP_INSTANCE(this, this->profilerName());
+    CC_PROFILER_STOP_INSTANCE((unsigned int)((unsigned long long)(this)), this->profilerName());
 }
 
 std::string IterateSpriteSheetFastEnum::title()
@@ -286,6 +347,42 @@ const char*  IterateSpriteSheetCArray::profilerName()
     return "iter c-array";
 }
 
+
+////////////////////////////////////////////////////////
+//
+// CallFuncsSpriteSheetCMacro
+//
+////////////////////////////////////////////////////////
+void CallFuncsSpriteSheetCMacro::update(float dt)
+{
+    // iterate using fast enumeration protocol
+    CCArray* pChildren = batchNode->getChildren();
+    
+    CC_PROFILER_START(this->profilerName());
+    
+    arrayMakeObjectsPerformSelector(pChildren, getPosition, CCNode*);
+    
+    CC_PROFILER_STOP(this->profilerName());
+}
+
+
+std::string CallFuncsSpriteSheetCMacro::title()
+{
+    return "C - 'map' functional call";
+}
+
+std::string CallFuncsSpriteSheetCMacro::subtitle()
+{
+    return "Using 'arrayMakeObjectsPerformSelector'. See console";
+}
+
+const char*  CallFuncsSpriteSheetCMacro::profilerName()
+{
+    static char _name[256];
+    snprintf(_name, sizeof(_name)-1, "Map: arrayMakeObjectsPerformSelector(%d)", quantityOfNodes);
+    return _name;
+}
+
 ////////////////////////////////////////////////////////
 //
 // AddRemoveSpriteSheet
@@ -339,6 +436,73 @@ const char*  AddRemoveSpriteSheet::profilerName()
     return "none";
 }
 
+
+
+////////////////////////////////////////////////////////
+//
+// GetSpriteSheet
+//
+////////////////////////////////////////////////////////
+void GetSpriteSheet::update(float dt)
+{
+    // reset seed
+    //srandom(0);
+    
+    // 15 percent
+    int totalToAdd = currentQuantityOfNodes * 0.15f;
+    
+    if( totalToAdd > 0 )
+    {
+        CCSprite **sprites = new CCSprite*[totalToAdd];
+        int *zs = new int[totalToAdd];
+        
+        // Don't include the sprite creation time and random as part of the profiling
+        for(int i=0; i<totalToAdd; i++)
+        {
+            sprites[i] = CCSprite::createWithTexture(batchNode->getTexture(), CCRect(0,0,32,32));
+            zs[i]      = CCRANDOM_MINUS1_1() * 50;
+        }
+        
+        for( int i=0; i < totalToAdd;i++ )
+        {
+            batchNode->addChild( sprites[i], zs[i], kTagBase+i);
+        }
+        
+        batchNode->sortAllChildren();
+        
+        CC_PROFILER_START( this->profilerName() );
+        for( int i=0; i < totalToAdd;i++ )
+        {
+            batchNode->getChildByTag(kTagBase+1);
+        }
+        CC_PROFILER_STOP(this->profilerName());
+        
+        // remove them
+        for( int i=0;i <  totalToAdd;i++)
+        {
+            batchNode->removeChild( sprites[i], true);
+        }
+        
+        delete [] sprites;
+        delete [] zs;
+    }
+}
+
+std::string GetSpriteSheet::title()
+{
+    return "E - getChildByTag from spritesheet";
+}
+
+std::string GetSpriteSheet::subtitle()
+{
+    return "Get sprites using getChildByTag(). See console";
+}
+
+const char*  GetSpriteSheet::profilerName()
+{
+    return "get sprites";
+}
+
 ////////////////////////////////////////////////////////
 //
 // AddSpriteSheet
@@ -389,7 +553,7 @@ void AddSpriteSheet::update(float dt)
 
 std::string AddSpriteSheet::title()
 {
-    return "C - Add to spritesheet";
+    return "D - Add to spritesheet";
 }
 
 std::string AddSpriteSheet::subtitle()
@@ -445,7 +609,7 @@ void RemoveSpriteSheet::update(float dt)
 
 std::string RemoveSpriteSheet::title()
 {
-    return "D - Del from spritesheet";
+    return "F - Del from spritesheet";
 }
 
 std::string RemoveSpriteSheet::subtitle()
@@ -511,7 +675,7 @@ void ReorderSpriteSheet::update(float dt)
 
 std::string ReorderSpriteSheet::title()
 {
-    return "E - Reorder from spritesheet";
+    return "G - Reorder from spritesheet";
 }
 
 std::string ReorderSpriteSheet::subtitle()
@@ -531,4 +695,71 @@ void runNodeChildrenTest()
 
     CCDirector::sharedDirector()->replaceScene(pScene);
     pScene->release();
+}
+
+
+
+////////////////////////////////////////////////////////
+//
+// SortAllChildrenSpriteSheet
+//
+////////////////////////////////////////////////////////
+void SortAllChildrenSpriteSheet::update(float dt)
+{
+    //srandom(0);
+    
+    // 15 percent
+    int totalToAdd = currentQuantityOfNodes * 0.15f;
+    
+    if( totalToAdd > 0 )
+    {
+        CCSprite **sprites = new CCSprite*[totalToAdd];
+        
+        // Don't include the sprite's creation time as part of the profiling
+        for(int i=0; i<totalToAdd; i++)
+        {
+            sprites[i] = CCSprite::createWithTexture(batchNode->getTexture(), CCRect(0,0,32,32));
+        }
+        
+        // add them with random Z (very important!)
+        for( int i=0; i < totalToAdd;i++ )
+        {
+            batchNode->addChild( sprites[i], CCRANDOM_MINUS1_1() * 50, kTagBase+i);
+        }
+        
+        batchNode->sortAllChildren();
+        
+        // reorder them
+        for( int i=0;i <  totalToAdd;i++)
+        {
+            batchNode->reorderChild(sprites[i], CCRANDOM_MINUS1_1() * 50);
+        }
+        
+        CC_PROFILER_START( this->profilerName() );
+        batchNode->sortAllChildren();
+        CC_PROFILER_STOP( this->profilerName() );
+        
+        // remove them
+        for( int i=0;i <  totalToAdd;i++)
+        {
+            batchNode->removeChild( sprites[i], true);
+        }
+        
+        delete [] sprites;
+    }
+}
+
+std::string SortAllChildrenSpriteSheet::title()
+{
+    return "H - Sort All Children from spritesheet";
+}
+
+std::string SortAllChildrenSpriteSheet::subtitle()
+{
+    return "Calls sortOfChildren(). See console";
+}
+
+const char*  SortAllChildrenSpriteSheet::profilerName()
+{
+    return "sort all children";
 }

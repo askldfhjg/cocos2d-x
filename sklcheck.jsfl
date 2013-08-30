@@ -55,6 +55,7 @@ function getActionList(boneName, asName)
 	var maxFrameId = 0;
 	var boneOtherLayer = 1;
 	var labelLayer = null;
+	var effectLayerFrameCount = [];
 	for(var layerIndex = 0; layerIndex < layers.length; layerIndex++) {
 		var currentLayer = layers[layerIndex];
 		var name = currentLayer.name.toLowerCase();
@@ -90,12 +91,28 @@ function getActionList(boneName, asName)
 			
 			getFrameXML(labelLayer, currentLayer, asName);
 			boneOtherLayer++;
+			effectLayerFrameCount.push(layerIndex);
 		}
-		maxFrameId = frames.length - 1;
+		if((frames.length - 1) > maxFrameId)
+		{
+			maxFrameId = frames.length - 1;
+		}
+		
 	}
 	if(maxFrameId > labelEnd)
 	{
 		fl.trace(asName+" label 少了");
+	}
+	for(var i = 0;i<effectLayerFrameCount.length;i++)
+	{
+		if(maxFrameId > layers[effectLayerFrameCount[i]].frames.length - 1)
+		{
+			fl.trace("effect"+(i+1)+" 帧少了");
+			selectLayer(effectLayerFrameCount[i]);
+			timeline.insertBlankKeyframe(layers[effectLayerFrameCount[i]].frames.length)
+			selectFrame(maxFrameId);
+			timeline.insertFrames();
+		}
 	}
 }
 
@@ -185,11 +202,15 @@ function getFrameXML(labelLayerId, currentLayer, asName) {
 				var frameLength = lay.frames.length;
 				for(var i=0;i<frameLength;i++)
 				{
-					var fr = lay.frames[0].elements[0];
+					var fr = lay.frames[i].elements[0];
 					if(fr.elementType == "shape")
 					{
 						fl.trace(elemfff.libraryItem.name +" shape " + i);
+						selectLayer(0);
+						selectFrame(i);
+						fl.getDocumentDOM().convertSelectionToBitmap();
 					}
+
 				}
 				fl.getDocumentDOM().exitEditMode();
 			}

@@ -142,6 +142,9 @@ function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, ef
 							"skewY" : 0,
 							"colorMode" : 0,
 							"brightness" : 0,
+							"pic" :"",
+							"transX" : 0,
+							"transY" : 0,
 						};
 					if(inArray(boneName, currentLayer.name.toLowerCase()))
 					{
@@ -155,7 +158,7 @@ function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, ef
 						if(!effectAction.hasOwnProperty(currentLayer.name.toLowerCase())) {
 							effectAction[currentLayer.name.toLowerCase()] = {};
 						}
-						effectAction[currentLayer.name.toLowerCase()][frameIndex+startIndex] = createEffectTransformInfo(fff, null);
+						effectAction[currentLayer.name.toLowerCase()][frameIndex+startIndex] = createEffectTransformInfo(fff);
 					}
 				}
 				else {
@@ -209,8 +212,9 @@ function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, ef
 						if(!effectAction.hasOwnProperty(currentLayer.name.toLowerCase())) {
 							effectAction[currentLayer.name.toLowerCase()] = {};
 						}
-						var ttt = getEffectTrans(currentFrame.elements[0]);
-						effectAction[currentLayer.name.toLowerCase()][frameIndex+startIndex] = createEffectTransformInfo(lastFrameStatus, ttt);
+						var ttt = currentFrame.elements[0].libraryItem.name.split('/');
+						lastFrameStatus['pic'] = ttt[ttt.length - 1];
+						effectAction[currentLayer.name.toLowerCase()][frameIndex+startIndex] = createEffectTransformInfo(lastFrameStatus);
 					}
 				}
 			}
@@ -240,7 +244,19 @@ function getFrameXML(frame, frameIndex, frames, startStatus, lastFrameStatus, cu
 		return {"end":end, "actionList":actionList, "lastFrameStatus":lastFrameStatus, "effectList":effectList, "effectpng":effectpng, "effectAction":effectAction};
 	}
 	var endStatus = getTransform(frames[end].elements[0], startStatus);
-	var ttt = getEffectTrans(frames[end].elements[0]);
+	if(!inArray(boneName, name))
+	{
+		if(frames[end].elements[0] != null)
+		{
+			var ttt = frames[end].elements[0].libraryItem.name.split('/');
+			endStatus['pic'] = ttt[ttt.length-1];
+		}
+		else
+		{
+			endStatus['pic'] = '';
+		}
+		
+	}
 	if(!inArray(boneName, name) && frames[end].elements.length > 0)
 	{
 		var gggg = getEffect(frames[end].elements[0], end, effectList, effectpng);
@@ -260,7 +276,7 @@ function getFrameXML(frame, frameIndex, frames, startStatus, lastFrameStatus, cu
 			if(!effectAction.hasOwnProperty(name)) {
 				effectAction[name] = {};
 			}
-			effectAction[name][end + startIndex] = createEffectTransformInfo(endStatus, ttt);
+			effectAction[name][end + startIndex] = createEffectTransformInfo(endStatus);
 		}
 	}
 	else if(!statusEqual(endStatus, lastFrameStatus)) {
@@ -281,7 +297,7 @@ function getFrameXML(frame, frameIndex, frames, startStatus, lastFrameStatus, cu
 					if(!effectAction.hasOwnProperty(name)) {
 						effectAction[name] = {};
 					}
-					effectAction[name][start + i + startIndex] = createEffectTransformInfo(tt, ttt);
+					effectAction[name][start + i + startIndex] = createEffectTransformInfo(tt);
 				}
 			}
 		}
@@ -494,16 +510,6 @@ function getEffectTrans(element)
 	element.rotation = 0;
 	var transPoint = getTransformationPointForElement(element);
 
-	//取得注入点位置
-	var x1 = element.transformX;
-	var y1 = element.transformY;
-	setTransformationPointForElement(element, {x:0, y:0});
-	var x2 = element.transformX;
-	var y2 = element.transformY;
-	setTransformationPointForElement(element, transPoint);
-	var leftOffset = roundToTwip(x1 - x2);
-	var topOffset = roundToTwip(y1 - y2);
-	
 	var identityMatrix = {a:1, b:0, c:0, d:1, tx:0, ty:0};
 	element.matrix = identityMatrix;
 
@@ -511,6 +517,7 @@ function getEffectTrans(element)
 		setTransformationPointForElement(element, transPoint);
 
 	var transXNormal = roundToTwip((element.transformX - element.left) / element.width);
+	fl.trace(element.height);
 	var transYNormal = roundToTwip(1 - (element.transformY - element.top) / element.height);
 	element.matrix = matrix;
 
@@ -532,10 +539,12 @@ function getEffect(elem, frameIndex, effectList, effectpng)
 		fl.getDocumentDOM().selectNone();
 		selectFrame(frameIndex);
 		elem.selected = true;
+		var ttt = getEffectTrans(elem);
 		fl.getDocumentDOM().enterEditMode('inPlace');
 		var lay = fl.getDocumentDOM().getTimeline().layers[0];
 		var frameLength = lay.frames.length;
 		effectList[kk] = {};
+		effectList[kk]['info'] = [ttt[1], ttt[2]];
 		for(var i=0;i<frameLength;i++)
 		{
 			var fr = lay.frames[i].elements[0];
@@ -556,12 +565,8 @@ function createTransformInfo(result) {
 	return [result.positionX, result.positionY, result.scaleX, result.scaleY, result.skewX, result.skewY, result.colorMode, result.brightness];
 }
 
-function createEffectTransformInfo(result, elemValue) {
-	if(elemValue == null)
-	{
-		elemValue = ["", 0, 0]
-	}
-	return [result.positionX, result.positionY, result.scaleX, result.scaleY, result.skewX, result.skewY, result.colorMode, result.brightness, elemValue[0], elemValue[1], elemValue[2]];
+function createEffectTransformInfo(result) {
+	return [result.positionX, result.positionY, result.scaleX, result.scaleY, result.skewX, result.skewY, result.colorMode, result.brightness, result.pic];
 }
 
 function statusEqual(status1, status2) {
@@ -612,6 +617,9 @@ function getStatusDivise(rotConfig, status1, status2, divice , id) {
 		"skewY" : roundToTwip(status1.skewY + rotY),
 		"colorMode" : status1.colorMode,
 		"brightness" : roundToTwip(status1.brightness + (status2.brightness - status1.brightness) / divice * id),
+		"pic" : status1.pic,
+		"transX" :status1.transX,
+		"transY" :status1.trasnY,
 	};
 
 }
@@ -847,36 +855,41 @@ function saveMotionXML(contents, png, effectpng, sprite, effectList, effectActio
 
 	exporter.exportSpriteSheet(fileURL+'pic/'+name,{format:"png", bitDepth:32, backgroundColor:"#00000000"});
 	sprite['picture'] = name;
-
-	exporter.beginExport();
-	exporter.autoSize = true;
-	exporter.allowTrimming = true;
-	exporter.allowRotate = false;
-	exporter.shapePadding = 2;
-	exporter.algorithm = "basic";
-	exporter.layoutFormat = "cocos2D v2";
-	exporter.stackDuplicateFrames = false;
-	//exporter.sheetHeight = 2048;
-	//exporter.sheetWidth = 2048;
-	var addPng = [];
-	var index = 0;
-	for (var j = 0; j < effectpng.length; j++) {
-		if(!inArray(addPng, effectpng[j].name))
-		{
-	        if(effectpng[j] instanceof BitmapItem)
-	        {
-	        	exporter.addBitmap(effectpng[j]);
-	        }
-	        else
-	        {
-	        	exporter.addSymbol(effectpng[j]);
-	        }
-	        addPng.push(effectpng[j].name);
+	contents['effect'] = false;
+	if(effectpng.length > 0)
+	{
+		exporter.beginExport();
+		exporter.autoSize = true;
+		exporter.allowTrimming = true;
+		exporter.allowRotate = false;
+		exporter.shapePadding = 2;
+		exporter.algorithm = "basic";
+		exporter.layoutFormat = "cocos2D v2";
+		exporter.stackDuplicateFrames = false;
+		//exporter.sheetHeight = 2048;
+		//exporter.sheetWidth = 2048;
+		var addPng = [];
+		var index = 0;
+		for (var j = 0; j < effectpng.length; j++) {
+			if(!inArray(addPng, effectpng[j].name))
+			{
+		        if(effectpng[j] instanceof BitmapItem)
+		        {
+		        	exporter.addBitmap(effectpng[j]);
+		        }
+		        else
+		        {
+		        	exporter.addSymbol(effectpng[j]);
+		        }
+		        addPng.push(effectpng[j].name);
+			}
 		}
+
+		var dname = name+"effect";
+		exporter.exportSpriteSheet(fileURL+'pic/'+dname,{format:"png", bitDepth:32, backgroundColor:"#00000000"});
+		contents['effect'] = true;
 	}
 
-	var dname = name+"effect";
-	exporter.exportSpriteSheet(fileURL+'pic/'+dname,{format:"png", bitDepth:32, backgroundColor:"#00000000"});
 
 	//var ret = '{"bone":'+JSON.stringify(sprite)+', "motion":'+JSON.stringify(contents)+'}';
 
@@ -890,16 +903,16 @@ function saveMotionXML(contents, png, effectpng, sprite, effectList, effectActio
 		alert(CopyMotionErrorStrings.SAVE_ERROR);
 		return false;
 	}
-	if (!FLfile.write(fileURL+'bone/'+name+".effect", JSON.stringify(effectList)))
+	if(contents['effect'])
 	{
-		alert(CopyMotionErrorStrings.SAVE_ERROR);
-		return false;
+		var dd = {"effect":effectList,"motion":effectAction,"picture":dname};
+		if (!FLfile.write(fileURL+'bone/'+name+".effect", JSON.stringify(dd)))
+		{
+			alert(CopyMotionErrorStrings.SAVE_ERROR);
+			return false;
+		}
 	}
-	if (!FLfile.write(fileURL+'bone/'+name+".effectmotion", JSON.stringify(effectAction)))
-	{
-		alert(CopyMotionErrorStrings.SAVE_ERROR);
-		return false;
-	}
+
 	alert("ok");
 	return true;
 }

@@ -8,12 +8,13 @@ LOCAL_MODULE_FILENAME := libhellocpp
 
 LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../Classes/AppDelegate.cpp \
-				   ../../Classes/BoneAction/CCLayerAction.cpp	\
+                  ../../Classes/BoneAction/CCLayerAction.cpp	\
                    ../../Classes/BoneAction/CCBone.cpp \
                    ../../Classes/BoneAction/CCBoneActionManager.cpp \
                     ../../Classes/BoneAction/CCBoneTextureManager.cpp \
                    ../../Classes/BoneAction/CCBoneSpriteLayer.cpp \
                    ../../Classes/BoneAction/function.cpp \
+                   ../../Classes/BoneAction/CCEffect.cpp \
                    ../../Classes/FightScene.cpp \
                    ../../Classes/LoadingScene.cpp \
                    ../../Classes/TableViewTestScene.cpp

@@ -251,7 +251,7 @@ void FightScene::checkMontion()
 					}
 					def = CCBoneSpriteLayer::create(const_cast<char *>(fggg.c_str()), const_cast<char *>(fggg.c_str()));
 					def->setPosition(ccp(400, 50));
-					def->setScale(0.5f);
+					def->setScale(0.3f);
 
 					def->changeBoneTexture("bone/weapon", "weapon", "BallinBlade");
 					def->changeBoneTexture("bone/weapon", "weaponoff", "BallinBlade");

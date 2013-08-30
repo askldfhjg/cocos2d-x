@@ -46,7 +46,7 @@
 			<key>backshinM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,333},{76,168}}</string>
+				<string>{{459,0},{76,168}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -59,7 +59,7 @@
 			<key>backshoulderM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{78,333},{46,122}}</string>
+				<string>{{537,0},{46,122}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -72,7 +72,7 @@
 			<key>backthighM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{126,333},{84,176}}</string>
+				<string>{{585,0},{84,176}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -85,7 +85,7 @@
 			<key>capeM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,511},{364,517}}</string>
+				<string>{{0,333},{364,517}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -98,7 +98,7 @@
 			<key>chestM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,1030},{178,238}}</string>
+				<string>{{366,333},{178,238}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -111,7 +111,7 @@
 			<key>frontfootM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{180,1030},{96,73}}</string>
+				<string>{{546,333},{96,73}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -124,7 +124,7 @@
 			<key>fronthandM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{278,1030},{58,164}}</string>
+				<string>{{644,333},{58,164}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -137,7 +137,7 @@
 			<key>frontshinM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{338,1030},{81,176}}</string>
+				<string>{{704,333},{81,176}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -150,7 +150,7 @@
 			<key>frontshoulderM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,1270},{100,121}}</string>
+				<string>{{787,333},{100,121}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -163,7 +163,7 @@
 			<key>frontthighM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{102,1270},{102,171}}</string>
+				<string>{{889,333},{102,171}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -176,7 +176,7 @@
 			<key>headM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{206,1270},{114,128}}</string>
+				<string>{{0,852},{114,128}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -189,7 +189,7 @@
 			<key>hipM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{322,1270},{116,75}}</string>
+				<string>{{116,852},{116,75}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -202,7 +202,7 @@
 			<key>idlefootM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{440,1270},{59,100}}</string>
+				<string>{{234,852},{59,100}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -215,7 +215,7 @@
 			<key>robeM0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,1443},{161,330}}</string>
+				<string>{{295,852},{161,330}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -228,7 +228,7 @@
 			<key>weapon0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{163,1443},{345,601}}</string>
+				<string>{{458,852},{345,601}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -238,6 +238,32 @@
 				<key>sourceSize</key>
 				<string>{345,601}</string>
 			</dict>
+			<key>weapon 副本0000</key>
+			<dict>
+				<key>frame</key>
+				<string>{{418,1455},{360,131}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{360,131}}</string>
+				<key>sourceSize</key>
+				<string>{360,131}</string>
+			</dict>
+			<key>补间 1e30000</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,1455},{416,120}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{416,120}}</string>
+				<key>sourceSize</key>
+				<string>{416,120}</string>
+			</dict>
 		</dict>
 		<key>metadata</key>
 		<dict>
@@ -246,7 +272,7 @@
 			<key>realTextureFileName</key>
 			<string>AvatarSklM.png</string>
 			<key>size</key>
-			<string>{512,2048}</string>
+			<string>{1024,2048}</string>
 			<key>textureFileName</key>
 			<string>AvatarSklM.png</string>
 		</dict>

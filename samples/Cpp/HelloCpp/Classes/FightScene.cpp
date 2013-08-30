@@ -7,6 +7,7 @@
 #include <windows.h>
 #include "direct.h" 
 #include <strsafe.h>
+#include "vld.h"
 USING_NS_CC;
 
 CCScene* FightScene::scene()

@@ -1,5 +1,6 @@
 #include "cocos2d.h"
 #include "CCBone.h"
+#include "CCEffect.h"
 #include "CCLayerAction.h"
 #include "Function.h"
 #include "CCBoneSpriteLayer.h"
@@ -128,10 +129,75 @@ void CCLayerAction::update(float frame)
 
 	int n = (int)(frame * totalFrameCount);
 	nowFrame = n + startFrame[nowStage];
-	//nowFrame = 17;
+
     char str[256]={0};
 	Func::itostr(nowFrame, str);
 	CCObject* child = NULL;
+	if(layer->haveEffect())
+	{
+		CCARRAY_FOREACH(layer->m_effect, child)
+		{
+			CCEffect *ch = (CCEffect *)child;
+			Json *source = Json_getItem(ch->m_frame, str);
+			if (source)
+			{
+				int c = Json_getSize(source);
+				if(c <= 0)
+				{
+					continue;
+				}
+				CCAssert(c == 9, "count error");
+				float posX = Json_getItemAt(source, 0)->valuefloat;
+				float posY = Json_getItemAt(source, 1)->valuefloat;
+				float scaleX = Json_getItemAt(source, 2)->valuefloat;
+				float scaleY = Json_getItemAt(source, 3)->valuefloat;
+				float skewX = Json_getItemAt(source, 4)->valuefloat;
+				float skewY = Json_getItemAt(source, 5)->valuefloat;
+				float visable = Json_getItemAt(source, 6)->valuefloat;
+				float brightness = Json_getItemAt(source, 7)->valuefloat;
+				const char *pic = Json_getItemAt(source, 8)->valuestring;
+
+				ch->setBrightness(brightness);
+				ch->setPosition(ccp(ch->m_startPosition.x + posX, ch->m_startPosition.y + posY));
+				ch->setRotationX(ch->m_fStartAngleX + skewX);
+				ch->setRotationY(ch->m_fStartAngleY + skewY);
+				ch->setScaleX(ch->m_fStartScaleX * scaleX);
+				ch->setScaleY(ch->m_fStartScaleY * scaleY);
+
+				bool vis = ch->isVisible();
+
+				float alf = ch->getAlpha();
+				if(vis != (bool)(int)visable || alf != visable)
+				{ 
+					if((bool)(int)visable)
+					{
+						ch->setVisible(true);
+						ch->setAlpha(1.0f);
+					}
+					else if(visable <= 0)
+					{
+						ch->setVisible(false);
+						ch->setAlpha(0);
+					}
+					else
+					{
+						ch->setVisible(true);
+						ch->setAlpha(visable);
+					}
+				}
+				ch->setAnimatime(std::string(pic), ch->isVisible(), nowFrame);
+				
+			}
+			else
+			{
+				if(n == 0)
+				{
+					ch->setVisible(false);
+				}
+			}
+		
+		}
+	}
 	CCARRAY_FOREACH(layer->m_bone, child)
 	{
 		CCBone *ch = (CCBone *)child;
@@ -177,7 +243,7 @@ void CCLayerAction::update(float frame)
 				}
 				else if(visable <= 0)
 				{
-					ch->setVisible((bool)false);
+					ch->setVisible(false);
 					ch->setAlpha(0);
 				}
 				else

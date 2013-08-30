@@ -13,7 +13,7 @@ public:
 		,m_pic(NULL)
 		,m_brightness(0)
 	{};
-	~CCBone(void);
+	virtual ~CCBone(void);
 
 public:
     /** creates the action */

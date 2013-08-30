@@ -4,6 +4,7 @@
 #include "CCBoneActionManager.h"
 #include "CCBoneTextureManager.h"
 #include "CCBone.h"
+#include "CCEffect.h"
 #include "../../extensions/spine/Json.h"
 USING_NS_CC;
 using namespace cocos2d::extension;
@@ -11,7 +12,9 @@ using namespace cocos2d::extension;
 CCBoneSpriteLayer::~CCBoneSpriteLayer(void)
 {
 	m_bone->removeAllObjects();
+	m_effect->removeAllObjects();
 	CC_SAFE_RELEASE(m_bone);
+	CC_SAFE_RELEASE(m_effect);
 }
 
 CCBoneSpriteLayer *CCBoneSpriteLayer::create(const char *spriteName)
@@ -81,14 +84,50 @@ CCBoneSpriteLayer *CCBoneSpriteLayer::createWithBatch(const char *spriteName, ch
 
 void CCBoneSpriteLayer::setAnimation(char *name)
 {
-	this->m_animation = CCBoneActionManager::sharedManager()->getAnimation(name);
-	this->m_label = Json_getItem(m_animation, "label");
+	Json *animation = CCBoneActionManager::sharedManager()->getAnimation(name);
+	this->m_label = Json_getItem(animation, "label");
 	CCObject* child = NULL;
 	CCARRAY_FOREACH(m_bone, child)
 	{
 		CCBone *ch = (CCBone *)child;
-		ch->m_frame = Json_getItem(m_animation, ch->getName());
+		ch->m_frame = Json_getItem(animation, ch->getName());
 	}
+
+	bool effect = (bool)Json_getItem(animation, "effect")->valueint;
+	if(effect)
+	{
+		Json *effectAnimation = CCBoneActionManager::sharedManager()->getEffectAnimation(name);
+
+		CCObject* child = NULL;
+		CCARRAY_FOREACH(m_effect, child)
+		{
+			CCEffect *ch = (CCEffect *)child;
+			ch->removeFromParent();
+		}
+		m_effect->removeAllObjects();
+		isEffect = true;
+
+		Json *motion = Json_getItem(effectAnimation, "motion");
+		Json *info = Json_getItem(effectAnimation, "effect");
+		int count = Json_getSize(motion);
+		for(int i = 0;i < count;i++)
+		{
+			Json *tmp = Json_getItemAt(motion, i);
+			std::string tmpString = tmp->name;
+			CCEffect *effect = CCEffect::create(tmpString);
+			effect->m_frame = tmp;
+			effect->m_effectInfo = info;
+			effect->setStartStatus(false);
+			effect->setVisible(false);
+			this->addChild(effect, 1000 - i);
+			m_effect->addObject(effect);
+		}
+	}
+}
+
+bool CCBoneSpriteLayer::haveEffect()
+{
+	return isEffect;
 }
 
 bool CCBoneSpriteLayer::getLabel(const char *name, int &startFrame, int &endFrame)
@@ -232,7 +271,7 @@ void CCBoneSpriteLayer::changeBoneTexture(const char *textureName, const char *b
 			CCRect rect = tmpBone->getTextureRect();
 			float archX = (leftOffset + tmpBone->getLeftOffset()) / rect.size.width;
 			float archY = (topOffset + tmpBone->getTopOffset()) / rect.size.height;
-			tmpBone->setAnchorPoint(ccp(archX , 1 - archY));
+			tmpBone->setAnchorPoint(ccp(archX , 1- archY));
 			tmpBone->setScaleX(scaleX);
 			tmpBone->setScaleY(scaleX);
 			tmpBone->setPosition(tmpBone->m_startPosition);
@@ -330,7 +369,9 @@ bool CCBoneSpriteLayer::init(const char *spriteName, bool isBatch)
 	Json *root = CCBoneTextureManager::sharedManager()->getSkl(const_cast<char*>(spriteName));
 	int count = Json_getSize(root);
 	m_bone = CCArray::create();
+	m_effect = CCArray::create();
 	CC_SAFE_RETAIN(m_bone);
+	CC_SAFE_RETAIN(m_effect);
 
 	CCSpriteBatchNode *batchNode = NULL;
 	if(isBatch)
@@ -349,7 +390,7 @@ bool CCBoneSpriteLayer::init(const char *spriteName, bool isBatch)
 	{
 		Json *tmp = Json_getItemAt(root, i);
 		std::string tmpString = tmp->name;
-		if(tmpString == "picture")
+		if(tmpString == "picture" || tmpString == "effect")
 		{
 			continue;
 		}

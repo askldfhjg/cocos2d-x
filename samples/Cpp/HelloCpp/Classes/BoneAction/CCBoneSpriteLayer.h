@@ -10,11 +10,12 @@ class CCBoneSpriteLayer : public cocos2d::CCLayer
 {
 public:
 	CCBoneSpriteLayer()
-		:m_animation(NULL)
-		,m_label(NULL)
+		:m_label(NULL)
 		,m_bone(NULL)
+		,m_effect(NULL)
 		,interval(1.0/24)
 		,isBatch(false)
+		,isEffect(false)
     {}
 	~CCBoneSpriteLayer(void);
 	virtual bool init(const char *spriteName, bool isBatch);
@@ -40,16 +41,19 @@ public:
 	
 public:
 	bool getLabel(const char *name, int &startFrame, int &endFrame);
+	bool haveEffect();
 	CCAction *runAction(CCAction* action, bool stopBefore = true);
 	CCArray* allLabel();
 public:
-	Json *m_animation;
 	CCArray *m_bone; 
+	CCArray *m_effect;
 
 private:
 	double interval;
 	Json *m_label;
 	bool isBatch;
+	bool isEffect;
+	
 };
 
 #endif //__LAYER_BONE_SPRITE_H__

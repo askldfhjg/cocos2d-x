@@ -84,6 +84,26 @@ Json *CCBoneActionManager::addAnimation(char *name)
 	CC_SAFE_DELETE_ARRAY(buffer);
 	
 	m_pAnimationData->insert(char_json::value_type(key, root));
+
+	std::string actionName = getActionName(name);
+	Json *source = Json_getItem(root, "effect");
+	bool isEffect = (bool)source->valueint;
+	if(isEffect)
+	{
+		actionName = "pic/" + actionName +"effect.plist";
+		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(actionName.c_str());
+
+		path = std::string(name) + ".effect";
+		fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(path.c_str());
+		size = 0;
+		buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
+		root = Json_create(buffer);
+		CC_SAFE_DELETE_ARRAY(buffer);
+		actionName = std::string(name) + "_effect";
+		CCString *key2 = CCString::create(actionName);
+		key2->retain();
+		m_pAnimationData->insert(char_json::value_type(key2, root));
+	}
 	return root;
 }
 
@@ -105,6 +125,26 @@ Json *CCBoneActionManager::replaceAnimation(char *name)
 	CC_SAFE_DELETE_ARRAY(buffer);
 	
 	m_pAnimationData->insert(char_json::value_type(key, root));
+
+	std::string actionName = getActionName(name);
+	Json *source = Json_getItem(root, "effect");
+	bool isEffect = (bool)source->valueint;
+	if(isEffect)
+	{
+		actionName = "pic/" + actionName +"effect.plist";
+		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(actionName.c_str());
+
+		path = std::string(name) + ".effect";
+		fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(path.c_str());
+		size = 0;
+		buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
+		root = Json_create(buffer);
+		CC_SAFE_DELETE_ARRAY(buffer);
+		actionName = std::string(name) + "_effect";
+		CCString *key2 = CCString::create(actionName);
+		key2->retain();
+		m_pAnimationData->insert(char_json::value_type(key2, root));
+	}
 	return root;
 }
 
@@ -127,11 +167,45 @@ Json *CCBoneActionManager::getAnimation(char *name)
 	{
 		tmp = it->second;
 	}
+
+
 	CCAssert(tmp != NULL, "no animation");
 	return tmp;
 }
 
+Json *CCBoneActionManager::getEffectAnimation(char *name)
+{
+	CCAssert(name, "plist filename should not be NULL");
+	CCString *key = CCString::create(std::string(name) + "_effect");
+	Json *tmp = NULL;
+	char_json::iterator it = m_pAnimationData->find(key);
+	if (it != m_pAnimationData->end())
+	{
+		tmp = it->second;
+	}
+	CCAssert(tmp != NULL, "no animation");
+	return tmp;
+}
 void CCBoneActionManager::purgeSharedCache()
 {
 	CC_SAFE_RELEASE_NULL(pSharedManager);
+}
+
+std::string CCBoneActionManager::getActionName(char *name)
+{
+	std::string s = std::string(name);
+	size_t last = 0;
+	size_t index=s.find_first_of("/",last);
+	std::vector< std::string> ret = std::vector<std::string>();
+	while (index!=std::string::npos)
+	{
+		ret.push_back(s.substr(last,index-last));
+		last=index+1;
+		index=s.find_first_of("/",last);
+	}
+	if (index-last>0)
+	{
+		ret.push_back(s.substr(last,index-last));
+	}
+	return ret.back();
 }

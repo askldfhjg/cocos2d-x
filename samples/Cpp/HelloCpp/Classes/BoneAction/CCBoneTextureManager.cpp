@@ -117,8 +117,6 @@ Json *CCBoneTextureManager::addSkl(char *name)
 	m_pTextureData->insert(char_json::value_type(newKey, root));
 	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(texturePic.c_str());
 
-	texturePic = "pic/" + textureName +"effect.plist";
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(texturePic.c_str());
 	return root;
 }
 

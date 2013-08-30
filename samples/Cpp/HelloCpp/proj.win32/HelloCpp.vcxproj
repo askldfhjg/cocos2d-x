@@ -124,6 +124,7 @@
     <ClCompile Include="..\Classes\BoneAction\CCBoneActionManager.cpp" />
     <ClCompile Include="..\Classes\BoneAction\CCBoneSpriteLayer.cpp" />
     <ClCompile Include="..\Classes\BoneAction\CCBoneTextureManager.cpp" />
+    <ClCompile Include="..\Classes\BoneAction\CCEffect.cpp" />
     <ClCompile Include="..\Classes\BoneAction\CCLayerAction.cpp" />
     <ClCompile Include="..\Classes\BoneAction\Function.cpp" />
     <ClCompile Include="..\Classes\FightScene.cpp" />
@@ -139,6 +140,7 @@
     <ClInclude Include="..\Classes\BoneAction\CCBoneActionManager.h" />
     <ClInclude Include="..\Classes\BoneAction\CCBoneSpriteLayer.h" />
     <ClInclude Include="..\Classes\BoneAction\CCBoneTextureManager.h" />
+    <ClInclude Include="..\Classes\BoneAction\CCEffect.h" />
     <ClInclude Include="..\Classes\BoneAction\CCLayerAction.h" />
     <ClInclude Include="..\Classes\BoneAction\ccShader_PositionTextureBrightnessColor_frag.h" />
     <ClInclude Include="..\Classes\BoneAction\ccShader_PositionTextureBrightnessColor_vert.h" />

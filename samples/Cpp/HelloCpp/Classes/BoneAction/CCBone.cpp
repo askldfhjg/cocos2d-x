@@ -37,6 +37,7 @@ CCGLProgram *CCBone::getShader()
 		shader->updateUniforms();
 		CHECK_GL_ERROR_DEBUG();
 		CCShaderCache::sharedShaderCache()->addProgram(shader, "boneshader");
+		shader->release();
 	}
 	return shader;
 }

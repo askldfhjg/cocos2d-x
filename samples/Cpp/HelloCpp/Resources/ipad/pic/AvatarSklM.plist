@@ -238,20 +238,7 @@
 				<key>sourceSize</key>
 				<string>{345,601}</string>
 			</dict>
-			<key>weapon 副本0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{418,1455},{360,131}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{360,131}}</string>
-				<key>sourceSize</key>
-				<string>{360,131}</string>
-			</dict>
-			<key>补间 1e30000</key>
+			<key>补间 10000</key>
 			<dict>
 				<key>frame</key>
 				<string>{{0,1455},{416,120}}</string>

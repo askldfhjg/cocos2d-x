@@ -39,7 +39,10 @@ bool CCEffect::setAnimatime(std::string name, bool show, int index)
 		m_lastFrame = index;
 		m_frameIndex++;
 	}
-	
+	if(m_lastFrame == index && index == 0)
+	{
+		m_frameIndex = 0;
+	}
 	Json *animation = Json_getItem(m_effectInfo, name.c_str());
 	if(animation == NULL)
 	{

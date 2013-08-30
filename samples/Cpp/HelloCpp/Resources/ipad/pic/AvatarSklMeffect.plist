@@ -4,161 +4,18 @@
 	<dict>
 		<key>frames</key>
 		<dict>
-			<key>Bitmap 1</key>
+			<key>Bitmap 3</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,0},{233,233}}</string>
+				<string>{{0,0},{115,229}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{233,233}}</string>
+				<string>{{0,0},{115,229}}</string>
 				<key>sourceSize</key>
-				<string>{233,233}</string>
-			</dict>
-			<key>slight_1</key>
-			<dict>
-				<key>frame</key>
-				<string>{{235,0},{150,254}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{150,254}}</string>
-				<key>sourceSize</key>
-				<string>{150,254}</string>
-			</dict>
-			<key>slight_2</key>
-			<dict>
-				<key>frame</key>
-				<string>{{387,0},{150,252}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{150,252}}</string>
-				<key>sourceSize</key>
-				<string>{150,252}</string>
-			</dict>
-			<key>slight_3</key>
-			<dict>
-				<key>frame</key>
-				<string>{{539,0},{150,254}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{150,254}}</string>
-				<key>sourceSize</key>
-				<string>{150,254}</string>
-			</dict>
-			<key>slight_4</key>
-			<dict>
-				<key>frame</key>
-				<string>{{691,0},{150,254}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{150,254}}</string>
-				<key>sourceSize</key>
-				<string>{150,254}</string>
-			</dict>
-			<key>slight_go_11</key>
-			<dict>
-				<key>frame</key>
-				<string>{{0,256},{742,133}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{742,133}}</string>
-				<key>sourceSize</key>
-				<string>{742,133}</string>
-			</dict>
-			<key>slight_go_12</key>
-			<dict>
-				<key>frame</key>
-				<string>{{744,256},{279,131}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{279,131}}</string>
-				<key>sourceSize</key>
-				<string>{279,131}</string>
-			</dict>
-			<key>slight_y_1</key>
-			<dict>
-				<key>frame</key>
-				<string>{{0,391},{136,225}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{136,225}}</string>
-				<key>sourceSize</key>
-				<string>{136,225}</string>
-			</dict>
-			<key>slight_y_2</key>
-			<dict>
-				<key>frame</key>
-				<string>{{138,391},{135,224}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{135,224}}</string>
-				<key>sourceSize</key>
-				<string>{135,224}</string>
-			</dict>
-			<key>slight_y_3</key>
-			<dict>
-				<key>frame</key>
-				<string>{{275,391},{136,225}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{136,225}}</string>
-				<key>sourceSize</key>
-				<string>{136,225}</string>
-			</dict>
-			<key>slight_y_4</key>
-			<dict>
-				<key>frame</key>
-				<string>{{413,391},{136,225}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{136,225}}</string>
-				<key>sourceSize</key>
-				<string>{136,225}</string>
-			</dict>
-			<key>slight_y_8</key>
-			<dict>
-				<key>frame</key>
-				<string>{{551,391},{68,66}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{68,66}}</string>
-				<key>sourceSize</key>
-				<string>{68,66}</string>
+				<string>{115,229}</string>
 			</dict>
 		</dict>
 		<key>metadata</key>
@@ -168,7 +25,7 @@
 			<key>realTextureFileName</key>
 			<string>AvatarSklMeffect.png</string>
 			<key>size</key>
-			<string>{1024,1024}</string>
+			<string>{128,256}</string>
 			<key>textureFileName</key>
 			<string>AvatarSklMeffect.png</string>
 		</dict>

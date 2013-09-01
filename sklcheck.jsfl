@@ -203,6 +203,20 @@ function getFrameXML(labelLayerId, currentLayer, asName) {
 				for(var i=0;i<frameLength;i++)
 				{
 					var fr = lay.frames[i].elements[0];
+					var trans = getEffectTrans(fr);
+					if(roundToTwip2(trans[0]) != 0.5)
+					{
+						fl.trace("transformX != 0.5");
+					}
+					if(roundToTwip2(trans[1]) != 0.5)
+					{
+						fl.trace("transformY != 0.5");
+					}
+					var matrix = fr.matrix;	
+					var scaleXStart = getMatrixScaleX(matrix);
+					var scaleYStart = getMatrixScaleY(matrix);
+					var name = fr.libraryItem.name.split('/');
+					fl.trace([name[name.length - 1],scaleXStart, scaleYStart]);
 					if(fr.elementType == "shape")
 					{
 						fl.trace(elemfff.libraryItem.name +" shape " + i);
@@ -228,9 +242,37 @@ function getLabelXml(frames, asName) {
 	}
 }
 
-function getSkill()
+function getEffectTrans(element)
 {
+	if(element == null)
+	{
+		return ["", 0, 0];
+	}
+	var matrix = element.matrix;
+	var startX = getX(element);
+	var startY = getY(element);
+	var name = element.libraryItem.name.split('/');
+	var oldRot = element.rotation;
+	element.rotation = 0;
+	var transPoint = getTransformationPointForElement(element);
 
+	var identityMatrix = {a:1, b:0, c:0, d:1, tx:0, ty:0};
+	element.matrix = identityMatrix;
+
+	if (element.elementType != 'text')
+		setTransformationPointForElement(element, transPoint);
+
+	var transXNormal = roundToTwip((element.transformX - element.left) / element.width);
+	var transYNormal = roundToTwip(1 - (element.transformY - element.top) / element.height);
+	element.matrix = matrix;
+
+	if (element.elementType != 'text')
+		setTransformationPointForElement(element, transPoint);
+
+	setX(element, startX);
+	setY(element, startY);
+	element.rotation = oldRot;
+	return [transXNormal, transYNormal];
 }
 
 function setTransformationPointForElement(element, transPoint)
@@ -319,4 +361,9 @@ function stringReplace(source, find, replace)
 		return '';
 	//return source.replace(find, replace);
 	return source.split(find).join(replace);
+}
+function roundToTwip2(value)
+{
+	var vv = Math.pow(10,1);
+    return Math.round(value*vv)/vv;
 }

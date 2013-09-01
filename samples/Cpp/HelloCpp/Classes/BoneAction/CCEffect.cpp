@@ -64,8 +64,12 @@ bool CCEffect::setAnimatime(std::string name, bool show, int index)
 	const char *pic = Json_getItemAt(source, 0)->valuestring;
 	float scaleX = Json_getItemAt(source, 1)->valuefloat;
 	float scaleY = Json_getItemAt(source, 2)->valuefloat;
+	float positionX = Json_getItemAt(source, 3)->valuefloat;
+	float positionY = Json_getItemAt(source, 4)->valuefloat;
 	setScaleX(getScaleX() * scaleX);
 	setScaleY(getScaleY() * scaleY);
+	setPositionX(positionX);
+	setPositionY(positionY);
 	setDisplayFrame(CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(pic));
 	ccBlendFunc blend2 = {GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA};
 	setShaderProgram(CCBone::getShader());

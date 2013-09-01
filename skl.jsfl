@@ -517,7 +517,6 @@ function getEffectTrans(element)
 		setTransformationPointForElement(element, transPoint);
 
 	var transXNormal = roundToTwip((element.transformX - element.left) / element.width);
-	fl.trace(element.height);
 	var transYNormal = roundToTwip(1 - (element.transformY - element.top) / element.height);
 	element.matrix = matrix;
 
@@ -536,6 +535,11 @@ function getEffect(elem, frameIndex, effectList, effectpng)
 	kk = kk[kk.length - 1];
 	if(!effectList.hasOwnProperty(kk))
 	{
+		var transPoint = getTransformationPointForElement(elem);
+		setTransformationPointForElement(elem, {x:0, y:0});
+		var elemStartX = getX(elem);
+		var elemStartY = getY(elem);
+		setTransformationPointForElement(elem, transPoint);
 		fl.getDocumentDOM().selectNone();
 		selectFrame(frameIndex);
 		elem.selected = true;
@@ -554,7 +558,11 @@ function getEffect(elem, frameIndex, effectList, effectpng)
 			var scaleXStart = getMatrixScaleX(matrix);
 			var scaleYStart = getMatrixScaleY(matrix);
 			var name = fr.libraryItem.name.split('/');
-			effectList[kk][i] = [name[name.length - 1], scaleXStart, scaleYStart];
+			fl.trace([elemStartX, elemStartY]);
+			fl.trace([getX(fr), getY(fr)]);
+			var startX = matrix.tx + elemStartX;
+			var startY = matrix.ty + elemStartY;
+			effectList[kk][i] = [name[name.length - 1], scaleXStart, scaleYStart, startX, -startY];
 		}
 		fl.getDocumentDOM().exitEditMode();
 	}

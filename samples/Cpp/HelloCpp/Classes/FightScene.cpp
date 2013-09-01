@@ -253,8 +253,8 @@ void FightScene::checkMontion()
 					def->setPosition(ccp(400, 50));
 					def->setScale(0.3f);
 
-					def->changeBoneTexture("bone/weapon", "weapon", "BallinBlade");
-					def->changeBoneTexture("bone/weapon", "weaponoff", "BallinBlade");
+					//def->changeBoneTexture("bone/weapon", "weapon", "BallinBlade");
+					//def->changeBoneTexture("bone/weapon", "weaponoff", "BallinBlade");
 					this->addChild(def, 3);
 
 					CC_SAFE_RELEASE(actionList);

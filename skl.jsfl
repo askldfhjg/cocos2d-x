@@ -145,6 +145,8 @@ function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, ef
 							"pic" :"",
 							"transX" : 0,
 							"transY" : 0,
+							"tranX" :0,
+							"tranY" :0,
 						};
 					if(inArray(boneName, currentLayer.name.toLowerCase()))
 					{
@@ -195,6 +197,8 @@ function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, ef
 							"skewY" : 0,
 							"colorMode" : startFrameStatus.colorMode,
 							"brightness" : startFrameStatus.brightness,
+							"tranX" :0,
+							"tranY" :0,
 						};
 					}
 					else {
@@ -316,6 +320,8 @@ function getTransform(element, startStatus)
 		"skewY" : 0,
 		"colorMode" : 0,
 		"brightness" :0,
+		"tranX" :0,
+		"tranY" :0,
 	};
 	if (!element || !startStatus) return result;
 	result.positionX = roundToTwip(getX(element) - startStatus.positionX);
@@ -326,6 +332,17 @@ function getTransform(element, startStatus)
 
 	result.skewX = roundToTwip(getMatrixSkewX(element.matrix) - startStatus.skewX);
 	result.skewY = roundToTwip(getMatrixSkewY(element.matrix) - startStatus.skewY);
+
+	var skewX = element.skewX;
+	var skewY = element.skewY;
+	element.skewX = element.skewY = 0;
+	var transPoint = getTransformationPointForElement(element);
+	setTransformationPointForElement(element, {x:0, y:0});
+	result.tranX = getX(element);
+	result.tranY = getY(element);
+	setTransformationPointForElement(element, transPoint);
+	element.skewX = skewX;
+	element.skewY = skewY;
 
 	var ggg = getColorXML(element);
 	result.colorMode = ggg[1];
@@ -391,6 +408,19 @@ function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, e
 	element.rotation = 0;
 	var transPoint = getTransformationPointForElement(element);
 
+	var mat = element.matrix;
+	//var identityMatrix = {a:1, b:0, c:0, d:1, tx:mat.tx, ty:mat.ty};
+	//element.matrix = identityMatrix;
+	var skewX = element.skewX;
+	var skewY = element.skewY;
+	element.skewX = element.skewY = 0;
+	setTransformationPointForElement(element, {x:0, y:0});
+	var tranX = getX(element);
+	var tranY = getY(element);
+	setTransformationPointForElement(element, transPoint);
+	element.skewX = skewX;
+	element.skewY = skewY;
+
 	//取得注入点位置
 	var x1 = element.transformX;
 	var y1 = element.transformY;
@@ -430,6 +460,8 @@ function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, e
 			"skewY" : skewYStart,
 			"colorMode" : rr,
 			"brightness" : brightness,
+			"tranX" :tranX,
+			"tranY" :tranY,
 		};
 	
 	if(startFrameIndex != 0)
@@ -462,6 +494,8 @@ function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, e
 				"skewY" : 0,
 				"colorMode" : 0,
 				"brightness" : 0,
+				"tranX" :0,
+				"tranY" :0,
 			};
 	}
 	return {"exportPng":exportPng, "spriteList":spriteList, "startFrameStatus":startFrameStatus, "effectpng": effectpng};
@@ -535,11 +569,8 @@ function getEffect(elem, frameIndex, effectList, effectpng)
 	kk = kk[kk.length - 1];
 	if(!effectList.hasOwnProperty(kk))
 	{
-		var transPoint = getTransformationPointForElement(elem);
-		setTransformationPointForElement(elem, {x:0, y:0});
-		var elemStartX = getX(elem);
-		var elemStartY = getY(elem);
-		setTransformationPointForElement(elem, transPoint);
+		//var scaleX = getMatrixScaleX(elem.matrix);
+		//var scaleY = getMatrixScaleY(elem.matrix);
 		fl.getDocumentDOM().selectNone();
 		selectFrame(frameIndex);
 		elem.selected = true;
@@ -553,16 +584,12 @@ function getEffect(elem, frameIndex, effectList, effectpng)
 		{
 			var fr = lay.frames[i].elements[0];
 			effectpng.push(fr.libraryItem);
-
 			var matrix = fr.matrix;	
 			var scaleXStart = getMatrixScaleX(matrix);
 			var scaleYStart = getMatrixScaleY(matrix);
 			var name = fr.libraryItem.name.split('/');
-			fl.trace([elemStartX, elemStartY]);
-			fl.trace([getX(fr), getY(fr)]);
-			var startX = matrix.tx + elemStartX;
-			var startY = matrix.ty + elemStartY;
-			effectList[kk][i] = [name[name.length - 1], scaleXStart, scaleYStart, startX, -startY];
+			effectList[kk][i] = [name[name.length - 1], scaleXStart, scaleYStart, roundToTwip(getX(fr)), roundToTwip(getY(fr))];
+			
 		}
 		fl.getDocumentDOM().exitEditMode();
 	}
@@ -574,7 +601,7 @@ function createTransformInfo(result) {
 }
 
 function createEffectTransformInfo(result) {
-	return [result.positionX, result.positionY, result.scaleX, result.scaleY, result.skewX, result.skewY, result.colorMode, result.brightness, result.pic];
+	return [result.tranX, result.tranY, result.scaleX, result.scaleY, result.skewX, result.skewY, result.colorMode, result.brightness, result.pic];
 }
 
 function statusEqual(status1, status2) {
@@ -619,6 +646,8 @@ function getStatusDivise(rotConfig, status1, status2, divice , id) {
 	return {
 		"positionX" : roundToTwip(status1.positionX + (status2.positionX - status1.positionX) / divice * id),
 		"positionY" : roundToTwip(status1.positionY + (status2.positionY - status1.positionY) / divice * id),
+		"tranX" : roundToTwip(status1.tranX + (status2.tranX - status1.tranX) / divice * id),
+		"tranY" : roundToTwip(status1.tranY + (status2.tranY - status1.tranY) / divice * id),
 		"scaleX" : roundToTwip(status1.scaleX + (status2.scaleX - status1.scaleX) / divice * id),
 		"scaleY" : roundToTwip(status1.scaleY + (status2.scaleY - status1.scaleY) / divice * id),
 		"skewX" : roundToTwip(status1.skewX + rotX),

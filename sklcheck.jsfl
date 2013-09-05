@@ -2,6 +2,46 @@
 var file = fl.configURI + 'Commands/json2.jsfl';
 fl.runScript(file); 
 
+var mainTag = {
+	"AvatarSkelM" : "idle",
+};
+var attackTag = {
+	"twokeep" : {
+		"4" :[20, 21, 32, 33, 43, 44, 52, 53, 71, 72],
+		"3" :[11, 12],
+		"2" :[10, 11, 19, 20],
+		"1" :[10, 11],
+	},
+	"sword" : {
+		"5" :[7, 8, 15, 16, 24, 25, 33, 34, 42, 43],
+		"4" :[4, 5, 8, 9, 13, 14, 24, 25],
+		"3" :[5, 6],
+		"2" :[4, 5],
+		"1" :[5, 6],
+	},
+	"combat" : {
+		"5" :[26, 27, 37, 38, 44, 45, 51, 52, 56, 57, 61 ,62, 67, 68, 74, 86],
+		"4" :[],
+		"3" :[6, 7],
+		"2" :[8, 9],
+		"1" :[5, 6],
+	},
+	"bigsword" : {
+		"5" :[14, 15, 31, 32, 50, 51, 64, 65,],
+		"4" :[21, 22, 34, 35, 46, 47, 79, 80],
+		"3" :[8, 9],
+		"2" :[18, 19],
+		"1" :[18, 19],
+	},
+};
+var otherTag = {
+	"heal" : {
+		13 : "_addHp",
+	},
+	"add_def" :{
+		16 : "_addDef",
+	},
+};
 var boneName = ["fronthand",
 				"frontshoulder",
 				"weapon",
@@ -32,6 +72,7 @@ var select = fl.getDocumentDOM().selection;
 var lll = select.length;
 fl.showIdleMessage(false);
 var skillEffectCount = 1;
+var addattackTag = confirm("add attack tag");
 for(var i =0;i < lll;i++)
 {
 	var elem = select[i];
@@ -56,6 +97,7 @@ function getActionList(boneName, asName)
 	var boneOtherLayer = 1;
 	var labelLayer = null;
 	var effectLayerFrameCount = [];
+	var flag = false;
 	for(var layerIndex = 0; layerIndex < layers.length; layerIndex++) {
 		var currentLayer = layers[layerIndex];
 		var name = currentLayer.name.toLowerCase();
@@ -73,6 +115,10 @@ function getActionList(boneName, asName)
 			timeline.setSelectedLayers(layerIndex, true);
 			timeline.clearKeyframes(0, frames.length - 1);
 			frames = currentLayer.frames;
+			if(mainTag.hasOwnProperty(asName))
+			{
+				asName = mainTag[asName];
+			}
 			getLabelXml(frames, asName);
 			labelEnd = frames.length - 1;
 			labelLayer = layerIndex;
@@ -89,7 +135,8 @@ function getActionList(boneName, asName)
 			}
 			currentLayer.name = "effect" + boneOtherLayer;
 			
-			getFrameXML(labelLayer, currentLayer, asName);
+			getFrameXML(labelLayer, currentLayer, asName, flag);
+			flag = true
 			boneOtherLayer++;
 			effectLayerFrameCount.push(layerIndex);
 		}
@@ -116,16 +163,14 @@ function getActionList(boneName, asName)
 	}
 }
 
-function getFrameXML(labelLayerId, currentLayer, asName) {
+function getFrameXML(labelLayerId, currentLayer, asName, flagggg) {
 
 	var frames = currentLayer.frames;
 	var ccc = frames.length;
 	var flag = false;
-	var keyframe = [];
 	if(frames[0].elements.length >0)
 	{
 		flag = true;
-		keyframe.push(0);
 	}
 	for(var f=0;f<ccc;)
 	{
@@ -142,7 +187,6 @@ function getFrameXML(labelLayerId, currentLayer, asName) {
 		else if(frames[end].elements.length > 0 && !flag)
 		{
 			flag = true;
-			keyframe.push(end);
 		}
 		f = end
 	}
@@ -150,15 +194,50 @@ function getFrameXML(labelLayerId, currentLayer, asName) {
 	timeline.setSelectedLayers(labelLayerId, true);
 	var labelLayer = timeline.layers[labelLayerId];
 	var labelframes = labelLayer.frames;
-	for(var i = 0; i < keyframe.length; i++)
+	var info = asName.split("_");
+
+	if(addattackTag)
 	{
-		//timeline.convertToKeyframes(keyframe[i]);
+		if(attackTag.hasOwnProperty(info[0]))
+		{
+			if(attackTag[info[0]].hasOwnProperty(info[2]) && !flagggg)
+			{
+				var keyframe = attackTag[info[0]][info[2]];
+				for(var i = 0; i < keyframe.length; i++)
+				{
+					timeline.convertToKeyframes(keyframe[i]);
+				}
+				
+				var labelframes = labelLayer.frames;
+				for(var i = 0; i < keyframe.length; i++)
+				{
+					var t = i % 2;
+					var ll = parseInt(i/2);
+					if(t == 0)
+					{
+						labelframes[keyframe[i]].name = asName + "Attack" + (ll+1);
+					}
+					else
+					{
+						labelframes[keyframe[i]].name = asName + "Hit" + (ll+1);
+					}
+					
+				}
+			}
+		}
+
+		if(otherTag.hasOwnProperty(asName))
+		{
+			for(var nn in otherTag[asName])
+			{
+				var ff = parseInt(nn);
+				timeline.convertToKeyframes(ff);
+				labelLayer.frames[ff].name = asName + otherTag[asName][nn];
+			}
+
+		}
 	}
-	labelframes = labelLayer.frames;
-	for(var i = 0; i < keyframe.length; i++)
-	{
-		//labelframes[keyframe[i]].name = asName + "Hit" + (i+1);
-	}
+
 
 	for(var f=0;f<ccc;)
 	{
@@ -180,6 +259,13 @@ function getFrameXML(labelLayerId, currentLayer, asName) {
 				fl.getDocumentDOM().selectNone();
 				selectFrame(end);
 				elemfff.selected = true;
+				if(!inArray(boneName, currentLayer.name))
+				{
+					var trans = getEffectTrans(elemfff);
+					fl.trace(elemfff.libraryItem.name);
+					fl.trace(trans);
+				}
+
 				fl.getDocumentDOM().enterEditMode('inPlace');
 				var timeline = fl.getDocumentDOM().getTimeline();
 				if(timeline.layers.length > 1)
@@ -212,11 +298,6 @@ function getFrameXML(labelLayerId, currentLayer, asName) {
 					{
 						fl.trace("transformY != 0.5");
 					}
-					var matrix = fr.matrix;	
-					var scaleXStart = getMatrixScaleX(matrix);
-					var scaleYStart = getMatrixScaleY(matrix);
-					var name = fr.libraryItem.name.split('/');
-					fl.trace([name[name.length - 1],scaleXStart, scaleYStart]);
 					if(fr.elementType == "shape")
 					{
 						fl.trace(elemfff.libraryItem.name +" shape " + i);
@@ -366,4 +447,48 @@ function roundToTwip2(value)
 {
 	var vv = Math.pow(10,1);
     return Math.round(value*vv)/vv;
+}
+
+
+function getX(element)
+{
+	return roundToTwip(element.transformX);
+}
+
+function getY(element)
+{
+	return roundToTwip(element.transformY);
+}
+
+function setX(element, x)
+{
+	element.transformX = x;
+}
+
+function setY(element, y)
+{
+	element.transformY = y;
+}
+
+function roundToTwip(value)
+{
+	var vv = Math.pow(10,4);
+    return Math.round(value*vv)/vv;
+}
+
+function getTransformationPointForElement(element)
+{
+	var oldSelected = element.selected;
+	element.selected = true;
+	var pt = element.getTransformationPoint();
+	element.selected = oldSelected;
+	return pt;
+}
+
+function setTransformationPointForElement(element, transPoint)
+{
+	var oldSelected = element.selected;
+	element.selected = true;
+	element.setTransformationPoint(transPoint);
+	element.selected = oldSelected;
 }

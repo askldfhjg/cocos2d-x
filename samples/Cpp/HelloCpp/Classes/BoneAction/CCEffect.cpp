@@ -58,6 +58,7 @@ bool CCEffect::setAnimatime(std::string name, bool show, int index)
 	{
 		m_frameIndex = 0;
 	}
+
 	char str[256]={0};
 	Func::itostr(m_frameIndex, str);
 	Json *source = Json_getItem(animation, str);
@@ -66,11 +67,12 @@ bool CCEffect::setAnimatime(std::string name, bool show, int index)
 	float scaleY = Json_getItemAt(source, 2)->valuefloat;
 	float positionX = Json_getItemAt(source, 3)->valuefloat;
 	float positionY = Json_getItemAt(source, 4)->valuefloat;
+	setDisplayFrame(CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(pic));
+	CCPoint anch = getAnchorPoint();
+	setPositionX(getPositionX() + positionX * getScaleX() + (anch.x - 0.5) * getTextureRect().size.width);
+	setPositionY(-(getPositionY() + positionY * getScaleY()) + (anch.y - 0.5) * getTextureRect().size.height);
 	setScaleX(getScaleX() * scaleX);
 	setScaleY(getScaleY() * scaleY);
-	setPositionX(positionX);
-	setPositionY(positionY);
-	setDisplayFrame(CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(pic));
 	ccBlendFunc blend2 = {GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA};
 	setShaderProgram(CCBone::getShader());
 	setBlendFunc(blend2);

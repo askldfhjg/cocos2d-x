@@ -72,3 +72,8 @@ void AppDelegate::applicationWillEnterForeground()
     SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
     SimpleAudioEngine::sharedEngine()->resumeAllEffects();
 }
+
+void AppDelegate::applicationBeforeExit()
+{
+
+}

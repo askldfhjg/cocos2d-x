@@ -14,7 +14,7 @@ CCBone *CCBone::createWithSpriteFrame(CCSpriteFrame *pSpriteFrame, std::string &
 
 		ccBlendFunc blend2 = {GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA};
 		pobSprite->setShaderProgram(CCBone::getShader());
-		pobSprite->setBlendFunc(blend2);
+		//pobSprite->setBlendFunc(blend2);
         return pobSprite;
     }
     CC_SAFE_DELETE(pobSprite);

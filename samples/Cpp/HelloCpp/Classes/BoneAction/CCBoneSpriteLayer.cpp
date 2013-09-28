@@ -220,7 +220,7 @@ void CCBoneSpriteLayer::changeBoneTexture(CCDictionary *info)
 			}
 			ccBlendFunc blend2 = {GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA};
 			tmpBone->setShaderProgram(CCBone::getShader());
-			tmpBone->setBlendFunc(blend2);
+			//tmpBone->setBlendFunc(blend2);
         }
     }
 }
@@ -292,7 +292,7 @@ void CCBoneSpriteLayer::changeBoneTexture(const char *textureName, const char *b
 		}
 		ccBlendFunc blend2 = {GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA};
 		tmpBone->setShaderProgram(CCBone::getShader());
-		tmpBone->setBlendFunc(blend2);
+		//tmpBone->setBlendFunc(blend2);
     }
 }
 
@@ -354,7 +354,7 @@ void CCBoneSpriteLayer::changeBoneTexture(const char *textureName)
 			}
 			ccBlendFunc blend2 = {GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA};
 			tmpBone->setShaderProgram(CCBone::getShader());
-			tmpBone->setBlendFunc(blend2);
+			//tmpBone->setBlendFunc(blend2);
         }
     }
 }

@@ -37,6 +37,6 @@ uniform float alpha;						\n\
 void main()									\n\
 {											\n\
 	vec4 textureColor = v_fragmentColor * texture2D(CC_Texture0, v_texCoord);			\n\
-	gl_FragColor = vec4((textureColor.rgb + vec3(brightness)), textureColor.a * alpha); \n\
+	gl_FragColor = vec4((textureColor.rgb / textureColor.a + vec3(brightness)) * textureColor.a, textureColor.a * alpha); \n\
 }											\n\
 ";

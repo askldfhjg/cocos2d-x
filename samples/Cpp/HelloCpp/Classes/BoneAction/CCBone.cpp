@@ -12,7 +12,7 @@ CCBone *CCBone::createWithSpriteFrame(CCSpriteFrame *pSpriteFrame, std::string &
 		pobSprite->name = name;
 		pobSprite->m_pic = pSpriteFrame;
 
-		ccBlendFunc blend2 = {GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA};
+		//ccBlendFunc blend2 = {GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA};
 		pobSprite->setShaderProgram(CCBone::getShader());
 		//pobSprite->setBlendFunc(blend2);
         return pobSprite;
@@ -60,6 +60,13 @@ const char *CCBone::getName()
 	return this->name.c_str();
 }
 
+void CCBone::changeTexture(CCTexture2D * texture)
+{
+	CCRect rect = CCRectZero;
+	rect.size = texture->getContentSize();
+	setTexture(texture);
+	setTextureRect(rect, false, rect.size);
+}
 void CCBone::setStartStatus(bool del)
 {
 	if(!del)

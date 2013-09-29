@@ -28,11 +28,14 @@ bool LoadingScene::init()
 
     this->addChild(m_pLabelLoading);
     this->addChild(m_pLabelPercent);
-
+	CCBoneSpriteConfig::setBoneUrl("bone/");
+	CCBoneSpriteConfig::setEquipUrl("pic/equip/");
+	CCBoneSpriteConfig::setEffectUrl("pic/boneeffect/");
+	CCBoneSpriteConfig::setSklUrl("pic/skl/");
 	CCTextureCache::sharedTextureCache()->addImageAsync("pic/bg.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
     CCTextureCache::sharedTextureCache()->addImageAsync("pic/CloseNormal.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
     CCTextureCache::sharedTextureCache()->addImageAsync("pic/CloseSelected.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
-	    CCTextureCache::sharedTextureCache()->addImageAsync("pic/AvatarSklMeffect.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
+	CCTextureCache::sharedTextureCache()->addImageAsync("pic/boneeffect/AvatarSklMeffect.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
 	m_nNumberOfSprites = 4;
 	m_nNumberOfSkl = 1;
     return true;
@@ -47,7 +50,8 @@ void LoadingScene::loadingCallBack(CCObject *obj)
 
     if (m_nNumberOfLoaded == m_nNumberOfSprites)
     {
-		CCBoneTextureManager::sharedManager()->addEquipAsync("bone/weapon", CCCallFunc::create(this, callfunc_selector(LoadingScene::loadingCallBack2)));
+		//CCBoneTextureManager::sharedManager()->addEquipAsync("bone/weapon", CCCallFunc::create(this, callfunc_selector(LoadingScene::loadingCallBack2)));
+		lastProcess();
     }
 }
 
@@ -57,7 +61,7 @@ void LoadingScene::loadingCallBack2()
     char tmp[10];
     sprintf(tmp,"%%%d", m_nNumberOfLoaded);
     m_pLabelPercent->setString(tmp);
-	if (m_nNumberOfLoaded == (m_nNumberOfSprites + m_nNumberOfSkl))
+	if (m_nNumberOfLoaded == (m_nNumberOfSprites))
     {
 		lastProcess();
     }

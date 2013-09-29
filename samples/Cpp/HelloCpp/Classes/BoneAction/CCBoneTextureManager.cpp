@@ -42,9 +42,9 @@ CCBoneTextureManager::~CCBoneTextureManager(void)
 char *CCBoneTextureManager::addTextureByAsync(CCNode *target, void *data1, void *data2)
 {
 	std::string item = std::string((char *)data2);
-	std::string textureName = getTextureName((char *)data1);
-	std::string texturePic = "pic/" + textureName +".plist";
-	std::string path = "bone/" + textureName + "."+item;
+	std::string textureName = std::string((char *)data1);
+	std::string texturePic = CCBoneSpriteConfig::sklUrl + textureName +".plist";
+	std::string path = CCBoneSpriteConfig::boneUrl + textureName + "."+item;
 	std::string fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(path.c_str());
 	std::string key = textureName+"_"+item;
 	CCString *newKey = CCString::create(key);
@@ -73,9 +73,9 @@ char *CCBoneTextureManager::addTextureByAsync(CCNode *target, void *data1, void 
 
 Json *CCBoneTextureManager::addEquip(char *name)
 {
-	std::string textureName = getTextureName(name);
-	std::string path = "bone/" + textureName + ".equip";
-	std::string texturePic = "pic/" + textureName +".plist";
+	std::string textureName = std::string(name);
+	std::string path = CCBoneSpriteConfig::boneUrl + textureName + ".equip";
+	std::string texturePic = CCBoneSpriteConfig::equipUrl + textureName +".plist";
 	std::string key = textureName+"_equip";
 	CCString *newKey = CCString::create(key);
 	newKey->retain();
@@ -91,15 +91,19 @@ Json *CCBoneTextureManager::addEquip(char *name)
     Json* root = Json_create(buffer);
 	CC_SAFE_DELETE_ARRAY(buffer);
 	m_pTextureData->insert(char_json::value_type(newKey, root));
-	CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(texturePic.c_str());
+	bool isFull = (bool)Json_getItem(root, "full")->valueint;
+	if(isFull)
+	{
+		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(texturePic.c_str());
+	}
 	return root;
 }
 
 Json *CCBoneTextureManager::addSkl(char *name)
 {
-	std::string textureName = getTextureName(name);
-	std::string path = "bone/" + textureName + ".skl";
-	std::string texturePic = "pic/" + textureName +".plist";
+	std::string textureName = std::string(name);
+	std::string path = CCBoneSpriteConfig::boneUrl + textureName + ".skl";
+	std::string texturePic = CCBoneSpriteConfig::sklUrl + textureName +".plist";
 	std::string key = textureName+"_skl";
 	CCString *newKey = CCString::create(key);
 	newKey->retain();
@@ -134,7 +138,7 @@ Json *CCBoneTextureManager::getEquip(char *name)
 	CCAssert(name, "plist filename should not be NULL");
 	Json *tmp = NULL;
 
-	std::string textureName = getTextureName(name);
+	std::string textureName = std::string(name);
 	std::string key = textureName+"_equip";
 	CCString *newKey = CCString::create(key);
 	char_json::iterator it = m_pTextureData->find(newKey);
@@ -155,7 +159,7 @@ Json *CCBoneTextureManager::getSkl(char *name)
 	CCAssert(name, "plist filename should not be NULL");
 	Json *tmp = NULL;
 
-	std::string textureName = getTextureName(name);
+	std::string textureName = std::string(name);
 	std::string key = textureName+"_skl";
 	CCString *newKey = CCString::create(key);
 	char_json::iterator it = m_pTextureData->find(newKey);
@@ -174,23 +178,4 @@ Json *CCBoneTextureManager::getSkl(char *name)
 void CCBoneTextureManager::purgeSharedCache()
 {
 	CC_SAFE_RELEASE_NULL(pSharedManager);
-}
-
-std::string CCBoneTextureManager::getTextureName(char *name)
-{
-	std::string s = std::string(name);
-	size_t last = 0;
-	size_t index=s.find_first_of("/",last);
-	std::vector< std::string> ret = std::vector<std::string>();
-	while (index!=std::string::npos)
-	{
-		ret.push_back(s.substr(last,index-last));
-		last=index+1;
-		index=s.find_first_of("/",last);
-	}
-	if (index-last>0)
-	{
-		ret.push_back(s.substr(last,index-last));
-	}
-	return ret.back();
 }

@@ -177,3 +177,28 @@ void threadAsync::asyncCallBack(float dt)
         }
     }
 }
+
+const char * CCBoneSpriteConfig::boneUrl;
+const char * CCBoneSpriteConfig::equipUrl;
+const char * CCBoneSpriteConfig::effectUrl;
+const char * CCBoneSpriteConfig::sklUrl;
+
+void CCBoneSpriteConfig::setBoneUrl(const char * url)
+{
+	CCBoneSpriteConfig::boneUrl = url;
+}
+
+void CCBoneSpriteConfig::setEquipUrl(const char * url)
+{
+	CCBoneSpriteConfig::equipUrl = url;
+}
+
+void CCBoneSpriteConfig::setEffectUrl(const char * url)
+{
+	CCBoneSpriteConfig::effectUrl = url;
+}
+
+void CCBoneSpriteConfig::setSklUrl(const char * url)
+{
+	CCBoneSpriteConfig::sklUrl = url;
+}

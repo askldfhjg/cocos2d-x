@@ -137,7 +137,7 @@ void FightScene::startAttack(CCObject *dd)
 void FightScene::streakMove(CCObject *dd)
 {
 	CCString *ff = (CCString *)dd;
-	def->changeBoneTexture(ff->getCString());
+	def->changeBoneTexture(ff->getCString(), ff->getCString());
 }
 
 void FightScene::afterAttack()
@@ -181,7 +181,7 @@ void FightScene::checkSkl()
 					CCString *ff = CCString::create(fggg);
 					CCLog(ff->getCString());
 					equipList->addObject(ff);
-					std::string gggg = "bone/" + fggg;
+					//std::string gggg = "bone/" + fggg;
 					break;
 				}
 			}
@@ -242,7 +242,6 @@ void FightScene::checkMontion()
 				while (index!=std::string::npos)
 				{
 					std::string fggg = fgg.substr(last,index-last);
-					fggg = "bone/" +fggg;
 					CCBoneActionManager::sharedManager()->replaceAnimation(const_cast<char *>(fggg.c_str()));
 					found = true;
 					if(def != NULL)

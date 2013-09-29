@@ -13,7 +13,7 @@ CCEffect *CCEffect::create(std::string &name)
 		pobSprite->name = name;
 		pobSprite->m_pic = NULL;
 
-		ccBlendFunc blend2 = {GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA};
+		//ccBlendFunc blend2 = {GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA};
 		pobSprite->setShaderProgram(CCBone::getShader());
 		//pobSprite->setBlendFunc(blend2);
         return pobSprite;
@@ -73,7 +73,7 @@ bool CCEffect::setAnimatime(std::string name, bool show, int index)
 	setPositionY(-(getPositionY() + positionY * getScaleY()) + (anch.y - 0.5) * getTextureRect().size.height);
 	setScaleX(getScaleX() * scaleX);
 	setScaleY(getScaleY() * scaleY);
-	ccBlendFunc blend2 = {GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA};
+	//ccBlendFunc blend2 = {GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA};
 	setShaderProgram(CCBone::getShader());
 	//setBlendFunc(blend2);
 	return true;

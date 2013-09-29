@@ -157,75 +157,8 @@ CCBone *CCBoneSpriteLayer::getBoneByName(const char *name)
     }
     return NULL;
 }
-void CCBoneSpriteLayer::changeBoneTexture(CCDictionary *info)
-{
-	if(isBatch)
-	{
-		return;
-	}
-	CCSpriteFrameCache *cache = CCSpriteFrameCache::sharedSpriteFrameCache();
-    if(m_bone != NULL && m_bone->count() > 0)
-    {
-        CCObject* child;
-        CCARRAY_FOREACH(m_bone, child)
-        {
-            CCBone* tmpBone = (CCBone*) child;
-			const char * tmp = tmpBone->getName();
-			CCString *texture = (CCString *)info->objectForKey(tmp);
-			if(texture == NULL)
-			{
-				continue;
-			}
-			Json* root = CCBoneTextureManager::sharedManager()->getEquip(const_cast<char*>(texture->getCString()));
-			if(root == NULL)
-			{
-				continue;
-			}
-			Json *source = Json_getItem(root, tmp);
-			if(!source)
-			{
-				continue;
-			}
-			source = Json_getItemAt(source, 0);
-			if(source)
-			{
-				const char *pic = Json_getItemAt(source, 0)->valuestring;
-				float scaleX = Json_getItemAt(source, 1)->valuefloat;
-				float scaleY = Json_getItemAt(source, 2)->valuefloat;
-				float leftOffset = Json_getItemAt(source, 3)->valuefloat;
-				float topOffset = Json_getItemAt(source, 4)->valuefloat;
 
-				tmpBone->setDisplayFrame(cache->spriteFrameByName(pic));
-				CCRect rect = tmpBone->getTextureRect();
-				float archX = (leftOffset + tmpBone->getLeftOffset()) / rect.size.width;
-				float archY = (topOffset + tmpBone->getTopOffset()) / rect.size.height;
-				tmpBone->setAnchorPoint(ccp(archX , 1 - archY));
-				tmpBone->setScaleX(scaleX);
-				tmpBone->setScaleY(scaleX);
-				tmpBone->setPosition(tmpBone->m_startPosition);
-				tmpBone->setRotationX(tmpBone->m_fStartAngleX);
-				tmpBone->setRotationY(tmpBone->m_fStartAngleY);
-				tmpBone->setVisible(tmpBone->m_startVisable);
-			}
-			else
-			{
-				tmpBone->setDisplayFrame(tmpBone->m_pic);
-				tmpBone->setAnchorPoint(tmpBone->m_startArch);
-				tmpBone->setScaleX(tmpBone->m_fStartScaleX);
-				tmpBone->setScaleY(tmpBone->m_fStartScaleY);
-				tmpBone->setPosition(tmpBone->m_startPosition);
-				tmpBone->setRotationX(tmpBone->m_fStartAngleX);
-				tmpBone->setRotationY(tmpBone->m_fStartAngleY);
-				tmpBone->setVisible(tmpBone->m_startVisable);
-			}
-			ccBlendFunc blend2 = {GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA};
-			tmpBone->setShaderProgram(CCBone::getShader());
-			//tmpBone->setBlendFunc(blend2);
-        }
-    }
-}
-
-void CCBoneSpriteLayer::changeBoneTexture(const char *textureName, const char *boneName, const char* equipName)
+void CCBoneSpriteLayer::resetBoneTexture(const char *textureName, const char *equipName)
 {
 	if(isBatch)
 	{
@@ -237,66 +170,38 @@ void CCBoneSpriteLayer::changeBoneTexture(const char *textureName, const char *b
 	{
 		return;
 	}
-	CCBone* tmpBone = getBoneByName(boneName);
-    if(tmpBone != NULL)
+	Json *source = Json_getItem(root, equipName);
+	if(!source)
+	{
+		return;
+	}
+	if(m_bone != NULL && m_bone->count() > 0)
     {
-		Json *source = Json_getItem(root, boneName);
-		if(!source)
-		{
-			return;
-		}
-		int size = Json_getSize(source);
-
-		if(size > 1)
-		{
-			if(equipName == NULL)
+        CCObject* child;
+        CCARRAY_FOREACH(m_bone, child)
+        {
+            CCBone* tmpBone = (CCBone*) child;
+			Json *info = Json_getItem(source, tmpBone->getName());
+			if(info == NULL)
 			{
-				return;
+				continue;
 			}
-			source = Json_getItem(source, equipName);
-		}
-		else
-		{
-			source = Json_getItemAt(source, 0);
-		}
-		if(source)
-		{
-			const char *pic = Json_getItemAt(source, 0)->valuestring;
-			float scaleX = Json_getItemAt(source, 1)->valuefloat;
-			float scaleY = Json_getItemAt(source, 2)->valuefloat;
-			float leftOffset = Json_getItemAt(source, 3)->valuefloat;
-			float topOffset = Json_getItemAt(source, 4)->valuefloat;
-
-			tmpBone->setDisplayFrame(cache->spriteFrameByName(pic));
-			CCRect rect = tmpBone->getTextureRect();
-			float archX = (leftOffset + tmpBone->getLeftOffset()) / rect.size.width;
-			float archY = (topOffset + tmpBone->getTopOffset()) / rect.size.height;
-			tmpBone->setAnchorPoint(ccp(archX , 1- archY));
-			tmpBone->setScaleX(scaleX);
-			tmpBone->setScaleY(scaleX);
-			tmpBone->setPosition(tmpBone->m_startPosition);
-			tmpBone->setRotationX(tmpBone->m_fStartAngleX);
-			tmpBone->setRotationY(tmpBone->m_fStartAngleY);
-			tmpBone->setVisible(tmpBone->m_startVisable);
-		}
-		else
-		{
 			tmpBone->setDisplayFrame(tmpBone->m_pic);
 			tmpBone->setAnchorPoint(tmpBone->m_startArch);
-			tmpBone->setScaleX(tmpBone->m_fStartScaleX);
+			/*tmpBone->setScaleX(tmpBone->m_fStartScaleX);
 			tmpBone->setScaleY(tmpBone->m_fStartScaleY);
 			tmpBone->setPosition(tmpBone->m_startPosition);
 			tmpBone->setRotationX(tmpBone->m_fStartAngleX);
 			tmpBone->setRotationY(tmpBone->m_fStartAngleY);
 			tmpBone->setVisible(tmpBone->m_startVisable);
+			//ccBlendFunc blend2 = {GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA};
+			tmpBone->setShaderProgram(CCBone::getShader());
+			//tmpBone->setBlendFunc(blend2);*/
 		}
-		ccBlendFunc blend2 = {GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA};
-		tmpBone->setShaderProgram(CCBone::getShader());
-		//tmpBone->setBlendFunc(blend2);
-    }
+	}
 }
 
-void CCBoneSpriteLayer::changeBoneTexture(const char *textureName)
+void CCBoneSpriteLayer::changeBoneTexture(const char *textureName, const char *equipName)
 {
 	if(isBatch)
 	{
@@ -308,55 +213,67 @@ void CCBoneSpriteLayer::changeBoneTexture(const char *textureName)
 	{
 		return;
 	}
-    if(m_bone != NULL && m_bone->count() > 0)
+	Json *source = Json_getItem(root, equipName);
+	if(!source)
+	{
+		return;
+	}
+	bool isFull = (bool)Json_getItem(root, "full")->valueint;
+	if(m_bone != NULL && m_bone->count() > 0)
     {
         CCObject* child;
         CCARRAY_FOREACH(m_bone, child)
         {
             CCBone* tmpBone = (CCBone*) child;
-			const char * tmp = tmpBone->getName();
-			Json *source = Json_getItem(root, tmp);
-			if(!source)
+			Json *info = Json_getItem(source, tmpBone->getName());
+			if(info == NULL)
 			{
 				continue;
 			}
-			source = Json_getItemAt(source, 0);
-			if(source)
-			{
-				const char *pic = Json_getItemAt(source, 0)->valuestring;
-				float scaleX = Json_getItemAt(source, 1)->valuefloat;
-				float scaleY = Json_getItemAt(source, 2)->valuefloat;
-				float leftOffset = Json_getItemAt(source, 3)->valuefloat;
-				float topOffset = Json_getItemAt(source, 4)->valuefloat;
-
-				tmpBone->setDisplayFrame(cache->spriteFrameByName(pic));
-				CCRect rect = tmpBone->getTextureRect();
-				float archX = (leftOffset + tmpBone->getLeftOffset()) / rect.size.width;
-				float archY = (topOffset + tmpBone->getTopOffset()) / rect.size.height;
-				tmpBone->setAnchorPoint(ccp(archX , 1 - archY));
-				tmpBone->setScaleX(scaleX);
-				tmpBone->setScaleY(scaleX);
-				tmpBone->setPosition(tmpBone->m_startPosition);
-				tmpBone->setRotationX(tmpBone->m_fStartAngleX);
-				tmpBone->setRotationY(tmpBone->m_fStartAngleY);
-				tmpBone->setVisible(tmpBone->m_startVisable);
-			}
-			else
+			int fCount = Json_getSize(info);
+			if(fCount <= 0)
 			{
 				tmpBone->setDisplayFrame(tmpBone->m_pic);
 				tmpBone->setAnchorPoint(tmpBone->m_startArch);
-				tmpBone->setScaleX(tmpBone->m_fStartScaleX);
+				/*tmpBone->setScaleX(tmpBone->m_fStartScaleX);
 				tmpBone->setScaleY(tmpBone->m_fStartScaleY);
 				tmpBone->setPosition(tmpBone->m_startPosition);
 				tmpBone->setRotationX(tmpBone->m_fStartAngleX);
 				tmpBone->setRotationY(tmpBone->m_fStartAngleY);
-				tmpBone->setVisible(tmpBone->m_startVisable);
+				tmpBone->setVisible(tmpBone->m_startVisable);*/
 			}
-			ccBlendFunc blend2 = {GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA};
+			else
+			{
+				const char *pic = Json_getItemAt(info, 0)->valuestring;
+				float leftOffset = Json_getItemAt(info, 1)->valuefloat;
+				float topOffset = Json_getItemAt(info, 2)->valuefloat;
+			
+				if(isFull)
+				{
+					tmpBone->setDisplayFrame(cache->spriteFrameByName(pic));
+				}
+				else
+				{
+					std::string tt = CCBoneSpriteConfig::equipUrl+std::string(pic);
+					CCTexture2D * texture = CCTextureCache::sharedTextureCache()->addImage(tt.c_str());
+					tmpBone->changeTexture(texture);
+				}
+				CCRect rect = tmpBone->getTextureRect();
+				float archX = (leftOffset + tmpBone->getLeftOffset()) / rect.size.width;
+				float archY = (topOffset + tmpBone->getTopOffset()) / rect.size.height;
+				tmpBone->setAnchorPoint(ccp(archX , 1- archY));
+				/*tmpBone->setScaleX(1);
+				tmpBone->setScaleY(1);
+				tmpBone->setPosition(tmpBone->m_startPosition);
+				tmpBone->setRotationX(tmpBone->m_fStartAngleX);
+				tmpBone->setRotationY(tmpBone->m_fStartAngleY);
+				tmpBone->setVisible(tmpBone->m_startVisable);*/
+			}
+			//ccBlendFunc blend2 = {GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA};
 			tmpBone->setShaderProgram(CCBone::getShader());
 			//tmpBone->setBlendFunc(blend2);
-        }
-    }
+		}
+	}
 }
 
 bool CCBoneSpriteLayer::init(const char *spriteName, bool isBatch)
@@ -378,7 +295,7 @@ bool CCBoneSpriteLayer::init(const char *spriteName, bool isBatch)
 	{
 		Json *source = Json_getItem(root, "picture");
 		CCAssert(source != NULL, "source error");
-		std::string pngPath = "pic/"+std::string(source->valuestring)+".png";
+		std::string pngPath = CCBoneSpriteConfig::sklUrl +std::string(source->valuestring)+".png";
 		batchNode = CCSpriteBatchNode::create(pngPath.c_str(), 40);
 		batchNode->setAnchorPoint(ccp(0, 0));
 		batchNode->setPosition(ccp(0, 0));

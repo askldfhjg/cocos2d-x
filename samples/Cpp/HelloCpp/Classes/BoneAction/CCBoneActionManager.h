@@ -36,7 +36,6 @@ public:
 
 protected:
 	char *addAnimationByAsync(CCNode *target, void *data1, void *data2);
-	std::string getActionName(char *name);
 
 protected:
     CCBoneActionManager(void) {}

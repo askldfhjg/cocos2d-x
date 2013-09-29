@@ -45,8 +45,7 @@ char *CCBoneActionManager::addAnimationByAsync(CCNode *target, void *data1, void
 	char *name = (char *)data1;
 	CCString *key = CCString::create(name);
 	key->retain();
-	std::string dd = std::string(name);
-	dd += ".motion";
+	std::string dd = CCBoneSpriteConfig::boneUrl + std::string(name) + ".motion";
 	std::string fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(dd.c_str());
 	
 	char_json::iterator it = m_pAnimationData->find(key);	
@@ -58,10 +57,13 @@ char *CCBoneActionManager::addAnimationByAsync(CCNode *target, void *data1, void
 
     unsigned long size;
     char* buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
-    Json* root = Json_create(buffer);
-	CC_SAFE_DELETE_ARRAY(buffer);
-	
-	m_pAnimationData->insert(char_json::value_type(key, root));
+	if(!buffer)
+	{
+		Json* root = Json_create(buffer);
+		CC_SAFE_DELETE_ARRAY(buffer);
+		m_pAnimationData->insert(char_json::value_type(key, root));
+	}
+
 	return NULL;
 }
 
@@ -76,7 +78,7 @@ Json *CCBoneActionManager::addAnimation(char *name)
 		CC_SAFE_RELEASE(it->first);
 		m_pAnimationData->erase(it++);
 	}
-	std::string path = std::string(name) + ".motion";
+	std::string path =  CCBoneSpriteConfig::boneUrl + std::string(name) + ".motion";
 	std::string fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(path.c_str());
     unsigned long size;
     char* buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
@@ -85,15 +87,15 @@ Json *CCBoneActionManager::addAnimation(char *name)
 	
 	m_pAnimationData->insert(char_json::value_type(key, root));
 
-	std::string actionName = getActionName(name);
+	std::string actionName = std::string(name);
 	Json *source = Json_getItem(root, "effect");
 	bool isEffect = (bool)source->valueint;
 	if(isEffect)
 	{
-		actionName = "pic/" + actionName +"effect.plist";
+		actionName =  CCBoneSpriteConfig::effectUrl + actionName +"effect.plist";
 		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(actionName.c_str());
 
-		path = std::string(name) + ".effect";
+		path =  CCBoneSpriteConfig::boneUrl + std::string(name) + ".effect";
 		fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(path.c_str());
 		size = 0;
 		buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
@@ -117,7 +119,7 @@ Json *CCBoneActionManager::replaceAnimation(char *name)
 		key->release();
 		return it->second;
 	}
-	std::string path = std::string(name) + ".motion";
+	std::string path =  CCBoneSpriteConfig::boneUrl + std::string(name) + ".motion";
 	std::string fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(path.c_str());
     unsigned long size;
     char* buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
@@ -126,15 +128,15 @@ Json *CCBoneActionManager::replaceAnimation(char *name)
 	
 	m_pAnimationData->insert(char_json::value_type(key, root));
 
-	std::string actionName = getActionName(name);
+	std::string actionName = std::string(name);
 	Json *source = Json_getItem(root, "effect");
 	bool isEffect = (bool)source->valueint;
 	if(isEffect)
 	{
-		actionName = "pic/" + actionName +"effect.plist";
+		actionName =  CCBoneSpriteConfig::effectUrl + actionName +"effect.plist";
 		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(actionName.c_str());
 
-		path = std::string(name) + ".effect";
+		path =  CCBoneSpriteConfig::boneUrl + std::string(name) + ".effect";
 		fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(path.c_str());
 		size = 0;
 		buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
@@ -189,23 +191,4 @@ Json *CCBoneActionManager::getEffectAnimation(char *name)
 void CCBoneActionManager::purgeSharedCache()
 {
 	CC_SAFE_RELEASE_NULL(pSharedManager);
-}
-
-std::string CCBoneActionManager::getActionName(char *name)
-{
-	std::string s = std::string(name);
-	size_t last = 0;
-	size_t index=s.find_first_of("/",last);
-	std::vector< std::string> ret = std::vector<std::string>();
-	while (index!=std::string::npos)
-	{
-		ret.push_back(s.substr(last,index-last));
-		last=index+1;
-		index=s.find_first_of("/",last);
-	}
-	if (index-last>0)
-	{
-		ret.push_back(s.substr(last,index-last));
-	}
-	return ret.back();
 }

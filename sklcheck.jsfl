@@ -68,6 +68,7 @@ var spriteList = {};
 var exportPng = [];
 var startFrameStatus = {};
 var startIndex = 0;
+var output = {};
 var select = fl.getDocumentDOM().selection;
 var lll = select.length;
 fl.showIdleMessage(false);
@@ -87,6 +88,7 @@ for(var i =0;i < lll;i++)
 	fl.trace("-------------------------------------");
 }
 fl.showIdleMessage(true);
+fl.trace(attackInfo(output));
 
 function getActionList(boneName, asName)
 {
@@ -205,6 +207,10 @@ function getFrameXML(labelLayerId, currentLayer, asName, flagggg) {
 				var keyframe = attackTag[info[0]][info[2]];
 				for(var i = 0; i < keyframe.length; i++)
 				{
+					if(i == 0)
+					{
+						continue;
+					}
 					timeline.convertToKeyframes(keyframe[i]);
 				}
 				
@@ -215,14 +221,30 @@ function getFrameXML(labelLayerId, currentLayer, asName, flagggg) {
 					var ll = parseInt(i/2);
 					if(t == 0)
 					{
-						labelframes[keyframe[i]].name = asName + "Attack" + (ll+1);
+						if(i == 0)
+						{
+							labelframes[0].name = asName + "Attack" + (ll+1);
+						}
+						else
+						{
+							labelframes[keyframe[i]].name = asName + "Attack" + (ll+1);
+						}
 					}
 					else
 					{
-						labelframes[keyframe[i]].name = asName + "Hit" + (ll+1);
+						labelframes[keyframe[i]].name = asName + "Attack" + (ll+1) + "Hit";
 					}
-					
 				}
+				if(!output.hasOwnProperty(info[0]))
+				{
+					output[info[0]] = {};
+				}
+				var cc = keyframe.length / 2;
+				if(!output[info[0]].hasOwnProperty(cc))
+				{
+					output[info[0]][cc] = [];
+				}
+				output[info[0]][cc].push(asName);
 			}
 		}
 
@@ -262,8 +284,6 @@ function getFrameXML(labelLayerId, currentLayer, asName, flagggg) {
 				if(!inArray(boneName, currentLayer.name))
 				{
 					var trans = getEffectTrans(elemfff);
-					fl.trace(elemfff.libraryItem.name);
-					fl.trace(trans);
 				}
 
 				fl.getDocumentDOM().enterEditMode('inPlace');
@@ -354,6 +374,49 @@ function getEffectTrans(element)
 	setY(element, startY);
 	element.rotation = oldRot;
 	return [transXNormal, transYNormal];
+}
+
+function attackInfo(output)
+{
+	var ret = '';
+	for(var i in output)
+	{
+		ret += i.toUpperCase() + "_ATK_POOL =\n{\n";
+		for(var j in output[i])
+		{
+			ret += "\t["+j+"] = {";
+			var first = true;
+			for(var k in output[i][j])
+			{
+				if(!first)
+				{
+					ret += ", ";
+				}
+				else
+				{
+					first = false;
+				}
+				ret += "{";
+				var ff = true;
+				for(var gg = 1; gg <= j; gg++)
+				{
+					if(!ff)
+					{
+						ret += ", ";
+					}
+					else
+					{
+						ff = false;
+					}
+					ret += '"'+output[i][j][k]+ 'Attack' + gg + '"';
+				}
+				ret += "}";
+			}
+			ret += "}\n";
+		}
+		ret += "}\n"
+	}
+	return ret;
 }
 
 function setTransformationPointForElement(element, transPoint)

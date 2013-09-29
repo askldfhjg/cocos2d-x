@@ -428,8 +428,8 @@ function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, e
 	var x2 = element.transformX;
 	var y2 = element.transformY;
 	setTransformationPointForElement(element, transPoint);
-	var leftOffset = roundToTwip(x1 - x2);
-	var topOffset = roundToTwip(y1 - y2);
+	var boneLeftOffset = roundToTwip(x1 - x2);
+	var boneTopOffset = roundToTwip(y1 - y2);
 	
 	var identityMatrix = {a:1, b:0, c:0, d:1, tx:0, ty:0};
 	element.matrix = identityMatrix;
@@ -439,6 +439,7 @@ function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, e
 
 	var transXNormal = roundToTwip((element.transformX - element.left) / element.width);
 	var transYNormal = roundToTwip(1 - (element.transformY - element.top) / element.height);
+
 	element.matrix = matrix;
 
 	if (element.elementType != 'text')
@@ -472,11 +473,45 @@ function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, e
 	{
 		rr = 0;
 	}
+
+	var orgPoint = getTransformationPointForElement(element);
+	setTransformationPointForElement(element, {x:0, y:0});
+
+	var startX = getX(element);
+	var startY = getY(element);
+	
+	var transPoint = getTransformationPointForElement(element);
+
+	var identityMatrix = {a:1, b:0, c:0, d:1, tx:0, ty:0};
+	element.matrix = identityMatrix;
+
+	if (element.elementType != 'text')
+		setTransformationPointForElement(element, transPoint);
+
+	var leftOffset = roundToTwip((element.transformX - element.left));
+	var topOffset = roundToTwip((element.transformY - element.top)); 
+	element.matrix = matrix;
+
+	if (element.elementType != 'text')
+		setTransformationPointForElement(element, transPoint);
+
+	setX(element, startX);
+	setY(element, startY);
+
+	setTransformationPointForElement(element, orgPoint);
+
 	if(inArray(boneName, layerName))
 	{
+		fl.trace(name);
+		fl.trace(transXNormal);
+		fl.trace(roundToTwip((boneLeftOffset+leftOffset)/element.width));
+		fl.trace(boneLeftOffset);
+		fl.trace(leftOffset);
+		fl.trace(element.width);
+		fl.trace("----------");
 		if(!spriteList.hasOwnProperty(layerName))
 		{
-			spriteList[layerName] = [name[name.length - 1]+"0000", startFrameIndex, zIndex, transXNormal, transYNormal, (startX-xOffset), (yOffset-startY), scaleXStart, scaleYStart, skewXStart, skewYStart, rr, leftOffset, topOffset, endFrame, brightness, true];
+			spriteList[layerName] = [name[name.length - 1]+"0000", startFrameIndex, zIndex, transXNormal, transYNormal, (startX-xOffset), (yOffset-startY), scaleXStart, scaleYStart, skewXStart, skewYStart, rr, boneLeftOffset, boneTopOffset, endFrame, leftOffset, topOffset,brightness, true];
 		}
 		else
 		{
@@ -889,7 +924,10 @@ function saveMotionXML(contents, png, effectpng, sprite, effectList, effectActio
 	}
 
 	var name = fl.getDocumentDOM().name.split(".")[0];
-
+	if(!FLfile.exists(fileURL+"pic/"))
+	{
+		FLfile.createFolder(fileURL+"pic/")
+	}
 	exporter.exportSpriteSheet(fileURL+'pic/'+name,{format:"png", bitDepth:32, backgroundColor:"#00000000"});
 	sprite['picture'] = name;
 	contents['effect'] = false;
@@ -929,7 +967,10 @@ function saveMotionXML(contents, png, effectpng, sprite, effectList, effectActio
 
 
 	//var ret = '{"bone":'+JSON.stringify(sprite)+', "motion":'+JSON.stringify(contents)+'}';
-
+	if(!FLfile.exists(fileURL+"bone/"))
+	{
+		FLfile.createFolder(fileURL+"bone/")
+	}
 	if (!FLfile.write(fileURL+'bone/'+name+".skl", JSON.stringify(sprite)))
 	{
 		alert(CopyMotionErrorStrings.SAVE_ERROR);

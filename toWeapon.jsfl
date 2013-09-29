@@ -1,25 +1,42 @@
+/*var timeline = fl.getDocumentDOM().getTimeline();
+var layer = timeline.layers[0];
+var elem= layer.frames[0].elements;
+for (var i = elem.length - 1; i >= 0; i--) {
+	if(elem[i].name == 'mcGenderBox')
+	{
+		fl.getDocumentDOM().selectNone();
+		elem[i].selected = true;
+		document.enterEditMode('inPlace');
+	}
+};*/
+
 fl.getDocumentDOM().setTransformationPoint({x:0, y:0});
 
 var file = fl.configURI + 'Commands/json2.jsfl';
 fl.runScript(file); 
 
-var spriteList = {};
-var exportPng = [];
-var select = fl.getDocumentDOM().selection;
-for(var i =0;i < select.length;i++)
+getActionList(0);
+function getActionList(startIndex)
 {
-	var elem = select[i];
-	var ac = elem.libraryItem.linkageClassName;
-	var tmp = getSourceXML(elem, "weapon", ac, spriteList, exportPng);
-	spriteList = tmp['spriteList'];
-	exportPng = tmp['exportPng'];
-	var tmp = getSourceXML(elem, "weaponoff", ac, spriteList, exportPng);
-	spriteList = tmp['spriteList'];
-	exportPng = tmp['exportPng'];
+	var spriteList = {};
+	var exportPng = [];
+	var timeline = fl.getDocumentDOM().getTimeline();
+	var currentLayer = timeline.layers[0];
+	var frames = currentLayer.frames;
+	selectLayer(0);
+	selectFrame(0);
+	var currentFrame = frames[0];
+	for(var i =0;i<currentFrame.elements.length;i++)
+	{
+		var tmp = getSourceXML(currentFrame.elements[i], currentLayer.name.toLowerCase(), spriteList, exportPng);
+		spriteList = tmp['spriteList'];
+		exportPng = tmp['exportPng'];
+	}
+	spriteList["full"] = 0;
+	saveMotionXML2(exportPng, spriteList);
 }
-saveMotionXML(exportPng, spriteList);
 
-function getSourceXML(element, layerName, namedddd, spriteList, exportPng){
+function getSourceXML(element, layerName, spriteList, exportPng){
 
 	var matrix = element.matrix;
 	var scaleXStart = getMatrixScaleX(matrix);
@@ -28,13 +45,13 @@ function getSourceXML(element, layerName, namedddd, spriteList, exportPng){
 	var skewYStart = getMatrixSkewY(matrix);
 	var libraryItem = element.libraryItem;
 	if (libraryItem) {
-		exportPng.push(libraryItem);
+		exportPng.push(element);
 	}
 	var name = element.libraryItem.name.split('/');
 
 	var orgPoint = getTransformationPointForElement(element);
 	setTransformationPointForElement(element, {x:0, y:0});
-
+	fl.trace(orgPoint.x);
 	var startX = getX(element);
 	var startY = getY(element);
 	
@@ -47,7 +64,7 @@ function getSourceXML(element, layerName, namedddd, spriteList, exportPng){
 		setTransformationPointForElement(element, transPoint);
 
 	var leftOffset = roundToTwip((element.transformX - element.left));
-	var topOffset = roundToTwip((element.transformY - element.top));
+	var topOffset = roundToTwip((element.transformY - element.top)); 
 	element.matrix = matrix;
 
 	if (element.elementType != 'text')
@@ -57,10 +74,9 @@ function getSourceXML(element, layerName, namedddd, spriteList, exportPng){
 	setY(element, startY);
 
 	setTransformationPointForElement(element, orgPoint);
-	if(!spriteList.hasOwnProperty(layerName)) {
-		spriteList[layerName] = {};
-	}
-	spriteList[layerName][namedddd] = [name[name.length - 1]+"0000", scaleXStart, scaleYStart, leftOffset, topOffset];
+	var asName = element.libraryItem.linkageClassName;
+	var out = {"weaponoff":[asName+".png", leftOffset, topOffset], "weapon":[asName+".png", leftOffset, topOffset]};
+	spriteList[asName] = out;
 	return {"exportPng":exportPng, "spriteList":spriteList};
 }
 function selectFrame(frameIndex) {
@@ -161,7 +177,7 @@ function roundToTwip(value)
 
 function inArray(ar, vl)
 {
-	for(var i=0;i<ar.length;i++)
+	for(i=0;i<ar.length;i++)
 	{
 		if(ar[i] == vl)
 		{
@@ -195,23 +211,66 @@ function saveMotionXML(png, sprite)
 	exporter.allowTrimming = true;
 	exporter.allowRotate = false;
 	exporter.shapePadding = 2;
-	exporter.algorithm = "basic";
-	exporter.layoutFormat = "cocos2D v2";
+	exporter.algorithm = "maxRects";
+	exporter.layoutFormat = "cocos2D v3";
+	exporter.format = "RGBA8888";
 
 	var index = 0;
 	for (var j = 0; j < png.length; j++) {
-	        exporter.addSymbol(png[j]);
-	        fl.trace(png[j].name);
+		exporter.addSymbol(png[j].libraryItem);
+		fl.trace(png[j].libraryItem.name);
 	}
 	
 	var name = fl.getDocumentDOM().name.split(".")[0];
-	exporter.exportSpriteSheet(fileURL+'pic/'+name,{format:"png", bitDepth:32, backgroundColor:"#00000000"});
-
+	if(!FLfile.exists(fileURL+"pic/"))
+	{
+		FLfile.createFolder(fileURL+"pic/")
+	}
+	exporter.exportSpriteSheet(fileURL+"pic/"+name,{format:"png", bitDepth:32, backgroundColor:"#00000000"});
 	//var ret = '{"bone":'+JSON.stringify(sprite)+', "motion":'+JSON.stringify(contents)+'}';
-	if (!FLfile.write(fileURL+'bone/'+name+".equip", JSON.stringify(sprite)))
+	if (!FLfile.write(fileURL+name+".equip", JSON.stringify(sprite)))
 	{
 		alert(CopyMotionErrorStrings.SAVE_ERROR);
 		return false;
 	}
 	return true;
+}
+
+function saveMotionXML2(png, sprite)
+{
+	var fileURL = fl.browseForFolderURL("save", "fffffff");
+	if (!fileURL || !fileURL.length) {
+		return false;
+	}
+	if(fileURL.charAt(fileURL.length-1) != '/')
+	{
+		fileURL += '/';
+	}
+
+	for (var j = 0; j < png.length; j++) {
+        fl.getDocumentDOM().library.selectItem(png[j].libraryItem.name);
+        fl.getDocumentDOM().library.addItemToDocument({x:0,y:0});
+        fl.getDocumentDOM().clipCut();
+        exportdoc=fl.createDocument();
+        exportdoc.clipPaste();
+        exportdoc.selectAll();
+        exportdoc.width=Math.floor(png[j].width);
+        exportdoc.height=Math.floor(png[j].height);
+		exportdoc.moveSelectionBy({x:- exportdoc.selection[0].left,y:- exportdoc.selection[0].top});
+		exportdoc.selectNone();
+		if(!FLfile.exists(fileURL+"pic/"))
+		{
+			FLfile.createFolder(fileURL+"pic/")
+		}
+        var pngName = fileURL+"pic/" + png[j].libraryItem.linkageClassName + ".png";
+		exportdoc.exportPNG(pngName,true,true);
+        exportdoc.close(false);
+	}
+
+	var name = fl.getDocumentDOM().name.split(".")[0];
+	if (!FLfile.write(fileURL+name+".equip", JSON.stringify(sprite)))
+	{
+		alert(CopyMotionErrorStrings.SAVE_ERROR);
+		return false;
+	}
 }

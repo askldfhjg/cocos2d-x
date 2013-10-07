@@ -18,20 +18,19 @@ public:
 		,isEffect(false)
     {}
 	~CCBoneSpriteLayer(void);
-	virtual bool init(const char *spriteName, bool isBatch);
+	virtual bool init(const char *animationName, const char *defaultSkl, bool isBatch);
 
 //luaµ¼³ö
 public:
-	static CCBoneSpriteLayer *create(const char *spriteName);
-	static CCBoneSpriteLayer *create(const char *spriteName, char *animationName);
+	static CCBoneSpriteLayer *create(const char *animationName, const char *defaultSkl);
 	static CCBoneSpriteLayer *createWithBatch(const char *spriteName);
-	static CCBoneSpriteLayer *createWithBatch(const char *spriteName, char *animationName);
+	//static CCBoneSpriteLayer *createWithBatch(const char *spriteName, char *animationName);
 	CCLayerAction *createAction(const char *BoneMove, CCFiniteTimeAction *layerMove, BoneMotion boneMotionType);
 	CCLayerAction *createAction(const char *BoneMove, CCFiniteTimeAction *layerMove);
 	CCBone *getBoneByName(const char *name);
 	void changeBoneTexture(const char *textureName, const char *equipName);
 	void resetBoneTexture(const char *textureName, const char *equipName);
-	void setAnimation(char *name);
+	void setAnimation(const char *name);
 	void setAnimationInterval(double interval);
 	CCAction *testLayerAction();
 	CCAction *randomLayerAction();

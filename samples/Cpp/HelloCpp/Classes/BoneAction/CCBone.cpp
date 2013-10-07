@@ -12,9 +12,22 @@ CCBone *CCBone::createWithSpriteFrame(CCSpriteFrame *pSpriteFrame, std::string &
 		pobSprite->name = name;
 		pobSprite->m_pic = pSpriteFrame;
 
-		//ccBlendFunc blend2 = {GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA};
 		pobSprite->setShaderProgram(CCBone::getShader());
-		//pobSprite->setBlendFunc(blend2);
+        return pobSprite;
+    }
+    CC_SAFE_DELETE(pobSprite);
+    return NULL;
+}
+
+CCBone *CCBone::create(std::string &name)
+{
+	CCBone *pobSprite = new CCBone();
+	if (pobSprite && pobSprite->init())
+    {
+        pobSprite->autorelease();
+		pobSprite->name = name;
+
+		pobSprite->setShaderProgram(CCBone::getShader());
         return pobSprite;
     }
     CC_SAFE_DELETE(pobSprite);

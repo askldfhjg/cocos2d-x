@@ -67,7 +67,7 @@ char *CCBoneActionManager::addAnimationByAsync(CCNode *target, void *data1, void
 	return NULL;
 }
 
-Json *CCBoneActionManager::addAnimation(char *name)
+Json *CCBoneActionManager::addAnimation(const char *name)
 {
 	CCString *key = CCString::create(name);
 	char_json::iterator it = m_pAnimationData->find(key);
@@ -155,7 +155,7 @@ void CCBoneActionManager::addAnimationAsync(char *name, CCCallFunc *callback)
 	this->async(this, callfuncNDD_return_selector(CCBoneActionManager::addAnimationByAsync), NULL, name, NULL, callback);
 }
 
-Json *CCBoneActionManager::getAnimation(char *name)
+Json *CCBoneActionManager::getAnimation(const char *name)
 {
 	CCAssert(name, "plist filename should not be NULL");
 	Json *tmp = NULL;
@@ -175,7 +175,7 @@ Json *CCBoneActionManager::getAnimation(char *name)
 	return tmp;
 }
 
-Json *CCBoneActionManager::getEffectAnimation(char *name)
+Json *CCBoneActionManager::getEffectAnimation(const char *name)
 {
 	CCAssert(name, "plist filename should not be NULL");
 	CCString *key = CCString::create(std::string(name) + "_effect");

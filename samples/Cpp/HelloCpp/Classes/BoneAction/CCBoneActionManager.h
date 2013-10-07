@@ -20,9 +20,9 @@ class CCBoneActionManager : public threadAsync
 //luaµ¼³ö
 public:
 	static CCBoneActionManager* sharedManager(void);
-	Json *addAnimation(char *name);
-	Json *getAnimation(char *name);
-	Json *getEffectAnimation(char *name);
+	Json *addAnimation(const char *name);
+	Json *getAnimation(const char *name);
+	Json *getEffectAnimation(const char *name);
 
 public:
     bool init(void);

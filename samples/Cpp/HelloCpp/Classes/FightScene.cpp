@@ -248,7 +248,7 @@ void FightScene::checkMontion()
 					{
 						this->removeChild(def);
 					}
-					def = CCBoneSpriteLayer::create(const_cast<char *>(fggg.c_str()), const_cast<char *>(fggg.c_str()));
+					def = CCBoneSpriteLayer::create(fggg.c_str(), "AvatarEquip_defultM");
 					def->setPosition(ccp(400, 50));
 					def->setScale(0.3f);
 

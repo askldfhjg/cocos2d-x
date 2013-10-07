@@ -18,6 +18,7 @@ public:
 public:
     /** creates the action */
     static CCBone *createWithSpriteFrame(CCSpriteFrame *pSpriteFrame, std::string &name);
+	static CCBone *create(std::string &name);
 	void changeTexture(CCTexture2D * texture);
 	const char *getName();
 	void setStartStatus(bool del);

@@ -45,8 +45,8 @@ char *CCBoneActionManager::addAnimationByAsync(CCNode *target, void *data1, void
 	char *name = (char *)data1;
 	CCString *key = CCString::create(name);
 	key->retain();
-	std::string dd = CCBoneSpriteConfig::boneUrl + std::string(name) + ".motion";
-	std::string fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(dd.c_str());
+	std::string path = CCBoneSpriteConfig::boneUrl + std::string(name) + ".motion";
+	std::string fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(path.c_str());
 	
 	char_json::iterator it = m_pAnimationData->find(key);	
 	if (it != m_pAnimationData->end())
@@ -59,11 +59,39 @@ char *CCBoneActionManager::addAnimationByAsync(CCNode *target, void *data1, void
     char* buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
 	if(!buffer)
 	{
-		Json* root = Json_create(buffer);
-		CC_SAFE_DELETE_ARRAY(buffer);
-		m_pAnimationData->insert(char_json::value_type(key, root));
+		return NULL;
 	}
+	Json* root = Json_create(buffer);
+	CC_SAFE_DELETE_ARRAY(buffer);
+	m_pAnimationData->insert(char_json::value_type(key, root));
 
+	std::string actionName = std::string(name);
+	Json *source = Json_getItem(root, "effect");
+	bool isEffect = (bool)source->valueint;
+	if(isEffect)
+	{
+		path =  CCBoneSpriteConfig::boneUrl + std::string(name) + ".effect";
+		fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(path.c_str());
+		size = 0;
+		buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
+		root = Json_create(buffer);
+		CC_SAFE_DELETE_ARRAY(buffer);
+		actionName = std::string(name) + "_effect";
+		CCString *key2 = CCString::create(actionName);
+		key2->retain();
+		m_pAnimationData->insert(char_json::value_type(key2, root));
+
+
+		actionName =  CCBoneSpriteConfig::effectUrl + std::string(name) +"effect.plist";
+
+		char* ret = new char[255];
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+		strcpy_s(ret, actionName.size() + 1, actionName.c_str());
+#else
+		strlcpy(ret, actionName.c_str(), actionName.size() + 1);
+#endif
+		return ret;
+	}
 	return NULL;
 }
 

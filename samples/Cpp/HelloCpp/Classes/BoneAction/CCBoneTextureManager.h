@@ -14,15 +14,12 @@ public:
 	static CCBoneTextureManager* sharedManager(void);
 	Json *addEquip(char *name);
 	Json *getEquip(char *name);
-	Json *addSkl(char *name);
-	Json *getSkl(char *name);
 
 public:
     bool init(void);
     ~CCBoneTextureManager(void);
 
 public:
-	void addSklAsync(char *name, CCCallFunc *callback);
 	void addEquipAsync(char *name, CCCallFunc *callback);
 	void purgeSharedCache();
 	

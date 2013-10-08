@@ -33,27 +33,11 @@ CCBoneSpriteLayer *CCBoneSpriteLayer::create(const char *animationName, const ch
 		return NULL;
 	}
 }
-/*
-CCBoneSpriteLayer *CCBoneSpriteLayer::createWithBatch(const char *spriteName)
-{
-	CCBoneSpriteLayer *pRet = new CCBoneSpriteLayer();
-	if (pRet && pRet->init(spriteName, true))
-	{
-		pRet->autorelease();
-		return pRet; 
-	}
-	else
-	{
-		delete pRet;
-		pRet = NULL;
-		return NULL;
-	}
-}
 
-CCBoneSpriteLayer *CCBoneSpriteLayer::createWithBatch(const char *spriteName, char *animationName)
+CCBoneSpriteLayer *CCBoneSpriteLayer::createWithBatch(const char *animationName, char *defaultSkl)
 {
 	CCBoneSpriteLayer *pRet = new CCBoneSpriteLayer();
-	if (pRet && pRet->init(spriteName, true))
+	if (pRet && pRet->init(animationName, defaultSkl, true))
 	{
 		pRet->autorelease();
 		pRet->setAnimation(animationName);
@@ -66,7 +50,7 @@ CCBoneSpriteLayer *CCBoneSpriteLayer::createWithBatch(const char *spriteName, ch
 		return NULL;
 	}
 }
-*/
+
 void CCBoneSpriteLayer::setAnimation(const char *name)
 {
 	Json *animation = CCBoneActionManager::sharedManager()->getAnimation(name);
@@ -171,8 +155,13 @@ void CCBoneSpriteLayer::resetBoneTexture(const char *textureName, const char *eq
 			{
 				continue;
 			}
-			tmpBone->setDisplayFrame(tmpBone->m_pic);
-			tmpBone->setAnchorPoint(tmpBone->m_startArch);
+			tmpBone->removeFromParentAndCleanup(false);
+			if(tmpBone->m_pic != NULL)
+			{
+				tmpBone->setDisplayFrame(tmpBone->m_pic);
+				tmpBone->setAnchorPoint(tmpBone->m_startArch);
+				this->addChild(tmpBone, tmpBone->m_startZOrder);
+			}
 		}
 	}
 }
@@ -206,11 +195,16 @@ void CCBoneSpriteLayer::changeBoneTexture(const char *textureName, const char *e
 			{
 				continue;
 			}
+			tmpBone->removeFromParentAndCleanup(false);
 			int fCount = Json_getSize(info);
 			if(fCount <= 0)
 			{
-				tmpBone->setDisplayFrame(tmpBone->m_pic);
-				tmpBone->setAnchorPoint(tmpBone->m_startArch);
+				if(tmpBone->m_pic != NULL)
+				{
+					tmpBone->setDisplayFrame(tmpBone->m_pic);
+					tmpBone->setAnchorPoint(tmpBone->m_startArch);
+					this->addChild(tmpBone, tmpBone->m_startZOrder);
+				}
 			}
 			else
 			{
@@ -232,7 +226,9 @@ void CCBoneSpriteLayer::changeBoneTexture(const char *textureName, const char *e
 				float archX = (leftOffset + tmpBone->getLeftOffset()) / rect.size.width;
 				float archY = (topOffset + tmpBone->getTopOffset()) / rect.size.height;
 				tmpBone->setAnchorPoint(ccp(archX , 1- archY));
+				this->addChild(tmpBone, tmpBone->m_startZOrder);
 			}
+			
 		}
 	}
 }
@@ -336,7 +332,7 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 		heads->setOffset(topOffset, leftOffset);
 		heads->setAlpha(1.0f);
 		heads->endFrame = endFrame;
-
+		heads->m_startZOrder = order;
 		heads->setStartStatus(false);
 		if(havePic)
 		{

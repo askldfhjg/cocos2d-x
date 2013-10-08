@@ -12,6 +12,7 @@ public:
 		:m_frame(NULL)
 		,m_pic(NULL)
 		,m_brightness(0)
+		,m_startZOrder(0)
 	{};
 	virtual ~CCBone(void);
 
@@ -45,6 +46,7 @@ public:
 	float m_topOffset;
 	float m_leftOffset;
 	int endFrame;
+	int m_startZOrder;
 	CCSpriteFrame *m_pic;
 	Json *m_frame;
 	float m_brightness;

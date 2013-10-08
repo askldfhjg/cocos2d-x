@@ -23,8 +23,7 @@ public:
 //luaµ¼³ö
 public:
 	static CCBoneSpriteLayer *create(const char *animationName, const char *defaultSkl);
-	static CCBoneSpriteLayer *createWithBatch(const char *spriteName);
-	//static CCBoneSpriteLayer *createWithBatch(const char *spriteName, char *animationName);
+	static CCBoneSpriteLayer *createWithBatch(const char *animationName, char *defaultSkl);
 	CCLayerAction *createAction(const char *BoneMove, CCFiniteTimeAction *layerMove, BoneMotion boneMotionType);
 	CCLayerAction *createAction(const char *BoneMove, CCFiniteTimeAction *layerMove);
 	CCBone *getBoneByName(const char *name);

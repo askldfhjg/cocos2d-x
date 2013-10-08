@@ -272,21 +272,18 @@ void FightScene::checkMontion()
 	delete []buffer;
 	FindClose(hFind);
 #else
-    CCBoneTextureManager::sharedManager()->addEquip("bone/weapon");
     actionList->removeAllObjects();
     std::string fggg = std::string("AvatarSklM");
-    fggg = "bone/" +fggg;
     CCBoneActionManager::sharedManager()->replaceAnimation(const_cast<char *>(fggg.c_str()));
     if(def != NULL)
     {
         this->removeChild(def);
     }
-    def = CCBoneSpriteLayer::create(const_cast<char *>(fggg.c_str()), const_cast<char *>(fggg.c_str()));
+    def = CCBoneSpriteLayer::create(const_cast<char *>(fggg.c_str()), "AvatarEquip_defultM");
     def->setPosition(ccp(400, 50));
     def->setScale(0.5f);
     
-    def->changeBoneTexture("bone/weapon", "weapon", "BallinBlade");
-    def->changeBoneTexture("bone/weapon", "weaponoff", "BallinBlade");
+    def->changeBoneTexture("sword", "BallinBlade");
     this->addChild(def, 3);
     
     CC_SAFE_RELEASE(actionList);

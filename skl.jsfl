@@ -474,48 +474,15 @@ function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, e
 		rr = 0;
 	}
 
-	var orgPoint = getTransformationPointForElement(element);
-	setTransformationPointForElement(element, {x:0, y:0});
-
-	var startX = getX(element);
-	var startY = getY(element);
-	
-	var transPoint = getTransformationPointForElement(element);
-
-	var identityMatrix = {a:1, b:0, c:0, d:1, tx:0, ty:0};
-	element.matrix = identityMatrix;
-
-	if (element.elementType != 'text')
-		setTransformationPointForElement(element, transPoint);
-
-	var leftOffset = roundToTwip((element.transformX - element.left));
-	var topOffset = roundToTwip((element.transformY - element.top)); 
-	element.matrix = matrix;
-
-	if (element.elementType != 'text')
-		setTransformationPointForElement(element, transPoint);
-
-	setX(element, startX);
-	setY(element, startY);
-
-	setTransformationPointForElement(element, orgPoint);
-
 	if(inArray(boneName, layerName))
 	{
-		fl.trace(name);
-		fl.trace(transXNormal);
-		fl.trace(roundToTwip((boneLeftOffset+leftOffset)/element.width));
-		fl.trace(boneLeftOffset);
-		fl.trace(leftOffset);
-		fl.trace(element.width);
-		fl.trace("----------");
 		if(!spriteList.hasOwnProperty(layerName))
 		{
-			spriteList[layerName] = [name[name.length - 1]+"0000", startFrameIndex, zIndex, transXNormal, transYNormal, (startX-xOffset), (yOffset-startY), scaleXStart, scaleYStart, skewXStart, skewYStart, rr, boneLeftOffset, boneTopOffset, endFrame, leftOffset, topOffset,brightness, true];
+			spriteList[layerName] = [startFrameIndex, zIndex, (startX-xOffset), (yOffset-startY), scaleXStart, scaleYStart, skewXStart, skewYStart, rr, boneLeftOffset, boneTopOffset, endFrame, brightness, true];
 		}
 		else
 		{
-			spriteList[layerName][14] = endFrame;
+			spriteList[layerName][11] = endFrame;
 		}
 	}
 	else
@@ -903,33 +870,8 @@ function saveMotionXML(contents, png, effectpng, sprite, effectList, effectActio
 	{
 		fileURL += '/';
 	}
-	var exporter = new SpriteSheetExporter; 
-	exporter.beginExport();
-	exporter.autoSize = true;
-	exporter.allowTrimming = true;
-	exporter.allowRotate = false;
-	exporter.shapePadding = 2;
-	exporter.algorithm = "basic";
-	exporter.layoutFormat = "cocos2D v2";
-	exporter.stackDuplicateFrames = false;
-
-	var addPng = [];
-	var index = 0;
-	for (var j = 0; j < png.length; j++) {
-		if(!inArray(addPng, png[j].name))
-		{
-	        exporter.addSymbol(png[j]);
-	        addPng.push(png[j].name);
-		}
-	}
-
 	var name = fl.getDocumentDOM().name.split(".")[0];
-	if(!FLfile.exists(fileURL+"pic/"))
-	{
-		FLfile.createFolder(fileURL+"pic/")
-	}
-	exporter.exportSpriteSheet(fileURL+'pic/'+name,{format:"png", bitDepth:32, backgroundColor:"#00000000"});
-	sprite['picture'] = name;
+	var exporter = new SpriteSheetExporter; 
 	contents['effect'] = false;
 	if(effectpng.length > 0)
 	{
@@ -959,22 +901,16 @@ function saveMotionXML(contents, png, effectpng, sprite, effectList, effectActio
 		        addPng.push(effectpng[j].name);
 			}
 		}
-
 		var dname = name+"effect";
 		exporter.exportSpriteSheet(fileURL+'pic/'+dname,{format:"png", bitDepth:32, backgroundColor:"#00000000"});
 		contents['effect'] = true;
 	}
-
+	contents["skl"] = sprite;
 
 	//var ret = '{"bone":'+JSON.stringify(sprite)+', "motion":'+JSON.stringify(contents)+'}';
 	if(!FLfile.exists(fileURL+"bone/"))
 	{
 		FLfile.createFolder(fileURL+"bone/")
-	}
-	if (!FLfile.write(fileURL+'bone/'+name+".skl", JSON.stringify(sprite)))
-	{
-		alert(CopyMotionErrorStrings.SAVE_ERROR);
-		return false;
 	}
 	if (!FLfile.write(fileURL+'bone/'+name+".motion", JSON.stringify(contents)))
 	{

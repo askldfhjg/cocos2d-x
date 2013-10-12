@@ -218,7 +218,7 @@ void CCBoneSpriteLayer::changeBoneTexture(const char *textureName, const char *e
 				}
 				else
 				{
-					std::string tt = CCBoneSpriteConfig::equipUrl+std::string(pic);
+					std::string tt = CCBoneSpriteConfig::getEquipUrl()+std::string(pic);
 					CCTexture2D * texture = CCTextureCache::sharedTextureCache()->addImage(tt.c_str());
 					tmpBone->changeTexture(texture);
 				}
@@ -265,7 +265,7 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 	}
 	if(isBatch && haveSkl)
 	{
-		std::string pngPath = CCBoneSpriteConfig::equipUrl +std::string(defaultSkl)+".png";
+		std::string pngPath = CCBoneSpriteConfig::getEquipUrl() +std::string(defaultSkl)+".png";
 		batchNode = CCSpriteBatchNode::create(pngPath.c_str(), 40);
 		batchNode->setAnchorPoint(ccp(0, 0));
 		batchNode->setPosition(ccp(0, 0));

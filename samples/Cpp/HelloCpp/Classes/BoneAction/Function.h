@@ -55,11 +55,8 @@ public:
 	static void setBoneUrl(const char * url);
 	static void setEquipUrl(const char * url);
 	static void setEffectUrl(const char * url);
-	static void setSklUrl(const char * url);
-public:
-	static const char * boneUrl;
-	static const char * equipUrl;
-	static const char * effectUrl;
-	static const char * sklUrl;
+	static const char * getBoneUrl();
+	static const char * getEquipUrl();
+	static const char * getEffectUrl();
 };
 #endif //__FUNCTION_H__

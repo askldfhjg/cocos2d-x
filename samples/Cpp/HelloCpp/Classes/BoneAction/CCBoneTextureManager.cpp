@@ -43,8 +43,8 @@ char *CCBoneTextureManager::addTextureByAsync(CCNode *target, void *data1, void 
 {
 	std::string item = std::string((char *)data2);
 	std::string textureName = std::string((char *)data1);
-	std::string texturePic = CCBoneSpriteConfig::equipUrl + textureName +".plist";
-	std::string path = CCBoneSpriteConfig::boneUrl + textureName + "."+item;
+	std::string texturePic = CCBoneSpriteConfig::getEquipUrl() + textureName +".plist";
+	std::string path = CCBoneSpriteConfig::getBoneUrl() + textureName + "."+item;
 	std::string fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(path.c_str());
 	std::string key = textureName+"_"+item;
 	CCString *newKey = CCString::create(key);
@@ -88,8 +88,8 @@ char *CCBoneTextureManager::addTextureByAsync(CCNode *target, void *data1, void 
 Json *CCBoneTextureManager::addEquip(char *name)
 {
 	std::string textureName = std::string(name);
-	std::string path = CCBoneSpriteConfig::boneUrl + textureName + ".equip";
-	std::string texturePic = CCBoneSpriteConfig::equipUrl + textureName +".plist";
+	std::string path = CCBoneSpriteConfig::getBoneUrl() + textureName + ".equip";
+	std::string texturePic = CCBoneSpriteConfig::getEquipUrl() + textureName +".plist";
 	std::string key = textureName+"_equip";
 	CCString *newKey = CCString::create(key);
 	newKey->retain();

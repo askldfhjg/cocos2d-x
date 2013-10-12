@@ -31,13 +31,12 @@ bool LoadingScene::init()
 	CCBoneSpriteConfig::setBoneUrl("bone/");
 	CCBoneSpriteConfig::setEquipUrl("pic/equip/");
 	CCBoneSpriteConfig::setEffectUrl("pic/boneeffect/");
-	CCBoneSpriteConfig::setSklUrl("pic/skl/");
 	CCTextureCache::sharedTextureCache()->addImageAsync("pic/bg.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
     CCTextureCache::sharedTextureCache()->addImageAsync("pic/CloseNormal.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
     CCTextureCache::sharedTextureCache()->addImageAsync("pic/CloseSelected.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
 	CCTextureCache::sharedTextureCache()->addImageAsync("pic/boneeffect/AvatarSklMeffect.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
 	m_nNumberOfSprites = 4;
-	m_nNumberOfSkl = 3;
+	m_nNumberOfSkl = 0;
     return true;
 }
 
@@ -50,10 +49,10 @@ void LoadingScene::loadingCallBack(CCObject *obj)
 
     if (m_nNumberOfLoaded == m_nNumberOfSprites)
     {
-		CCBoneTextureManager::sharedManager()->addEquipAsync("AvatarEquip_defultM", CCCallFunc::create(this, callfunc_selector(LoadingScene::loadingCallBack2)));
-		CCBoneTextureManager::sharedManager()->addEquipAsync("sword", CCCallFunc::create(this, callfunc_selector(LoadingScene::loadingCallBack2)));
-		CCBoneActionManager::sharedManager()->addAnimationAsync("AvatarSklM", CCCallFunc::create(this, callfunc_selector(LoadingScene::loadingCallBack2)));
-		
+		//CCBoneTextureManager::sharedManager()->addEquipAsync("AvatarEquip_defultM", CCCallFunc::create(this, callfunc_selector(LoadingScene::loadingCallBack2)));
+		//CCBoneTextureManager::sharedManager()->addEquipAsync("sword", CCCallFunc::create(this, callfunc_selector(LoadingScene::loadingCallBack2)));
+		//CCBoneActionManager::sharedManager()->addAnimationAsync("AvatarSklM", CCCallFunc::create(this, callfunc_selector(LoadingScene::loadingCallBack2)));
+		lastProcess();
     }
 }
 

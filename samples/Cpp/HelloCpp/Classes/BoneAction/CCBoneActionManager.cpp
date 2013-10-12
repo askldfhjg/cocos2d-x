@@ -45,7 +45,7 @@ char *CCBoneActionManager::addAnimationByAsync(CCNode *target, void *data1, void
 	char *name = (char *)data1;
 	CCString *key = CCString::create(name);
 	key->retain();
-	std::string path = CCBoneSpriteConfig::boneUrl + std::string(name) + ".motion";
+	std::string path = CCBoneSpriteConfig::getBoneUrl() + std::string(name) + ".motion";
 	std::string fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(path.c_str());
 	
 	char_json::iterator it = m_pAnimationData->find(key);	
@@ -70,7 +70,7 @@ char *CCBoneActionManager::addAnimationByAsync(CCNode *target, void *data1, void
 	bool isEffect = (bool)source->valueint;
 	if(isEffect)
 	{
-		path =  CCBoneSpriteConfig::boneUrl + std::string(name) + ".effect";
+		path =  CCBoneSpriteConfig::getBoneUrl() + std::string(name) + ".effect";
 		fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(path.c_str());
 		size = 0;
 		buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
@@ -82,7 +82,7 @@ char *CCBoneActionManager::addAnimationByAsync(CCNode *target, void *data1, void
 		m_pAnimationData->insert(char_json::value_type(key2, root));
 
 
-		actionName =  CCBoneSpriteConfig::effectUrl + std::string(name) +"effect.plist";
+		actionName =  CCBoneSpriteConfig::getEffectUrl() + std::string(name) +"effect.plist";
 
 		char* ret = new char[255];
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
@@ -106,7 +106,7 @@ Json *CCBoneActionManager::addAnimation(const char *name)
 		CC_SAFE_RELEASE(it->first);
 		m_pAnimationData->erase(it++);
 	}
-	std::string path =  CCBoneSpriteConfig::boneUrl + std::string(name) + ".motion";
+	std::string path =  CCBoneSpriteConfig::getBoneUrl() + std::string(name) + ".motion";
 	std::string fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(path.c_str());
     unsigned long size;
     char* buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
@@ -120,10 +120,10 @@ Json *CCBoneActionManager::addAnimation(const char *name)
 	bool isEffect = (bool)source->valueint;
 	if(isEffect)
 	{
-		actionName =  CCBoneSpriteConfig::effectUrl + actionName +"effect.plist";
+		actionName =  CCBoneSpriteConfig::getEffectUrl() + actionName +"effect.plist";
 		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(actionName.c_str());
 
-		path =  CCBoneSpriteConfig::boneUrl + std::string(name) + ".effect";
+		path =  CCBoneSpriteConfig::getBoneUrl() + std::string(name) + ".effect";
 		fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(path.c_str());
 		size = 0;
 		buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
@@ -147,7 +147,7 @@ Json *CCBoneActionManager::replaceAnimation(char *name)
 		key->release();
 		return it->second;
 	}
-	std::string path =  CCBoneSpriteConfig::boneUrl + std::string(name) + ".motion";
+	std::string path =  CCBoneSpriteConfig::getBoneUrl() + std::string(name) + ".motion";
 	std::string fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(path.c_str());
     unsigned long size;
     char* buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
@@ -161,10 +161,10 @@ Json *CCBoneActionManager::replaceAnimation(char *name)
 	bool isEffect = (bool)source->valueint;
 	if(isEffect)
 	{
-		actionName =  CCBoneSpriteConfig::effectUrl + actionName +"effect.plist";
+		actionName =  CCBoneSpriteConfig::getEffectUrl() + actionName +"effect.plist";
 		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(actionName.c_str());
 
-		path =  CCBoneSpriteConfig::boneUrl + std::string(name) + ".effect";
+		path =  CCBoneSpriteConfig::getBoneUrl() + std::string(name) + ".effect";
 		fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(path.c_str());
 		size = 0;
 		buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);

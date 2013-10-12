@@ -178,27 +178,37 @@ void threadAsync::asyncCallBack(float dt)
     }
 }
 
-const char * CCBoneSpriteConfig::boneUrl;
-const char * CCBoneSpriteConfig::equipUrl;
-const char * CCBoneSpriteConfig::effectUrl;
-const char * CCBoneSpriteConfig::sklUrl;
+static std::string boneUrl;
+static std::string equipUrl;
+static std::string effectUrl;
+static std::string sklUrl;
 
 void CCBoneSpriteConfig::setBoneUrl(const char * url)
 {
-	CCBoneSpriteConfig::boneUrl = url;
+	boneUrl = std::string(url);
 }
 
 void CCBoneSpriteConfig::setEquipUrl(const char * url)
 {
-	CCBoneSpriteConfig::equipUrl = url;
+	equipUrl = std::string(url);
 }
 
 void CCBoneSpriteConfig::setEffectUrl(const char * url)
 {
-	CCBoneSpriteConfig::effectUrl = url;
+	effectUrl = std::string(url);
 }
 
-void CCBoneSpriteConfig::setSklUrl(const char * url)
+const char * CCBoneSpriteConfig::getBoneUrl()
 {
-	CCBoneSpriteConfig::sklUrl = url;
+	return boneUrl.c_str();
+}
+
+const char * CCBoneSpriteConfig::getEquipUrl()
+{
+	return equipUrl.c_str();
+}
+
+const char * CCBoneSpriteConfig::getEffectUrl()
+{
+	return effectUrl.c_str();
 }

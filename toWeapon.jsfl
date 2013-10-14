@@ -238,10 +238,12 @@ function saveMotionXML(png, sprite)
 
 function saveMotionXML2(png, sprite)
 {
-	var fileURL = fl.browseForFolderURL("save", "fffffff");
+	/*var fileURL = fl.browseForFolderURL("save", "fffffff");
 	if (!fileURL || !fileURL.length) {
 		return false;
 	}
+	fl.trace(fileURL);*/
+	var fileURL = "file:///E|/github/cocos2d-x/samples/Cpp/HelloCpp/Resources/ipad";
 	if(fileURL.charAt(fileURL.length-1) != '/')
 	{
 		fileURL += '/';
@@ -258,17 +260,21 @@ function saveMotionXML2(png, sprite)
         exportdoc.height=Math.floor(png[j].height);
 		exportdoc.moveSelectionBy({x:- exportdoc.selection[0].left,y:- exportdoc.selection[0].top});
 		exportdoc.selectNone();
-		if(!FLfile.exists(fileURL+"pic/"))
+		if(!FLfile.exists(fileURL+"pic/equip"))
 		{
-			FLfile.createFolder(fileURL+"pic/")
+			FLfile.createFolder(fileURL+"pic/equip")
 		}
-        var pngName = fileURL+"pic/" + png[j].libraryItem.linkageClassName + ".png";
+        var pngName = fileURL+"pic/equip/" + png[j].libraryItem.linkageClassName + ".png";
 		exportdoc.exportPNG(pngName,true,true);
         exportdoc.close(false);
 	}
 
 	var name = fl.getDocumentDOM().name.split(".")[0];
-	if (!FLfile.write(fileURL+name+".equip", JSON.stringify(sprite)))
+	if(!FLfile.exists(fileURL+"bone/"))
+	{
+		FLfile.createFolder(fileURL+"bone/")
+	}
+	if (!FLfile.write(fileURL+"bone/"+name+".equip", JSON.stringify(sprite)))
 	{
 		alert(CopyMotionErrorStrings.SAVE_ERROR);
 		return false;

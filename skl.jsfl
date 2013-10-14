@@ -862,10 +862,11 @@ function saveMotionXML(contents, png, effectpng, sprite, effectList, effectActio
 	if (!contents) {
 		return false;
 	}
-	var fileURL = fl.browseForFolderURL("save", "fffffff");
+	/*var fileURL = fl.browseForFolderURL("save", "fffffff");
 	if (!fileURL || !fileURL.length) {
 		return false;
-	}
+	}*/
+	var fileURL = "file:///E|/github/cocos2d-x/samples/Cpp/HelloCpp/Resources/ipad";
 	if(fileURL.charAt(fileURL.length-1) != '/')
 	{
 		fileURL += '/';
@@ -902,7 +903,7 @@ function saveMotionXML(contents, png, effectpng, sprite, effectList, effectActio
 			}
 		}
 		var dname = name+"effect";
-		exporter.exportSpriteSheet(fileURL+'pic/'+dname,{format:"png", bitDepth:32, backgroundColor:"#00000000"});
+		exporter.exportSpriteSheet(fileURL+'pic/boneeffect/'+dname,{format:"png", bitDepth:32, backgroundColor:"#00000000"});
 		contents['effect'] = true;
 	}
 	contents["skl"] = sprite;

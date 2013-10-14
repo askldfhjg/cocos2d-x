@@ -6,136 +6,67 @@
 		<dict>
 			<key>slight_1</key>
 			<dict>
-				<key>aliases</key>
-				<array/>
+				<key>frame</key>
+				<string>{{0,0},{150,254}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
 				<key>sourceColorRect</key>
 				<string>{{0,0},{150,254}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
+				<key>sourceSize</key>
 				<string>{150,254}</string>
-				<key>spriteSourceSize</key>
-				<string>{150,254}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{441,185},{150,254}}</string>
-				<key>textureRotated</key>
-				<false/>
 			</dict>
 			<key>slight_2</key>
 			<dict>
-				<key>aliases</key>
-				<array/>
+				<key>frame</key>
+				<string>{{152,0},{150,252}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
 				<key>sourceColorRect</key>
 				<string>{{0,0},{150,252}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
+				<key>sourceSize</key>
 				<string>{150,252}</string>
-				<key>spriteSourceSize</key>
-				<string>{150,252}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{151,440},{150,252}}</string>
-				<key>textureRotated</key>
-				<false/>
 			</dict>
 			<key>slight_3</key>
 			<dict>
-				<key>aliases</key>
-				<array/>
+				<key>frame</key>
+				<string>{{304,0},{150,254}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
 				<key>sourceColorRect</key>
 				<string>{{0,0},{150,254}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
+				<key>sourceSize</key>
 				<string>{150,254}</string>
-				<key>spriteSourceSize</key>
-				<string>{150,254}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{290,185},{150,254}}</string>
-				<key>textureRotated</key>
-				<false/>
 			</dict>
 			<key>slight_4</key>
 			<dict>
-				<key>aliases</key>
-				<array/>
+				<key>frame</key>
+				<string>{{0,256},{150,254}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
 				<key>sourceColorRect</key>
 				<string>{{0,0},{150,254}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
+				<key>sourceSize</key>
 				<string>{150,254}</string>
-				<key>spriteSourceSize</key>
-				<string>{150,254}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{0,360},{150,254}}</string>
-				<key>textureRotated</key>
-				<false/>
-			</dict>
-			<key>slight_g_1</key>
-			<dict>
-				<key>aliases</key>
-				<array/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{520,184}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
-				<string>{520,184}</string>
-				<key>spriteSourceSize</key>
-				<string>{520,184}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{0,0},{520,184}}</string>
-				<key>textureRotated</key>
-				<false/>
-			</dict>
-			<key>slight_g_2</key>
-			<dict>
-				<key>aliases</key>
-				<array/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{289,174}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
-				<string>{289,174}</string>
-				<key>spriteSourceSize</key>
-				<string>{289,174}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{0,185},{289,174}}</string>
-				<key>textureRotated</key>
-				<false/>
 			</dict>
 		</dict>
 		<key>metadata</key>
 		<dict>
 			<key>format</key>
-			<integer>3</integer>
+			<integer>2</integer>
+			<key>realTextureFileName</key>
+			<string>AvatarSklMeffect.png</string>
 			<key>size</key>
-			<string>{1024,1024}</string>
-			<key>target</key>
-			<dict>
-				<key>name</key>
-				<string>AvatarSklMeffect.png</string>
-				<key>textureFileName</key>
-				<string>AvatarSklMeffect</string>
-				<key>textureFileExtension</key>
-				<string>png</string>
-				<key>premultipliedAlpha</key>
-				<true/>
-			</dict>
+			<string>{512,512}</string>
+			<key>textureFileName</key>
+			<string>AvatarSklMeffect.png</string>
 		</dict>
 	</dict>
 </plist>

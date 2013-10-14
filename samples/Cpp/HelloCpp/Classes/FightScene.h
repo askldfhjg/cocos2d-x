@@ -21,7 +21,7 @@ public:
 	void streakMove(CCObject *dd);
 	void menuCloseCallback(CCObject* pSender);
 	void menuSpeedCallback(CCObject* pSender);
-	void afterAttack();
+	void afterAttack(CCObject *dd);
     CREATE_FUNC(FightScene);
 
 private:
@@ -31,6 +31,7 @@ protected:
 	CCBoneSpriteLayer *def;
 	CCArray *equipList;
 	CCArray *actionList;
+	CCArray *motionList;
 };
 
 #endif // __FIGHT_SCENE_H__

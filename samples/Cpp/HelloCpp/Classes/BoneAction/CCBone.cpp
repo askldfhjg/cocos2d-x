@@ -57,7 +57,8 @@ CCGLProgram *CCBone::getShader()
 
 CCBone::~CCBone(void)
 {
-	
+	CC_SAFE_DELETE(m_picLowWeight);
+	CC_SAFE_DELETE(m_picNowWeight);
 }
 void CCBone::Reset()
 {
@@ -66,6 +67,7 @@ void CCBone::Reset()
 	setRotationY(m_fStartAngleY);
 	setScaleX(m_fStartScaleX);
 	setScaleY(m_fStartAngleY);
+
 }
 
 const char *CCBone::getName()

@@ -5,6 +5,16 @@
 USING_NS_CC;
 using namespace cocos2d::extension;
 
+struct CCBonePicWeight
+{
+	const char *pic;
+	int type;
+	float topOffset;
+	float leftOffset;
+	bool isFull;
+	int weight;
+};
+
 class CCBone : public CCSprite
 {
 public:
@@ -13,6 +23,8 @@ public:
 		,m_pic(NULL)
 		,m_brightness(0)
 		,m_startZOrder(0)
+		,m_picLowWeight(NULL)
+		,m_picNowWeight(NULL)
 	{};
 	virtual ~CCBone(void);
 
@@ -51,6 +63,8 @@ public:
 	Json *m_frame;
 	float m_brightness;
 	float m_alpha;
+	CCBonePicWeight *m_picLowWeight;
+	CCBonePicWeight *m_picNowWeight;
 	std::string name;
 };
 

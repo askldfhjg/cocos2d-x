@@ -24,8 +24,8 @@ public:
 public:
 	static CCBoneSpriteLayer *create(const char *animationName, const char *defaultSkl);
 	static CCBoneSpriteLayer *createWithBatch(const char *animationName, char *defaultSkl);
-	CCLayerAction *createAction(const char *BoneMove, CCFiniteTimeAction *layerMove, BoneMotion boneMotionType);
-	CCLayerAction *createAction(const char *BoneMove, CCFiniteTimeAction *layerMove);
+	CCLayerAction *createAction(const char *BoneMove, float time);
+	CCLayerAction *createAction(const char *BoneMove);
 	CCBone *getBoneByName(const char *name);
 	void changeBoneTexture(const char *textureName, const char *equipName);
 	void resetBoneTexture(const char *textureName, const char *equipName);
@@ -37,6 +37,7 @@ public:
 	
 public:
 	bool getLabel(const char *name, int &startFrame, int &endFrame);
+	CCRenderTexture* createStroke(CCSprite* label, int size, ccColor3B color, GLubyte opacity);
 	bool haveEffect();
 	CCAction *runAction(CCAction* action, bool stopBefore = true);
 	CCArray* allLabel();

@@ -22,6 +22,7 @@ public:
 	void menuCloseCallback(CCObject* pSender);
 	void menuSpeedCallback(CCObject* pSender);
 	void afterAttack(CCObject *dd);
+	CCRenderTexture* FightScene::createStroke(CCSprite* label, int size, ccColor3B color, GLubyte opacity);
     CREATE_FUNC(FightScene);
 
 private:

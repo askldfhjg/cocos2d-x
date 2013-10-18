@@ -14,9 +14,17 @@ fl.getDocumentDOM().setTransformationPoint({x:0, y:0});
 
 var file = fl.configURI + 'Commands/json2.jsfl';
 fl.runScript(file); 
-
-getActionList(0);
-function getActionList(startIndex)
+output();
+function output()
+{
+	for (doc in fl.documents) 
+	{ 
+    	fl.setActiveWindow(fl.documents[doc]);
+    	getActionList(0);
+	}
+	alert("ok");
+}
+function getActionList(flag)
 {
 	var spriteList = {};
 	var exportPng = [];
@@ -32,8 +40,18 @@ function getActionList(startIndex)
 		spriteList = tmp['spriteList'];
 		exportPng = tmp['exportPng'];
 	}
-	spriteList["full"] = 0;
-	saveMotionXML2(exportPng, spriteList);
+	if(flag == 1)
+	{
+		saveMotionXML2(exportPng, {});
+	}
+	else if(flag == 2)
+	{
+		saveMotionXML2([], spriteList);
+	}
+	else
+	{
+		saveMotionXML2(exportPng, spriteList);
+	}
 }
 
 function getSourceXML(element, layerName, spriteList, exportPng){
@@ -51,7 +69,7 @@ function getSourceXML(element, layerName, spriteList, exportPng){
 
 	var orgPoint = getTransformationPointForElement(element);
 	setTransformationPointForElement(element, {x:0, y:0});
-	fl.trace(orgPoint.x);
+
 	var startX = getX(element);
 	var startY = getY(element);
 	
@@ -75,8 +93,15 @@ function getSourceXML(element, layerName, spriteList, exportPng){
 
 	setTransformationPointForElement(element, orgPoint);
 	var asName = element.libraryItem.linkageClassName;
+	if(!asName)
+	{
+		asName = fl.getDocumentDOM().name.split(".")[0];
+	}
 	var out = {"weaponoff":[asName+".png", leftOffset, topOffset], "weapon":[asName+".png", leftOffset, topOffset]};
-	spriteList[asName] = out;
+	spriteList[asName] = {};
+	spriteList[asName]["part"] = out;
+	spriteList["full"] = 0;
+	spriteList[asName]["type"] = 1;
 	return {"exportPng":exportPng, "spriteList":spriteList};
 }
 function selectFrame(frameIndex) {
@@ -210,7 +235,7 @@ function saveMotionXML(png, sprite)
 	exporter.autoSize = true;
 	exporter.allowTrimming = true;
 	exporter.allowRotate = false;
-	exporter.shapePadding = 2;
+	exporter.shapePadding = 1;
 	exporter.algorithm = "maxRects";
 	exporter.layoutFormat = "cocos2D v3";
 	exporter.format = "RGBA8888";
@@ -248,7 +273,7 @@ function saveMotionXML2(png, sprite)
 	{
 		fileURL += '/';
 	}
-
+	var name = fl.getDocumentDOM().name.split(".")[0];
 	for (var j = 0; j < png.length; j++) {
         fl.getDocumentDOM().library.selectItem(png[j].libraryItem.name);
         fl.getDocumentDOM().library.addItemToDocument({x:0,y:0});
@@ -264,7 +289,12 @@ function saveMotionXML2(png, sprite)
 		{
 			FLfile.createFolder(fileURL+"pic/equip")
 		}
-        var pngName = fileURL+"pic/equip/" + png[j].libraryItem.linkageClassName + ".png";
+		var asName = png[j].libraryItem.linkageClassName;
+		if(!asName)
+		{
+			asName = name;
+		}
+        var pngName = fileURL+"pic/equip/" + asName + ".png";
 		exportdoc.exportPNG(pngName,true,true);
         exportdoc.close(false);
 	}

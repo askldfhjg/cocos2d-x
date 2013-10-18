@@ -184,6 +184,8 @@ void CCBoneSpriteLayer::changeBoneTexture(const char *textureName, const char *e
 		return;
 	}
 	bool isFull = (bool)Json_getItem(root, "full")->valueint;
+	int type = Json_getItem(source, "type")->valueint;
+	source = Json_getItem(source, "part");
 	if(m_bone != NULL && m_bone->count() > 0)
     {
         CCObject* child;
@@ -195,6 +197,7 @@ void CCBoneSpriteLayer::changeBoneTexture(const char *textureName, const char *e
 			{
 				continue;
 			}
+			
 			tmpBone->removeFromParentAndCleanup(false);
 			int fCount = Json_getSize(info);
 			if(fCount <= 0)
@@ -211,7 +214,53 @@ void CCBoneSpriteLayer::changeBoneTexture(const char *textureName, const char *e
 				const char *pic = Json_getItemAt(info, 0)->valuestring;
 				float leftOffset = Json_getItemAt(info, 1)->valuefloat;
 				float topOffset = Json_getItemAt(info, 2)->valuefloat;
-			
+
+				if(fCount == 4)
+				{
+					int weight = Json_getItemAt(info, 3)->valueint;
+					if(tmpBone->m_picNowWeight && tmpBone->m_picLowWeight)
+					{
+						if(tmpBone->m_picNowWeight->type != type && tmpBone->m_picLowWeight->type != type)
+						{
+							continue;
+						}
+					}
+					CCBonePicWeight *weightInfo = new CCBonePicWeight();
+					weightInfo->pic = pic;
+					weightInfo->topOffset = topOffset;
+					weightInfo->leftOffset = leftOffset;
+					weightInfo->weight = weight;
+					weightInfo->isFull = isFull;
+					weightInfo->type = type;
+					if(tmpBone->m_picNowWeight)
+					{
+						if(type != tmpBone->m_picNowWeight->type && weight < tmpBone->m_picNowWeight->weight)
+						{
+							CC_SAFE_DELETE(tmpBone->m_picLowWeight);
+							tmpBone->m_picLowWeight = weightInfo;
+							continue;
+						}
+					}
+					if(!tmpBone->m_picNowWeight)
+					{
+						tmpBone->m_picNowWeight = weightInfo;
+					}
+					else
+					{
+						if(type == tmpBone->m_picNowWeight->type)
+						{
+							CC_SAFE_DELETE(tmpBone->m_picNowWeight);
+							tmpBone->m_picNowWeight = weightInfo;
+						}
+						else
+						{
+							tmpBone->m_picLowWeight = tmpBone->m_picNowWeight;
+							tmpBone->m_picNowWeight = weightInfo;
+						}
+					}
+				}
+
+
 				if(isFull)
 				{
 					tmpBone->setDisplayFrame(cache->spriteFrameByName(pic));
@@ -257,6 +306,7 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 		if(skl)
 		{
 			skl = Json_getItem(skl, defaultSkl);
+			skl = Json_getItem(skl, "part");
 			if(skl)
 			{
 				haveSkl = true;
@@ -343,6 +393,8 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 			else
 			{
 				this->addChild(heads, order);
+				CCRenderTexture* tex = createStroke(heads, 2, ccc3(0, 255, 0), 50);
+				this->addChild(tex, heads->getZOrder() - 1);
 			}
 		}
 		m_bone->addObject(heads);
@@ -352,15 +404,15 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
     return true;
 }
 
-CCLayerAction *CCBoneSpriteLayer::createAction(const char *BoneMove, CCFiniteTimeAction *layerMove, BoneMotion boneMotionType)
+CCLayerAction *CCBoneSpriteLayer::createAction(const char *BoneMove, float time)
 {
-	CCLayerAction *tmp = CCLayerAction::create(BoneMove, layerMove, boneMotionType, this, interval);
+	CCLayerAction *tmp = CCLayerAction::create(BoneMove, this, interval, time);
 	return tmp;
 }
 
-CCLayerAction *CCBoneSpriteLayer::createAction(const char *BoneMove, CCFiniteTimeAction *layerMove)
+CCLayerAction *CCBoneSpriteLayer::createAction(const char *BoneMove)
 {
-	CCLayerAction *tmp = CCLayerAction::create(BoneMove, layerMove, BoneMotionTypeSlow, this, interval);
+	CCLayerAction *tmp = CCLayerAction::create(BoneMove, this, interval);
 	return tmp;
 }
 
@@ -424,4 +476,49 @@ CCAction *CCBoneSpriteLayer::runAction(CCAction* action, bool stopBefore)
 	}
     m_pActionManager->addAction(action, this, !m_bRunning);
     return action;
+}
+
+
+CCRenderTexture* CCBoneSpriteLayer::createStroke(CCSprite* label, int size, ccColor3B color, GLubyte opacity)
+{
+    CCRenderTexture* rt = CCRenderTexture::create(
+        label->getTexture()->getContentSize().width + size * 2,
+        label->getTexture()->getContentSize().height+size * 2
+        );
+
+    CCPoint originalPos = label->getPosition();
+    ccColor3B originalColor = label->getColor();
+    GLubyte originalOpacity = label->getOpacity();
+    bool originalVisibility = label->isVisible();
+    label->setColor(color);
+    label->setOpacity(opacity);
+    label->setVisible(true);
+    ccBlendFunc originalBlend = label->getBlendFunc();
+    ccBlendFunc bf = {GL_SRC_ALPHA, GL_ONE};
+    label->setBlendFunc(bf);
+    CCPoint bottomLeft = ccp(
+        label->getTexture()->getContentSize().width * label->getAnchorPoint().x + size, 
+        label->getTexture()->getContentSize().height * label->getAnchorPoint().y + size);
+    CCPoint positionOffset= ccp(
+        - label->getTexture()->getContentSize().width / 2,
+        - label->getTexture()->getContentSize().height / 2);
+    CCPoint position = ccpSub(originalPos, positionOffset);
+    rt->begin();
+    for (int i=0; i<360; i+= 15) // you should optimize that for your needs
+    {
+        label->setPosition(
+            ccp(bottomLeft.x + sin(CC_DEGREES_TO_RADIANS(i))*size, bottomLeft.y + cos(CC_DEGREES_TO_RADIANS(i))*size)
+            );
+        label->visit();
+    }
+    rt->end();
+
+    label->setPosition(originalPos);
+    label->setColor(originalColor);
+    label->setBlendFunc(originalBlend);
+	label->setVisible(originalVisibility);
+    label->setOpacity(originalOpacity);
+    rt->setPosition(ccp(0,0));
+	//rt->setAnchorPoint(label->getAnchorPoint());
+    return rt;
 }

@@ -21,7 +21,7 @@ public:
 	~CCLayerAction(void);
 
     /** initializes the action */
-    bool initWithFrame(const char *name, CCNode *node, double interval);
+    bool initWithFrame(const char *name, CCNode *node, double interval, float time);
 
     /** returns true if the action has finished */
     virtual bool isDone(void);
@@ -30,8 +30,8 @@ public:
 
 public:
     /** creates the action */
-    static CCLayerAction* create(const char *name, CCNode *node, double interval);
-	static CCLayerAction* create(const char *name, CCFiniteTimeAction *layerMove, BoneMotion actionType, CCNode *node, double interval);
+    static CCLayerAction* create(const char *name, CCNode *node, double interval, float time = 0);
+	//static CCLayerAction* create(const char *name, CCFiniteTimeAction *layerMove, BoneMotion actionType, CCNode *node, double interval);
 	static int obj;
 protected:
 	bool  m_isDone;

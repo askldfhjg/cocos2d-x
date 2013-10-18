@@ -280,9 +280,9 @@
 			<key>target</key>
 			<dict>
 				<key>name</key>
-				<string>goldGlory_M(2).png</string>
+				<string>6321_armor_res.png</string>
 				<key>textureFileName</key>
-				<string>goldGlory_M(2)</string>
+				<string>6321_armor_res</string>
 				<key>textureFileExtension</key>
 				<string>png</string>
 				<key>premultipliedAlpha</key>

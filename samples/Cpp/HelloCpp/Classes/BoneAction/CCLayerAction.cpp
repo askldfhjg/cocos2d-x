@@ -16,13 +16,14 @@ CCLayerAction::~CCLayerAction(void)
 	CC_SAFE_RELEASE(action);
 }
 
-CCLayerAction* CCLayerAction::create(const char *name, CCNode *node, double interval)
+CCLayerAction* CCLayerAction::create(const char *name, CCNode *node, double interval, float time)
 {
     CCLayerAction *pAction = new CCLayerAction();
-    pAction->initWithFrame(name, node, interval);
+    pAction->initWithFrame(name, node, interval, time);
     pAction->autorelease();
     return pAction;
 }
+/*
 CCLayerAction* CCLayerAction::create(const char *name, CCFiniteTimeAction *layerMove, BoneMotion actionType, CCNode *node, double interval)
 {
 	CCLayerAction *pAction = new CCLayerAction();
@@ -41,8 +42,8 @@ CCLayerAction* CCLayerAction::create(const char *name, CCFiniteTimeAction *layer
 	}
 	return pAction;
 }
-
-bool CCLayerAction::initWithFrame(const char *name, CCNode *node, double interval)
+*/
+bool CCLayerAction::initWithFrame(const char *name, CCNode *node, double interval, float time)
 {
     m_bFirstTick = true;
 	CC_SAFE_DELETE_ARRAY(startFrame);
@@ -64,7 +65,14 @@ bool CCLayerAction::initWithFrame(const char *name, CCNode *node, double interva
 		nowStage = 0;
 		nowFrame = startFrame[0];
 		totalFrameCount = end - start + 1;
-		setDuration(totalFrameCount * interval);
+		if(time <= 0)
+		{
+			setDuration(totalFrameCount * interval);
+		}
+		else
+		{
+			setDuration(time);
+		}
 	}
 	else
 	{
@@ -106,10 +114,7 @@ bool CCLayerAction::isDone(void)
 	{
 		actionDone = true;
 	}
-	if(m_isDone && actionDone)
-	{
 
-	}
 	return m_isDone && actionDone;
 }
 

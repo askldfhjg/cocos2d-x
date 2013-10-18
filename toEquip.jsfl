@@ -14,16 +14,8 @@ fl.getDocumentDOM().setTransformationPoint({x:0, y:0});
 
 var file = fl.configURI + 'Commands/json2.jsfl';
 fl.runScript(file); 
-//var fm = fl.getDocumentDOM().getTimeline().layers[0].frames[0];
 
-//var elem = fm.elements[0];
-//var xOffset = elem.transformX - elem.x;
-//var yOffset = elem.transformY - elem.y;
-//fl.getDocumentDOM().selectNone();
-//elem.selected = true;
-//document.enterEditMode('inPlace');
 getActionList(0);
-//document.exitEditMode();
 function getActionList(startIndex)
 {
 	var spriteList = {};
@@ -246,8 +238,10 @@ function saveMotionXML(png, sprite)
 	exporter.exportSpriteSheet(fileURL+"pic/equip/"+name,{format:"png", bitDepth:32, backgroundColor:"#00000000"});
 	//sprite['picture'] = name;
 	var output = {};
-	output[name] = sprite;
+	output[name] = {};
+	output[name]["part"] = sprite;
 	output["full"] = 1;
+	output[name]["type"] = 2;
 	if(!FLfile.exists(fileURL+"bone/"))
 	{
 		FLfile.createFolder(fileURL+"bone/")

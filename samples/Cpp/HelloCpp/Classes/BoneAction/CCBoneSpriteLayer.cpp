@@ -393,8 +393,8 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 			else
 			{
 				this->addChild(heads, order);
-				//CCRenderTexture* tex = createStroke(heads, 2, ccc3(0, 255, 0), 50);
-				//this->addChild(tex, heads->getZOrder() - 1);
+				CCRenderTexture* tex = createStroke(heads, 2, ccc3(0, 255, 0), 50);
+				this->addChild(tex, heads->getZOrder() - 1);
 			}
 		}
 		m_bone->addObject(heads);

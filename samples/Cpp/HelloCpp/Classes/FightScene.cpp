@@ -167,7 +167,7 @@ void FightScene::startAttack(CCObject *dd)
 		return;
 	}
 	CCString *ff = (CCString *)dd;
-	CCSequence *gg = CCSequence::create(def->createAction(ff->getCString(), 10), NULL);
+	CCSequence *gg = CCSequence::create(def->createAction(ff->getCString()), NULL);
 	def->runAction(gg);
 }
 
@@ -200,7 +200,7 @@ void FightScene::afterAttack(CCObject *dd)
 	}
 	CCString *ff = (CCString *)dd;
 	CCBoneActionManager::sharedManager()->addAnimation(const_cast<char *>(ff->getCString()));
-	def = CCBoneSpriteLayer::create(ff->getCString(), "AvatarEquip_defultM");
+	def = CCBoneSpriteLayer::create(ff->getCString(), "AvatarDefult_M");
 	def->setPosition(ccp(500, 100));
 	def->setScale(0.5f);
 
@@ -241,7 +241,7 @@ void FightScene::checkSkl()
 				char str[MAX_PATH]={0};
 				WideCharToMultiByte(CP_ACP, 0, FindFileData.cFileName, sizeof(FindFileData.cFileName) + 1, str, MAX_PATH, NULL, NULL);
 				std::string fgg = std::string(str);
-				if(fgg == "AvatarEquip_defultM.equip")
+				if(fgg == "AvatarDefult_M.equip")
 				{
 					continue;
 				}

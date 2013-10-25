@@ -14,7 +14,7 @@ fl.getDocumentDOM().setTransformationPoint({x:0, y:0});
 
 var file = fl.configURI + 'Commands/json2.jsfl';
 fl.runScript(file); 
-output();
+/*output();
 function output()
 {
 	for (doc in fl.documents) 
@@ -23,7 +23,8 @@ function output()
     	getActionList(0);
 	}
 	alert("ok");
-}
+}*/
+getActionList(0);
 function getActionList(flag)
 {
 	var spriteList = {};
@@ -268,7 +269,7 @@ function saveMotionXML2(png, sprite)
 		return false;
 	}
 	fl.trace(fileURL);*/
-	var fileURL = "file:///E|/github/cocos2d-x/samples/Cpp/HelloCpp/Resources/ipad";
+	var fileURL = "file:///E|/equipview/ipad";
 	if(fileURL.charAt(fileURL.length-1) != '/')
 	{
 		fileURL += '/';
@@ -309,4 +310,5 @@ function saveMotionXML2(png, sprite)
 		alert(CopyMotionErrorStrings.SAVE_ERROR);
 		return false;
 	}
+	alert("ok");
 }

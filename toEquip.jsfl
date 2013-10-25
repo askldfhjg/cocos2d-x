@@ -208,7 +208,7 @@ function saveMotionXML(png, sprite)
 	if (!fileURL || !fileURL.length) {
 		return false;
 	}*/
-	var fileURL = "file:///E|/github/cocos2d-x/samples/Cpp/HelloCpp/Resources/ipad";
+	var fileURL = "file:///E|/equipview/ipad";
 	if(fileURL.charAt(fileURL.length-1) != '/')
 	{
 		fileURL += '/';
@@ -252,5 +252,6 @@ function saveMotionXML(png, sprite)
 		alert(CopyMotionErrorStrings.SAVE_ERROR);
 		return false;
 	}
+	alert("ok");
 	return true;
 }

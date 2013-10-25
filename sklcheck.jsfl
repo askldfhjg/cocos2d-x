@@ -45,6 +45,7 @@ var otherTag = {
 var boneName = ["fronthand",
 				"frontshoulder",
 				"weapon",
+				"hair",
 				"head",
 				"robe",
 				"frontfoot",

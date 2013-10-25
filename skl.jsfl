@@ -31,6 +31,7 @@ document.exitEditMode();
 var boneName = ["fronthand",
 				"frontshoulder",
 				"weapon",
+				"hair",
 				"head",
 				"robe",
 				"frontfoot",
@@ -866,7 +867,7 @@ function saveMotionXML(contents, png, effectpng, sprite, effectList, effectActio
 	if (!fileURL || !fileURL.length) {
 		return false;
 	}*/
-	var fileURL = "file:///E|/github/cocos2d-x/samples/Cpp/HelloCpp/Resources/ipad";
+	var fileURL = "file:///E|/equipview/ipad";
 	if(fileURL.charAt(fileURL.length-1) != '/')
 	{
 		fileURL += '/';

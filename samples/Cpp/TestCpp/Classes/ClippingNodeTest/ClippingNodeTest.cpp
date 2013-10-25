@@ -531,7 +531,7 @@ void ScrollViewDemo::setup()
     clipper->setContentSize(  CCSizeMake(200, 200) );
     clipper->setAnchorPoint(  ccp(0.5, 0.5) );
     clipper->setPosition( ccp(this->getContentSize().width / 2, this->getContentSize().height / 2) );
-    clipper->runAction(CCRepeatForever::create(CCRotateBy::create(1, 45)));
+    //clipper->runAction(CCRepeatForever::create(CCRotateBy::create(1, 45)));
     this->addChild(clipper);
 
     CCDrawNode *stencil = CCDrawNode::create();

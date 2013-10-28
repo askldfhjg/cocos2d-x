@@ -51,8 +51,10 @@ var boneName = ["fronthand",
 				"backhair",
 				"shadow"];
 fl.showIdleMessage(false);
+var alltoge = confirm("动作贴图一起导出？");
 var actionList = {};
 var spriteList = {};
+var equipList = {};
 var exportPng = [];
 var effectpng = [];
 var effectList = {};
@@ -84,7 +86,7 @@ for(var i =select.length-1;i >= 0;i--)
 	var archY = roundToTwip(yOffset / elem.height);
 	document.enterEditMode('inPlace');
 	var asName = elem.libraryItem.linkageClassName;
-	var ddd = getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, effectpng, actionList, spriteList, effectList, effectAction, startFrameStatus, first, asName);
+	var ddd = getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, effectpng, actionList, spriteList, equipList, effectList, effectAction, startFrameStatus, first, asName);
 	exportPng = ddd[1];
 	effectpng = ddd[2];
 	spriteList = ddd[3];
@@ -92,14 +94,15 @@ for(var i =select.length-1;i >= 0;i--)
 	effectAction = ddd[5];
 	startIndex = ddd[6];
 	startFrameStatus = ddd[7];
+	equipList = ddd[8];
 	document.exitEditMode();
 	first = false;
 }
 fl.showIdleMessage(true);
-saveMotionXML(actionList, exportPng, effectpng, spriteList, effectList, effectAction);
+saveMotionXML(alltoge, actionList, exportPng, effectpng, spriteList, equipList, effectList, effectAction);
 
 
-function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, effectpng, actionList, spriteList, effectList, effectAction, startFrameStatusObject, first, asName)
+function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, effectpng, actionList, spriteList, equipList, effectList, effectAction, startFrameStatusObject, first, asName)
 {
 	var timeline = fl.getDocumentDOM().getTimeline();
 	var layers = timeline.layers;
@@ -111,6 +114,22 @@ function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, ef
 		if(!currentLayer.visible) {
 			continue
 		}
+		/*if(currentLayer.layerType != "mask")
+		{
+			fl.trace(currentLayer.layerType);
+			continue;
+		}
+		fl.trace(currentLayer.name.toLowerCase());
+		var gg = currentLayer.frames[0].elements[0];
+		for(var hh in gg)
+		{
+			if(inArray(["tintColor","brightness","tintPercent"], hh))
+			{
+				continue;
+			}
+			fl.trace(hh+":"+gg[hh]);
+		}
+		continue;*/
 		var frames = currentLayer.frames;
 		if(currentLayer.name.toLowerCase() == "label") {
 			var tmp = getLabelXml(frames, startIndex, actionList, asName);
@@ -179,9 +198,10 @@ function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, ef
 					{
 						newLayer = false;
 					}
-					var tmp = getSourceXML(currentFrame.elements[0], zIndex, frameIndex, currentLayer.name.toLowerCase(), spriteList, exportPng, effectpng, xOffset, yOffset, endFrame+startIndex, show, newLayer);
+					var tmp = getSourceXML(currentFrame.elements[0], zIndex, frameIndex, currentLayer.name.toLowerCase(), spriteList, equipList, exportPng, effectpng, xOffset, yOffset, endFrame+startIndex, show, newLayer);
 					spriteList = tmp['spriteList'];
 					exportPng = tmp['exportPng'];
+					equipList = tmp['equipList'];
 					if(!startFrameStatusObject.hasOwnProperty(currentLayer.name.toLowerCase()))
 					{
 						startFrameStatusObject[currentLayer.name.toLowerCase()] = tmp['startFrameStatus'];
@@ -233,7 +253,7 @@ function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, ef
 		}
 	}
 	//saveMotionXML(actionList, exportPng, tmp);
-	return [actionList, exportPng, effectpng, spriteList, effectList, effectAction, maxFrameId, startFrameStatusObject];
+	return [actionList, exportPng, effectpng, spriteList, effectList, effectAction, maxFrameId, startFrameStatusObject, equipList];
 }
 
 
@@ -248,6 +268,8 @@ function getFrameXML(frame, frameIndex, frames, startStatus, lastFrameStatus, cu
 	if(end >= frames.length) {
 		return {"end":end, "actionList":actionList, "lastFrameStatus":lastFrameStatus, "effectList":effectList, "effectpng":effectpng, "effectAction":effectAction};
 	}
+
+	var startTweenType = (frames[start]["tweenType"] == "none");
 	var endStatus = getTransform(frames[end].elements[0], startStatus);
 	if(!inArray(boneName, name))
 	{
@@ -287,6 +309,10 @@ function getFrameXML(frame, frameIndex, frames, startStatus, lastFrameStatus, cu
 	else if(!statusEqual(endStatus, lastFrameStatus)) {
 		//actionList[currentFrame.elements[0].name][end + startIndex] = createTransformInfo(endStatus, end);
 		for(var i = 1; i <= frame.duration; i++) {
+			if(startTweenType && i != frame.duration)
+			{
+				continue;
+			}
 			var tt = getStatusDivise(frame.motionTweenRotate, lastFrameStatus, endStatus, frame.duration , i);
 			if(tt != null)
 			{
@@ -381,14 +407,14 @@ function getColorXML(element)
 			return [0, (element.colorAlphaPercent/100)];
 			break;
 		case 'advanced':
-			return [0, (element.colorAlphaPercent/100)];
+			return [0, (element.colorAlphaPercent/100*255+element.colorAlphaAmount)/255];
 			break;
 		default:
 			alert("54545333");
 			return [0, 1];
 	}
 }
-function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, exportPng, effectpng, xOffset, yOffset, endFrame, show, newLayer){
+function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, equipList, exportPng, effectpng, xOffset, yOffset, endFrame, show, newLayer){
 
 	var matrix = element.matrix;
 	var startX = getX(element);
@@ -406,7 +432,11 @@ function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, e
 	}
 	var name = element.libraryItem.name.split('/');
 	var oldRot = element.rotation;
+	var oldSkX = element.skewX;
+	var oldSkY = element.skewY;
 	element.rotation = 0;
+	element.skewY = 0;
+	element.skewX = 0;
 	var transPoint = getTransformationPointForElement(element);
 
 	var mat = element.matrix;
@@ -439,8 +469,9 @@ function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, e
 		setTransformationPointForElement(element, transPoint);
 
 	var transXNormal = roundToTwip((element.transformX - element.left) / element.width);
-	var transYNormal = roundToTwip(1 - (element.transformY - element.top) / element.height);
-
+	var transYNormal = roundToTwip((element.transformY - element.top) / element.height);
+	var picLeftOffset = element.transformX - element.left - boneLeftOffset;
+	var picTopOffset = element.transformY - element.top - boneTopOffset;
 	element.matrix = matrix;
 
 	if (element.elementType != 'text')
@@ -450,6 +481,8 @@ function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, e
 	setY(element, startY);
 
 	element.rotation = oldRot;
+	element.skewX = oldSkX;
+	element.skewY = oldSkY;
 	var ggg = getColorXML(element);
 	var rr = ggg[1];
 	var brightness = ggg[0];
@@ -480,6 +513,7 @@ function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, e
 		if(!spriteList.hasOwnProperty(layerName))
 		{
 			spriteList[layerName] = [startFrameIndex, zIndex, (startX-xOffset), (yOffset-startY), scaleXStart, scaleYStart, skewXStart, skewYStart, rr, boneLeftOffset, boneTopOffset, endFrame, brightness, true];
+			equipList[layerName] = [name[name.length - 1]+"0000", picLeftOffset, picTopOffset];
 		}
 		else
 		{
@@ -501,7 +535,7 @@ function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, e
 				"tranY" :0,
 			};
 	}
-	return {"exportPng":exportPng, "spriteList":spriteList, "startFrameStatus":startFrameStatus, "effectpng": effectpng};
+	return {"exportPng":exportPng, "spriteList":spriteList, "startFrameStatus":startFrameStatus, "effectpng": effectpng, "equipList": equipList};
 }
 function getLabelXml(frames, startIndex, actionList, asName) {
 	var s = '{'
@@ -858,7 +892,7 @@ function rotInfo(rot1, rot2, divice, id)
 	}
 }
 
-function saveMotionXML(contents, png, effectpng, sprite, effectList, effectAction)
+function saveMotionXML(alltoge, contents, png, effectpng, sprite, equipList, effectList, effectAction)
 {
 	if (!contents) {
 		return false;
@@ -867,11 +901,44 @@ function saveMotionXML(contents, png, effectpng, sprite, effectList, effectActio
 	if (!fileURL || !fileURL.length) {
 		return false;
 	}*/
-	var fileURL = "file:///E|/equipview/ipad";
+	fileURL = fl.browseForFolderURL("save", "fffffff");
+	//var fileURL = "file:///E|/equipview/ipad";
 	if(fileURL.charAt(fileURL.length-1) != '/')
 	{
 		fileURL += '/';
 	}
+	if(alltoge)
+	{
+		var exporter = new SpriteSheetExporter; 
+		exporter.beginExport();
+		exporter.autoSize = true;
+		exporter.allowTrimming = true;
+		exporter.allowRotate = false;
+		exporter.shapePadding = 1;
+		exporter.algorithm = "maxRects";
+		exporter.layoutFormat = "cocos2D v3";
+		exporter.format = "RGBA8888";
+
+		var index = 0;
+		for (var j = 0; j < png.length; j++) {
+			if(png[j] instanceof BitmapItem)
+		    {
+		    	exporter.addBitmap(png[j]);
+		    }
+		    else
+		    {
+		    	exporter.addSymbol(png[j]);
+		    }
+		}
+
+		var name = fl.getDocumentDOM().name.split(".")[0];
+		if(!FLfile.exists(fileURL+"pic/equip"))
+		{
+			FLfile.createFolder(fileURL+"pic/equip")
+		}
+		exporter.exportSpriteSheet(fileURL+"pic/equip/"+name,{format:"png", bitDepth:32, backgroundColor:"#00000000"});
+	}
+
 	var name = fl.getDocumentDOM().name.split(".")[0];
 	var exporter = new SpriteSheetExporter; 
 	contents['effect'] = false;
@@ -918,6 +985,19 @@ function saveMotionXML(contents, png, effectpng, sprite, effectList, effectActio
 	{
 		alert(CopyMotionErrorStrings.SAVE_ERROR);
 		return false;
+	}
+	if(alltoge)
+	{
+		var output = {};
+		output[name] = {};
+		output[name]["part"] = equipList;
+		output["full"] = 1;
+		output[name]["type"] = 2;
+		if (!FLfile.write(fileURL+'bone/'+name+".equip", JSON.stringify(output)))
+		{
+			alert(CopyMotionErrorStrings.SAVE_ERROR);
+			return false;
+		}
 	}
 	if(contents['effect'])
 	{

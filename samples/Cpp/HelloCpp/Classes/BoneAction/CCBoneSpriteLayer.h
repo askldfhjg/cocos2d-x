@@ -13,6 +13,7 @@ public:
 		:m_label(NULL)
 		,m_bone(NULL)
 		,m_effect(NULL)
+		,m_clip(NULL)
 		,interval(1.0/24)
 		,isBatch(false)
 		,isEffect(false)
@@ -29,7 +30,6 @@ public:
 	CCBone *getBoneByName(const char *name);
 	void changeBoneTexture(const char *textureName, const char *equipName);
 	void resetBoneTexture(const char *textureName, const char *equipName);
-	void setAnimation(const char *name);
 	void setAnimationInterval(double interval);
 	CCAction *testLayerAction();
 	CCAction *randomLayerAction();
@@ -44,6 +44,7 @@ public:
 public:
 	CCArray *m_bone; 
 	CCArray *m_effect;
+	CCBoneClip *m_clip;
 
 private:
 	double interval;

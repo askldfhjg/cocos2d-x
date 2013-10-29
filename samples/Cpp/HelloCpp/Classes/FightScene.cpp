@@ -8,7 +8,7 @@
 #include <windows.h>
 #include "direct.h" 
 #include <strsafe.h>
-//#include "vld.h"
+#include "vld.h"
 #endif
 
 USING_NS_CC;

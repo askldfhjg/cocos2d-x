@@ -54,7 +54,8 @@ bool CCEffect::setAnimatime(std::string name, bool show, int index)
 	float archY = Json_getItemAt(arch, 1)->valuefloat;
 	setAnchorPoint(ccp(archX , archY));
 	int count = Json_getSize(animation);
-	if(m_frameIndex + 1 >= count)
+	//ÔÚeffectÖÐÅÅ³ýtypeºÍinfo
+	if(m_frameIndex + 2 >= count)
 	{
 		m_frameIndex = 0;
 	}
@@ -86,4 +87,63 @@ bool CCEffect::getAdd()
 void CCEffect::setAdd(bool add)
 {
 	m_add = add;
+}
+
+
+CCBoneClip *CCBoneClip::create()
+{
+	CCBoneClip *pRet = new CCBoneClip();
+    if (pRet && pRet->init())
+    {
+        pRet->autorelease();
+		pRet->setInverted(true);
+    }
+    else
+    {
+        CC_SAFE_DELETE(pRet);
+    }
+    
+    return pRet;
+}
+
+CCBoneClip::~CCBoneClip()
+{
+
+}
+
+void CCBoneClip::onEnter()
+{
+    CCNode::onEnter();
+	if(m_pStencil)
+	{
+		m_pStencil->onEnter();
+	}
+}
+
+void CCBoneClip::onEnterTransitionDidFinish()
+{
+    CCNode::onEnterTransitionDidFinish();
+	if(m_pStencil)
+	{
+		m_pStencil->onEnterTransitionDidFinish();
+	}
+    
+}
+
+void CCBoneClip::onExitTransitionDidStart()
+{
+    if(m_pStencil)
+	{
+		m_pStencil->onExitTransitionDidStart();
+	}
+	CCNode::onExitTransitionDidStart();
+}
+
+void CCBoneClip::onExit()
+{
+	if(m_pStencil)
+	{
+		m_pStencil->onExit();
+	}
+    CCNode::onExit();
 }

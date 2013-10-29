@@ -32,5 +32,32 @@ private:
 	int m_lastFrame;
 };
 
+class CCBoneClip : public CCClippingNode
+{
+public:
+    static CCBoneClip* create();
+public:
+	CCBoneClip()
+		:m_effectInfo(NULL)
+		,m_frame(NULL)
+		,m_frameIndex(-1)
+		,m_add(false)
+		,m_lastFrame(0)
+	{};
+	virtual ~CCBoneClip();
+	virtual void onEnter();
+    virtual void onEnterTransitionDidFinish();
+    virtual void onExitTransitionDidStart();
+    virtual void onExit();
+
+public:
+	Json *m_frame;
+	Json *m_effectInfo;
+
+private:
+	int m_frameIndex;
+	bool m_add;
+	int m_lastFrame;
+};
 
 #endif //__EFFECT_H__

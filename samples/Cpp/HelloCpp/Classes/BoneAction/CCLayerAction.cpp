@@ -138,6 +138,18 @@ void CCLayerAction::update(float frame)
     char str[256]={0};
 	Func::itostr(nowFrame, str);
 	CCObject* child = NULL;
+	if(layer->m_clip)
+	{
+		Json *source = Json_getItem(layer->m_clip->m_frame, str);
+		if (source)
+		{
+			int c = Json_getSize(source);
+			CCAssert(c == 9, "count error");
+			float posX = Json_getItemAt(source, 0)->valuefloat;
+			float posY = Json_getItemAt(source, 1)->valuefloat;
+			float visable = Json_getItemAt(source, 6)->valuefloat;
+		}
+	}
 	if(layer->haveEffect())
 	{
 		CCARRAY_FOREACH(layer->m_effect, child)

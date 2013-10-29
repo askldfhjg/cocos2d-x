@@ -23,7 +23,6 @@ CCBoneSpriteLayer *CCBoneSpriteLayer::create(const char *animationName, const ch
 	if (pRet && pRet->init(animationName, defaultSkl, false))
 	{
 		pRet->autorelease();
-		pRet->setAnimation(animationName);
 		return pRet; 
 	}
 	else
@@ -40,7 +39,6 @@ CCBoneSpriteLayer *CCBoneSpriteLayer::createWithBatch(const char *animationName,
 	if (pRet && pRet->init(animationName, defaultSkl, true))
 	{
 		pRet->autorelease();
-		pRet->setAnimation(animationName);
 		return pRet; 
 	}
 	else
@@ -51,48 +49,6 @@ CCBoneSpriteLayer *CCBoneSpriteLayer::createWithBatch(const char *animationName,
 	}
 }
 
-void CCBoneSpriteLayer::setAnimation(const char *name)
-{
-	Json *animation = CCBoneActionManager::sharedManager()->getAnimation(name);
-	this->m_label = Json_getItem(animation, "label");
-	CCObject* child = NULL;
-	CCARRAY_FOREACH(m_bone, child)
-	{
-		CCBone *ch = (CCBone *)child;
-		ch->m_frame = Json_getItem(animation, ch->getName());
-	}
-
-	bool effect = (bool)Json_getItem(animation, "effect")->valueint;
-	if(effect)
-	{
-		Json *effectAnimation = CCBoneActionManager::sharedManager()->getEffectAnimation(name);
-
-		CCObject* child = NULL;
-		CCARRAY_FOREACH(m_effect, child)
-		{
-			CCEffect *ch = (CCEffect *)child;
-			ch->removeFromParent();
-		}
-		m_effect->removeAllObjects();
-		isEffect = true;
-
-		Json *motion = Json_getItem(effectAnimation, "motion");
-		Json *info = Json_getItem(effectAnimation, "effect");
-		int count = Json_getSize(motion);
-		for(int i = 0;i < count;i++)
-		{
-			Json *tmp = Json_getItemAt(motion, i);
-			std::string tmpString = tmp->name;
-			CCEffect *effect = CCEffect::create(tmpString);
-			effect->m_frame = tmp;
-			effect->m_effectInfo = info;
-			effect->setStartStatus(false);
-			effect->setVisible(false);
-			this->addChild(effect, 1000 - i);
-			m_effect->addObject(effect);
-		}
-	}
-}
 
 bool CCBoneSpriteLayer::haveEffect()
 {
@@ -323,6 +279,45 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 		this->isBatch = true;
 	}
 
+	this->m_label = Json_getItem(animation, "label");
+	int haveMask = 0;
+	bool effect = (bool)Json_getItem(animation, "effect")->valueint;
+	if(effect)
+	{
+		Json *effectAnimation = CCBoneActionManager::sharedManager()->getEffectAnimation(animationName);
+		isEffect = true;
+		Json *motion = Json_getItem(effectAnimation, "motion");
+		Json *info = Json_getItem(effectAnimation, "effect");
+		Json *effectOrder = Json_getItem(effectAnimation, "order");
+		haveMask = Json_getItem(effectAnimation, "mask")->valueint;
+		int count = Json_getSize(motion);
+		for(int i = 0;i < count;i++)
+		{
+			Json *tmp = Json_getItemAt(motion, i);
+			std::string tmpString = tmp->name;
+			Json * tt = Json_getItem(effectOrder, tmpString.c_str());
+			std::string layerT = Json_getItemAt(tt, 0)->valuestring;
+			int od = Json_getItemAt(tt, 1)->valueint;
+			if(layerT == "mask")
+			{
+				m_clip = CCBoneClip::create();
+				m_clip->m_frame = tmp;
+				m_clip->m_effectInfo = info;
+				this->addChild(m_clip, od);
+			}
+			else
+			{
+				CCEffect *effect = CCEffect::create(tmpString);
+				effect->m_frame = tmp;
+				effect->m_effectInfo = info;
+				effect->setStartStatus(false);
+				effect->setVisible(false);
+				this->addChild(effect, od);
+				m_effect->addObject(effect);
+			}
+		}
+	}
+
 	for(int i = 0; i< count; i++)
 	{
 		Json *tmp = Json_getItemAt(root, i);
@@ -331,6 +326,7 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 		{
 			continue;
 		}
+		std::string layerType = Json_getItemAt(tmp, 0)->valuestring;
 		int order = Json_getItemAt(tmp, 1)->valueint;;
 		float posX = Json_getItemAt(tmp, 2)->valuefloat;
 		float posY = Json_getItemAt(tmp, 3)->valuefloat;
@@ -392,13 +388,23 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 			}
 			else
 			{
-				this->addChild(heads, order);
+				if(haveMask && layerType == "masked")
+				{
+					m_clip->addChild(heads, order);
+				}
+				else
+				{
+					this->addChild(heads, order);
+				}
+				
 				//CCRenderTexture* tex = createStroke(heads, 2, ccc3(0, 255, 0), 50);
 				//this->addChild(tex, heads->getZOrder() - 1);
 			}
 		}
+		heads->m_frame = Json_getItem(animation, heads->getName());
 		m_bone->addObject(heads);
 	}
+
 	this->ignoreAnchorPointForPosition(true);
 	this->setAnchorPoint(ccp(0,0));
     return true;

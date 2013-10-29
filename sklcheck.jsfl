@@ -117,6 +117,11 @@ function getActionList(boneName, asName)
 				fl.trace(asName+" "+name+" 不可见");
 				currentLayer.visible = true;
 			}
+			if(currentLayer.layerType == "mask")
+			{
+				fl.trace(asName+" "+name+" 不可见");
+				currentLayer.visible = true;
+			}
 			continue;
 		}
 		if(currentLayer.layerType == "mask")
@@ -338,6 +343,7 @@ function getFrameXML(labelLayerId, currentLayer, asName, flagggg, maskLayer) {
 					if(maskLayer)
 					{
 						fr.selected = true;
+						fl.trace(66666666666);
 						fl.getDocumentDOM().setFillColor('#cdcdcd');
 					}
 					if(fr.elementType == "shape")
@@ -392,6 +398,8 @@ function getEffectTrans(element)
 
 	var transXNormal = roundToTwip((element.transformX - element.left) / element.width);
 	var transYNormal = roundToTwip(1 - (element.transformY - element.top) / element.height);
+	var hX = element.width/2+element.left;
+	var hY = element.height/2+element.top;
 	element.matrix = matrix;
 
 	if (element.elementType != 'text')
@@ -400,8 +408,6 @@ function getEffectTrans(element)
 	setX(element, startX);
 	setY(element, startY);
 	element.rotation = oldRot;
-	var hX = element.width/2+element.left;
-	var hY = element.height/2+element.top;
 	return [transXNormal, transYNormal, hX, hY];
 }
 

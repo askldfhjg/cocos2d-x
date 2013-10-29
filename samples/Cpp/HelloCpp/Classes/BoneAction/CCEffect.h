@@ -40,24 +40,25 @@ public:
 	CCBoneClip()
 		:m_effectInfo(NULL)
 		,m_frame(NULL)
-		,m_frameIndex(-1)
-		,m_add(false)
-		,m_lastFrame(0)
+		,m_visable(false)
+		,m_offsetX(0)
+		,m_offsetY(0)
 	{};
 	virtual ~CCBoneClip();
+	virtual void visit();
 	virtual void onEnter();
     virtual void onEnterTransitionDidFinish();
     virtual void onExitTransitionDidStart();
     virtual void onExit();
 
+	void setBoneStencil(std::string name, float posX, float posY, bool visable);
+
 public:
 	Json *m_frame;
 	Json *m_effectInfo;
-
-private:
-	int m_frameIndex;
-	bool m_add;
-	int m_lastFrame;
+	bool m_visable;
+	float m_offsetX;
+	float m_offsetY;
 };
 
 #endif //__EFFECT_H__

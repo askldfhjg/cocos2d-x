@@ -2,6 +2,7 @@
 #define __LAYER_BONE_SPRITE_H__
 #include "CCLayerAction.h"
 #include "CCBone.h"
+#include "CCEffect.h"
 #include "cocos2d.h"
 USING_NS_CC;
 

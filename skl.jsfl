@@ -59,9 +59,11 @@ var exportPng = [];
 var effectpng = [];
 var effectList = {};
 var effectAction = {};
+var effectLayerOrder = {};
 var startFrameStatus = {};
 var startIndex = 0;
 var select = fl.getDocumentDOM().selection;
+var haveMask = false;
 for(var i =0;i < select.length;i++)
 {
 	var elem = select[i];
@@ -86,7 +88,7 @@ for(var i =select.length-1;i >= 0;i--)
 	var archY = roundToTwip(yOffset / elem.height);
 	document.enterEditMode('inPlace');
 	var asName = elem.libraryItem.linkageClassName;
-	var ddd = getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, effectpng, actionList, spriteList, equipList, effectList, effectAction, startFrameStatus, first, asName);
+	var ddd = getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, effectpng, actionList, spriteList, equipList, effectList, effectAction, effectLayerOrder, startFrameStatus, first, asName);
 	exportPng = ddd[1];
 	effectpng = ddd[2];
 	spriteList = ddd[3];
@@ -95,41 +97,28 @@ for(var i =select.length-1;i >= 0;i--)
 	startIndex = ddd[6];
 	startFrameStatus = ddd[7];
 	equipList = ddd[8];
+	haveMask = haveMask | ddd[9];
+	effectLayerOrder = ddd[10];
 	document.exitEditMode();
 	first = false;
 }
 fl.showIdleMessage(true);
-saveMotionXML(alltoge, actionList, exportPng, effectpng, spriteList, equipList, effectList, effectAction);
+saveMotionXML(alltoge, actionList, exportPng, effectpng, spriteList, equipList, effectList, effectAction, haveMask, effectLayerOrder);
 
 
-function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, effectpng, actionList, spriteList, equipList, effectList, effectAction, startFrameStatusObject, first, asName)
+function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, effectpng, actionList, spriteList, equipList, effectList, effectAction, effectLayerOrder, startFrameStatusObject, first, asName)
 {
 	var timeline = fl.getDocumentDOM().getTimeline();
 	var layers = timeline.layers;
 	var labelEnd = 0;
 	var maxFrameId = 0;
 	var posOffset = null;
+	var haveMask = false;
 	for(var layerIndex = 0; layerIndex < layers.length; layerIndex++) {
 		var currentLayer = layers[layerIndex];
 		if(!currentLayer.visible) {
 			continue
 		}
-		/*if(currentLayer.layerType != "mask")
-		{
-			fl.trace(currentLayer.layerType);
-			continue;
-		}
-		fl.trace(currentLayer.name.toLowerCase());
-		var gg = currentLayer.frames[0].elements[0];
-		for(var hh in gg)
-		{
-			if(inArray(["tintColor","brightness","tintPercent"], hh))
-			{
-				continue;
-			}
-			fl.trace(hh+":"+gg[hh]);
-		}
-		continue;*/
 		var frames = currentLayer.frames;
 		if(currentLayer.name.toLowerCase() == "label") {
 			var tmp = getLabelXml(frames, startIndex, actionList, asName);
@@ -140,6 +129,10 @@ function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, ef
 		}
 		if(currentLayer.name.toLowerCase() == "shadow") {
 			//continue;
+		}
+		if(currentLayer.layerType == "mask")
+		{
+			haveMask = true;
 		}
 		selectLayer(layerIndex);
 		var findFirst = false;
@@ -186,7 +179,7 @@ function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, ef
 				else {
 					findFirst = true;
 					var zIndex = timeline.layers.length - layerIndex;
-
+					
 					//
 					var show = true;
 					if(!startFrameStatusObject.hasOwnProperty(currentLayer.name.toLowerCase()) && !first)
@@ -198,7 +191,7 @@ function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, ef
 					{
 						newLayer = false;
 					}
-					var tmp = getSourceXML(currentFrame.elements[0], zIndex, frameIndex, currentLayer.name.toLowerCase(), spriteList, equipList, exportPng, effectpng, xOffset, yOffset, endFrame+startIndex, show, newLayer);
+					var tmp = getSourceXML(currentFrame.elements[0], zIndex, frameIndex, currentLayer.name.toLowerCase(), spriteList, equipList, exportPng, effectpng, xOffset, yOffset, endFrame+startIndex, show, newLayer, currentLayer.layerType);
 					spriteList = tmp['spriteList'];
 					exportPng = tmp['exportPng'];
 					equipList = tmp['equipList'];
@@ -240,10 +233,14 @@ function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, ef
 						var ttt = currentFrame.elements[0].libraryItem.name.split('/');
 						lastFrameStatus['pic'] = ttt[ttt.length - 1];
 						effectAction[currentLayer.name.toLowerCase()][frameIndex+startIndex] = createEffectTransformInfo(lastFrameStatus);
+						if(!effectLayerOrder.hasOwnProperty(currentLayer.name.toLowerCase()))
+						{
+							effectLayerOrder[currentLayer.name.toLowerCase()] = [currentLayer.layerType, zIndex];
+						}
 					}
 				}
 			}
-			var tmp = getFrameXML(currentFrame, frameIndex, frames, startFrameStatus, lastFrameStatus, currentFrame, actionList, effectList, effectpng, effectAction, startIndex, currentLayer.name.toLowerCase());
+			var tmp = getFrameXML(currentFrame, frameIndex, frames, startFrameStatus, lastFrameStatus, currentFrame, actionList, effectList, effectpng, effectAction, startIndex, currentLayer.name.toLowerCase(), currentLayer.layerType);
 			frameIndex = tmp['end'];
 			actionList = tmp['actionList'];
 			lastFrameStatus = tmp['lastFrameStatus'];
@@ -252,13 +249,12 @@ function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, ef
 			effectAction = tmp['effectAction'];
 		}
 	}
-	//saveMotionXML(actionList, exportPng, tmp);
-	return [actionList, exportPng, effectpng, spriteList, effectList, effectAction, maxFrameId, startFrameStatusObject, equipList];
+	return [actionList, exportPng, effectpng, spriteList, effectList, effectAction, maxFrameId, startFrameStatusObject, equipList, haveMask, effectLayerOrder];
 }
 
 
 
-function getFrameXML(frame, frameIndex, frames, startStatus, lastFrameStatus, currentFrame, actionList, effectList, effectpng, effectAction, startIndex, name) {
+function getFrameXML(frame, frameIndex, frames, startStatus, lastFrameStatus, currentFrame, actionList, effectList, effectpng, effectAction, startIndex, name, layerType) {
 	if(frame.startFrame != frameIndex) {
 		alert("error55555");
 		return {"end":(frameIndex + 1), "actionList":actionList, "lastFrameStatus":lastFrameStatus, "effectList":effectList, "effectpng":effectpng,"effectAction":effectAction};
@@ -286,7 +282,7 @@ function getFrameXML(frame, frameIndex, frames, startStatus, lastFrameStatus, cu
 	}
 	if(!inArray(boneName, name) && frames[end].elements.length > 0)
 	{
-		var gggg = getEffect(frames[end].elements[0], end, effectList, effectpng);
+		var gggg = getEffect(frames[end].elements[0], end, effectList, effectpng, layerType);
 		effectpng = gggg[1];
 		effectList = gggg[0];
 	}
@@ -313,7 +309,7 @@ function getFrameXML(frame, frameIndex, frames, startStatus, lastFrameStatus, cu
 			{
 				continue;
 			}
-			var tt = getStatusDivise(frame.motionTweenRotate, lastFrameStatus, endStatus, frame.duration , i);
+			var tt = getStatusDivise(frame.motionTweenRotate, lastFrameStatus, endStatus, frame.duration , i, !startTweenType);
 			if(tt != null)
 			{
 				if(inArray(boneName, name))
@@ -414,7 +410,7 @@ function getColorXML(element)
 			return [0, 1];
 	}
 }
-function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, equipList, exportPng, effectpng, xOffset, yOffset, endFrame, show, newLayer){
+function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, equipList, exportPng, effectpng, xOffset, yOffset, endFrame, show, newLayer, layerType){
 
 	var matrix = element.matrix;
 	var startX = getX(element);
@@ -512,7 +508,7 @@ function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, e
 	{
 		if(!spriteList.hasOwnProperty(layerName))
 		{
-			spriteList[layerName] = [startFrameIndex, zIndex, (startX-xOffset), (yOffset-startY), scaleXStart, scaleYStart, skewXStart, skewYStart, rr, boneLeftOffset, boneTopOffset, endFrame, brightness, true];
+			spriteList[layerName] = [layerType, zIndex, (startX-xOffset), (yOffset-startY), scaleXStart, scaleYStart, skewXStart, skewYStart, rr, boneLeftOffset, boneTopOffset, endFrame, brightness];
 			equipList[layerName] = [name[name.length - 1]+"0000", picLeftOffset, picTopOffset];
 		}
 		else
@@ -534,6 +530,10 @@ function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, e
 				"tranX" :0,
 				"tranY" :0,
 			};
+
+		var gggg = getEffect(element, startFrameIndex, effectList, effectpng, layerType);
+		effectpng = gggg[1];
+		effectList = gggg[0];
 	}
 	return {"exportPng":exportPng, "spriteList":spriteList, "startFrameStatus":startFrameStatus, "effectpng": effectpng, "equipList": equipList};
 }
@@ -600,9 +600,10 @@ function getEffectTrans(element)
 	return [name[name.length - 1], transXNormal, transYNormal];
 }
 
-function getEffect(elem, frameIndex, effectList, effectpng)
+function getEffect(elem, frameIndex, effectList, effectpng, layerType)
 {
 	var kk = elem.libraryItem.name.split('/');
+	fl.trace(elem.libraryItem.name);
 	kk = kk[kk.length - 1];
 	if(!effectList.hasOwnProperty(kk))
 	{
@@ -612,23 +613,39 @@ function getEffect(elem, frameIndex, effectList, effectpng)
 		selectFrame(frameIndex);
 		elem.selected = true;
 		var ttt = getEffectTrans(elem);
-		fl.getDocumentDOM().enterEditMode('inPlace');
-		var lay = fl.getDocumentDOM().getTimeline().layers[0];
-		var frameLength = lay.frames.length;
-		effectList[kk] = {};
-		effectList[kk]['info'] = [ttt[1], ttt[2]];
-		for(var i=0;i<frameLength;i++)
+		if(layerType != "mask")
 		{
-			var fr = lay.frames[i].elements[0];
-			effectpng.push(fr.libraryItem);
-			var matrix = fr.matrix;	
-			var scaleXStart = getMatrixScaleX(matrix);
-			var scaleYStart = getMatrixScaleY(matrix);
-			var name = fr.libraryItem.name.split('/');
-			effectList[kk][i] = [name[name.length - 1], scaleXStart, scaleYStart, roundToTwip(getX(fr)), roundToTwip(getY(fr))];
-			
+			fl.getDocumentDOM().enterEditMode('inPlace');
+			var lay = fl.getDocumentDOM().getTimeline().layers[0];
+			var frameLength = lay.frames.length;
+			effectList[kk] = {};
+			effectList[kk]["type"] = "normal";
+			effectList[kk]['info'] = [ttt[1], ttt[2]];
+			for(var i=0;i<frameLength;i++)
+			{
+				var fr = lay.frames[i].elements[0];
+				effectpng.push(fr.libraryItem);
+				var matrix = fr.matrix;	
+				var scaleXStart = getMatrixScaleX(matrix);
+				var scaleYStart = getMatrixScaleY(matrix);
+				var name = fr.libraryItem.name.split('/');
+				name = name[name.length - 1];
+				if(fr.libraryItem.itemType == "graphic")
+				{
+					name = name +"0000";
+				}
+				effectList[kk][i] = [name, scaleXStart, scaleYStart, roundToTwip(getX(fr)), roundToTwip(getY(fr))];
+				
+			}
+			fl.getDocumentDOM().exitEditMode();
 		}
-		fl.getDocumentDOM().exitEditMode();
+		else
+		{
+			effectList[kk] = {};
+			effectList[kk]["type"] = "mask";
+			effectList[kk]['info'] = [ttt[1], -ttt[2], elem.width, elem.height];
+		}
+
 	}
 	return [effectList, effectpng];
 }
@@ -670,7 +687,7 @@ function statusEqual(status1, status2) {
 		return true;
 	}
 }
-function getStatusDivise(rotConfig, status1, status2, divice , id) {
+function getStatusDivise(rotConfig, status1, status2, divice , id, tween) {
 	if(divice == id) return status2;
 	if(status1.colorMode <= 0)
 	{
@@ -680,6 +697,11 @@ function getStatusDivise(rotConfig, status1, status2, divice , id) {
 	var YDirect = "clockwise";
 	var rotX = rotInfo(status1.skewX, status2.skewX, divice, id);
 	var rotY = rotInfo(status1.skewY, status2.skewY, divice, id);
+	var alf = status1.colorMode;
+	if(tween)
+	{
+		alf = roundToTwip(status1.colorMode + (status2.colorMode - status1.colorMode) / divice * id);
+	}
 	return {
 		"positionX" : roundToTwip(status1.positionX + (status2.positionX - status1.positionX) / divice * id),
 		"positionY" : roundToTwip(status1.positionY + (status2.positionY - status1.positionY) / divice * id),
@@ -689,7 +711,7 @@ function getStatusDivise(rotConfig, status1, status2, divice , id) {
 		"scaleY" : roundToTwip(status1.scaleY + (status2.scaleY - status1.scaleY) / divice * id),
 		"skewX" : roundToTwip(status1.skewX + rotX),
 		"skewY" : roundToTwip(status1.skewY + rotY),
-		"colorMode" : status1.colorMode,
+		"colorMode" : alf,
 		"brightness" : roundToTwip(status1.brightness + (status2.brightness - status1.brightness) / divice * id),
 		"pic" : status1.pic,
 		"transX" :status1.transX,
@@ -892,7 +914,7 @@ function rotInfo(rot1, rot2, divice, id)
 	}
 }
 
-function saveMotionXML(alltoge, contents, png, effectpng, sprite, equipList, effectList, effectAction)
+function saveMotionXML(alltoge, contents, png, effectpng, sprite, equipList, effectList, effectAction, haveMask, effectLayerOrder)
 {
 	if (!contents) {
 		return false;
@@ -971,6 +993,10 @@ function saveMotionXML(alltoge, contents, png, effectpng, sprite, equipList, eff
 			}
 		}
 		var dname = name+"effect";
+		if(!FLfile.exists(fileURL+"pic/boneeffect/"))
+		{
+			FLfile.createFolder(fileURL+"pic/boneeffect/");
+		}
 		exporter.exportSpriteSheet(fileURL+'pic/boneeffect/'+dname,{format:"png", bitDepth:32, backgroundColor:"#00000000"});
 		contents['effect'] = true;
 	}
@@ -1001,7 +1027,7 @@ function saveMotionXML(alltoge, contents, png, effectpng, sprite, equipList, eff
 	}
 	if(contents['effect'])
 	{
-		var dd = {"effect":effectList,"motion":effectAction,"picture":dname};
+		var dd = {"effect":effectList,"motion":effectAction,"order":effectLayerOrder,"picture":dname,"mask":haveMask};
 		if (!FLfile.write(fileURL+'bone/'+name+".effect", JSON.stringify(dd)))
 		{
 			alert(CopyMotionErrorStrings.SAVE_ERROR);

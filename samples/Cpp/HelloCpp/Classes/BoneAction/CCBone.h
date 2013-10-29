@@ -25,6 +25,7 @@ public:
 		,m_startZOrder(0)
 		,m_picLowWeight(NULL)
 		,m_picNowWeight(NULL)
+		,m_masked(false)
 	{};
 	virtual ~CCBone(void);
 
@@ -66,6 +67,7 @@ public:
 	CCBonePicWeight *m_picLowWeight;
 	CCBonePicWeight *m_picNowWeight;
 	std::string name;
+	bool m_masked;
 };
 
 

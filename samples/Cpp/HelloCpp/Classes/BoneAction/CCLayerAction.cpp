@@ -147,7 +147,9 @@ void CCLayerAction::update(float frame)
 			CCAssert(c == 9, "count error");
 			float posX = Json_getItemAt(source, 0)->valuefloat;
 			float posY = Json_getItemAt(source, 1)->valuefloat;
-			float visable = Json_getItemAt(source, 6)->valuefloat;
+			int visable = Json_getItemAt(source, 6)->valueint;
+			const char *pic = Json_getItemAt(source, 8)->valuestring;
+			layer->m_clip->setBoneStencil(std::string(pic), posX, posY, (bool)visable);
 		}
 	}
 	if(layer->haveEffect())
@@ -242,7 +244,15 @@ void CCLayerAction::update(float frame)
 			float brightness = Json_getItemAt(source, 7)->valuefloat;
 
 			ch->setBrightness(brightness);
-			ch->setPosition(ccp(ch->m_startPosition.x + posX, ch->m_startPosition.y + posY));
+			float fX = 0;
+			float fY = 0;
+			if(ch->m_masked)
+			{
+				CCBoneClip *tm = (CCBoneClip *)ch->getParent();
+				fX = tm->m_offsetX;
+				fY = tm->m_offsetY;
+			}
+			ch->setPosition(ccp(ch->m_startPosition.x + posX - fX, ch->m_startPosition.y + posY - fY));
 			ch->setRotationX(ch->m_fStartAngleX + skewX);
 			ch->setRotationY(ch->m_fStartAngleY + skewY);
 			ch->setScaleX(ch->m_fStartScaleX * scaleX);

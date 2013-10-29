@@ -527,12 +527,21 @@ std::string ScrollViewDemo::subtitle()
 void ScrollViewDemo::setup()
 {
     CCClippingNode *clipper = CCClippingNode::create();
+	this->addChild(clipper);
+
+	CCSprite *content = CCSprite::create(s_back2);
+    content->setTag( kTagContentNode );
+    content->setAnchorPoint(  ccp(0.5, 0.5) );
+    content->setPosition( ccp(clipper->getContentSize().width / 2, clipper->getContentSize().height / 2) );
+    clipper->addChild(content);
+
+
     clipper->setTag( kTagClipperNode );
     clipper->setContentSize(  CCSizeMake(200, 200) );
     clipper->setAnchorPoint(  ccp(0.5, 0.5) );
     clipper->setPosition( ccp(this->getContentSize().width / 2, this->getContentSize().height / 2) );
     //clipper->runAction(CCRepeatForever::create(CCRotateBy::create(1, 45)));
-    this->addChild(clipper);
+    
 
     CCDrawNode *stencil = CCDrawNode::create();
     CCPoint rectangle[4];
@@ -544,13 +553,7 @@ void ScrollViewDemo::setup()
     ccColor4F white = {1, 1, 1, 1};
     stencil->drawPolygon(rectangle, 4, white, 1, white);
     clipper->setStencil(stencil);
-
-    CCSprite *content = CCSprite::create(s_back2);
-    content->setTag( kTagContentNode );
-    content->setAnchorPoint(  ccp(0.5, 0.5) );
-    content->setPosition( ccp(clipper->getContentSize().width / 2, clipper->getContentSize().height / 2) );
-    clipper->addChild(content);
-    
+	clipper->setInverted(true);
     m_bScrolling = false;
 
     this->setTouchEnabled(true);

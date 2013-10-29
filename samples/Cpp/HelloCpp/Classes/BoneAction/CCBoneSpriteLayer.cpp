@@ -301,6 +301,7 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 			if(layerT == "mask")
 			{
 				m_clip = CCBoneClip::create();
+				m_clip->setAnchorPoint(ccp(0,0));
 				m_clip->m_frame = tmp;
 				m_clip->m_effectInfo = info;
 				this->addChild(m_clip, od);
@@ -390,6 +391,7 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 			{
 				if(haveMask && layerType == "masked")
 				{
+					heads->m_masked = true;
 					m_clip->addChild(heads, order);
 				}
 				else

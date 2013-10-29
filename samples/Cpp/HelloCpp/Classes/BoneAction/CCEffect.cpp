@@ -96,7 +96,6 @@ CCBoneClip *CCBoneClip::create()
     if (pRet && pRet->init())
     {
         pRet->autorelease();
-		pRet->setInverted(true);
     }
     else
     {
@@ -146,4 +145,48 @@ void CCBoneClip::onExit()
 		m_pStencil->onExit();
 	}
     CCNode::onExit();
+}
+
+void CCBoneClip::visit()
+{
+	if(!getStencil() || !m_visable)
+	{
+		CCNode::visit();
+	}
+	else
+	{
+		CCClippingNode::visit();
+	}
+}
+
+void CCBoneClip::setBoneStencil(std::string name, float posX, float posY, bool visable)
+{
+	if(!getStencil())
+	{
+		Json *animation = Json_getItem(m_effectInfo, name.c_str());
+		if(animation == NULL)
+		{
+			return;
+		}
+		Json *arch = Json_getItem(animation, "info");
+		float archX = Json_getItemAt(arch, 0)->valuefloat;
+		float archY = Json_getItemAt(arch, 1)->valuefloat;
+		int width = Json_getItemAt(arch, 2)->valueint;
+		int height = Json_getItemAt(arch, 3)->valueint;
+		setContentSize(CCSizeMake(width, height));
+		m_offsetX = posX-archX*width;
+		m_offsetY = posY-archY*height;
+		setPosition(ccp(m_offsetX, m_offsetY));
+
+		CCDrawNode *stencil = CCDrawNode::create();
+		CCPoint rectangle[4];
+		rectangle[0] = ccp(0, 0);
+		rectangle[1] = ccp(width, 0);
+		rectangle[2] = ccp(width, height);
+		rectangle[3] = ccp(0, height);
+		ccColor4F white = {1, 1, 1, 1};
+		stencil->drawPolygon(rectangle, 4, white, 1, white);
+		setStencil(stencil);
+	}
+	m_visable = visable;
 }

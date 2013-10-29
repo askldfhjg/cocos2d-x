@@ -8,7 +8,7 @@
 #include <windows.h>
 #include "direct.h" 
 #include <strsafe.h>
-#include "vld.h"
+//#include "vld.h"
 #endif
 
 USING_NS_CC;
@@ -201,6 +201,7 @@ void FightScene::afterAttack(CCObject *dd)
 	CCString *ff = (CCString *)dd;
 	CCBoneActionManager::sharedManager()->addAnimation(const_cast<char *>(ff->getCString()));
 	def = CCBoneSpriteLayer::create(ff->getCString(), "test01_mon_res");
+	//def = CCBoneSpriteLayer::create(ff->getCString(), "AvatarEquip_defultM");
 	def->setPosition(ccp(500, 100));
 	//def->setScale(0.5f);
 

@@ -84,6 +84,11 @@ for(var i =0;i < lll;i++)
 	elem.selected = true;
 	fl.getDocumentDOM().enterEditMode('inPlace');
 	var asName = elem.libraryItem.linkageClassName;
+	if(asName == null)
+	{
+		elem.libraryItem.linkageClassName = elem.libraryItem.name;
+		asName = elem.libraryItem.name;
+	}
 	getActionList(boneName, asName);
 	fl.getDocumentDOM().exitEditMode();
 	fl.trace("-------------------------------------");
@@ -101,6 +106,7 @@ function getActionList(boneName, asName)
 	var labelLayer = null;
 	var effectLayerFrameCount = [];
 	var flag = false;
+	var maskCount = 0;
 	for(var layerIndex = 0; layerIndex < layers.length; layerIndex++) {
 		var currentLayer = layers[layerIndex];
 		var name = currentLayer.name.toLowerCase();
@@ -113,8 +119,18 @@ function getActionList(boneName, asName)
 			}
 			continue;
 		}
+		if(currentLayer.layerType == "mask")
+		{
+			maskCount++;
+			if(maskCount > 1)
+			{
+				fl.trace("mask层大于1,手动删除先");
+				continue;
+			}
+		}
 		var frames = currentLayer.frames;
-		if(currentLayer.name.toLowerCase() == "label") {
+		var llName = currentLayer.name.toLowerCase();
+		if(llName.search("label") != -1) {
 			timeline.setSelectedLayers(layerIndex, true);
 			timeline.clearKeyframes(0, frames.length - 1);
 			frames = currentLayer.frames;
@@ -125,24 +141,34 @@ function getActionList(boneName, asName)
 			getLabelXml(frames, asName);
 			labelEnd = frames.length - 1;
 			labelLayer = layerIndex;
+			currentLayer.name = "label";
 			continue;
 		}
 		if(currentLayer.name.toLowerCase() == "shadow") {
 			continue;
 		}
-		if(!inArray(boneName, name))
+		if(currentLayer.layerType == "mask")
 		{
-			if(boneOtherLayer >= 4)
-			{
-				fl.trace(asName+" attacklayer over count");
-			}
-			currentLayer.name = "effect" + boneOtherLayer;
-			
-			getFrameXML(labelLayer, currentLayer, asName, flag);
-			flag = true
-			boneOtherLayer++;
-			effectLayerFrameCount.push(layerIndex);
+			currentLayer.name = "masklayer";
+			getFrameXML(labelLayer, currentLayer, asName, flag, true);
 		}
+		else
+		{
+			if(!inArray(boneName, name))
+			{
+				if(boneOtherLayer >= 4)
+				{
+					fl.trace(asName+" attacklayer over count");
+				}
+				currentLayer.name = "effect" + boneOtherLayer;
+				
+				getFrameXML(labelLayer, currentLayer, asName, flag, false);
+				flag = true
+				boneOtherLayer++;
+				effectLayerFrameCount.push(layerIndex);
+			}
+		}
+
 		if((frames.length - 1) > maxFrameId)
 		{
 			maxFrameId = frames.length - 1;
@@ -166,7 +192,7 @@ function getActionList(boneName, asName)
 	}
 }
 
-function getFrameXML(labelLayerId, currentLayer, asName, flagggg) {
+function getFrameXML(labelLayerId, currentLayer, asName, flagggg, maskLayer) {
 
 	var frames = currentLayer.frames;
 	var ccc = frames.length;
@@ -261,31 +287,20 @@ function getFrameXML(labelLayerId, currentLayer, asName, flagggg) {
 		}
 	}
 
-
 	for(var f=0;f<ccc;)
 	{
-		var frame = frames[f];
-		var end = frame.startFrame + frame.duration;
-		if(end >= ccc)
+		if(frames[f].elements.length > 0)
 		{
-			break;
-		}
-		if(frames[end].elements.length > 0)
-		{
-			var elemfff = frames[end].elements[0];
+			var elemfff = frames[f].elements[0];
 			if(elemfff.elementType != "instance")
 			{
-				fl.trace("skill no instance "+elemfff.elementType + " " + end);
+				fl.trace("skill no instance "+elemfff.elementType + " " + f);
 			}
 			else
 			{
 				fl.getDocumentDOM().selectNone();
-				selectFrame(end);
+				selectFrame(f);
 				elemfff.selected = true;
-				if(!inArray(boneName, currentLayer.name))
-				{
-					var trans = getEffectTrans(elemfff);
-				}
 
 				fl.getDocumentDOM().enterEditMode('inPlace');
 				var timeline = fl.getDocumentDOM().getTimeline();
@@ -313,11 +328,17 @@ function getFrameXML(labelLayerId, currentLayer, asName, flagggg) {
 					var trans = getEffectTrans(fr);
 					if(roundToTwip2(trans[0]) != 0.5)
 					{
-						fl.trace("transformX != 0.5");
+						fl.trace("transformX != 0.5 "+roundToTwip2(trans[0]));
 					}
 					if(roundToTwip2(trans[1]) != 0.5)
 					{
-						fl.trace("transformY != 0.5");
+						fl.trace("transformY != 0.5 "+roundToTwip2(trans[1]));
+					}
+					fr.setTransformationPoint({x:trans[2], y:trans[3]});
+					if(maskLayer)
+					{
+						fr.selected = true;
+						fl.getDocumentDOM().setFillColor('#cdcdcd');
 					}
 					if(fr.elementType == "shape")
 					{
@@ -330,6 +351,12 @@ function getFrameXML(labelLayerId, currentLayer, asName, flagggg) {
 				}
 				fl.getDocumentDOM().exitEditMode();
 			}
+		}
+		var frame = frames[f];
+		var end = frame.startFrame + frame.duration;
+		if(end >= ccc)
+		{
+			break;
 		}
 		f = end;
 	}
@@ -353,7 +380,6 @@ function getEffectTrans(element)
 	var matrix = element.matrix;
 	var startX = getX(element);
 	var startY = getY(element);
-	var name = element.libraryItem.name.split('/');
 	var oldRot = element.rotation;
 	element.rotation = 0;
 	var transPoint = getTransformationPointForElement(element);
@@ -374,7 +400,9 @@ function getEffectTrans(element)
 	setX(element, startX);
 	setY(element, startY);
 	element.rotation = oldRot;
-	return [transXNormal, transYNormal];
+	var hX = element.width/2+element.left;
+	var hY = element.height/2+element.top;
+	return [transXNormal, transYNormal, hX, hY];
 }
 
 function attackInfo(output)

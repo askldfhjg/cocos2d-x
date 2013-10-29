@@ -4,231 +4,269 @@
 	<dict>
 		<key>frames</key>
 		<dict>
-			<key>backfoot_mon_test010000</key>
+			<key>1-fronthand0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{269,157}}</string>
+				<string>{{0,0},{53,160}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{269,157}</string>
+				<string>{53,160}</string>
 				<key>spriteSourceSize</key>
-				<string>{269,157}</string>
+				<string>{53,160}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{738,294},{269,157}}</string>
+				<string>{{335,0},{53,160}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>backshin_mon_test010000</key>
+			<key>10-hip0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{342,339}}</string>
+				<string>{{0,0},{111,75}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{342,339}</string>
+				<string>{111,75}</string>
 				<key>spriteSourceSize</key>
-				<string>{342,339}</string>
+				<string>{111,75}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{611,839},{342,339}}</string>
+				<string>{{99,407},{111,75}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>chest_mon_test010000</key>
+			<key>11-chest0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{65,97}}</string>
+				<string>{{0,0},{176,238}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{65,97}</string>
+				<string>{176,238}</string>
 				<key>spriteSourceSize</key>
-				<string>{65,97}</string>
+				<string>{176,238}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{937,452},{65,97}}</string>
+				<string>{{0,0},{176,238}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>fronthand_mon_test010000</key>
+			<key>12-backfoot0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{325,372}}</string>
+				<string>{{0,0},{84,71}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{325,372}</string>
+				<string>{84,71}</string>
 				<key>spriteSourceSize</key>
-				<string>{325,372}</string>
+				<string>{84,71}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{611,466},{325,372}}</string>
+				<string>{{358,161},{84,71}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>frontshin_mon_test010000</key>
+			<key>13-backshin0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{273,293}}</string>
+				<string>{{0,0},{77,187}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{273,293}</string>
+				<string>{77,187}</string>
 				<key>spriteSourceSize</key>
-				<string>{273,293}</string>
+				<string>{77,187}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{738,0},{273,293}}</string>
+				<string>{{177,0},{77,187}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>frontshoulder_mon_test010000</key>
+			<key>14-backthigh0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{449,465}}</string>
+				<string>{{0,0},{79,169}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{449,465}</string>
+				<string>{79,169}</string>
 				<key>spriteSourceSize</key>
-				<string>{449,465}</string>
+				<string>{79,169}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{288,0},{449,465}}</string>
+				<string>{{255,0},{79,169}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>frontthigh_mon_test010000</key>
+			<key>16-backhand0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{144,285}}</string>
+				<string>{{0,0},{78,130}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{144,285}</string>
+				<string>{78,130}</string>
 				<key>spriteSourceSize</key>
-				<string>{144,285}</string>
+				<string>{78,130}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{0,966},{144,285}}</string>
+				<string>{{211,365},{78,130}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>idlefoot_mon_test010000</key>
+			<key>17-backshoulder0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{140,107}}</string>
+				<string>{{0,0},{65,132}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{140,107}</string>
+				<string>{65,132}</string>
 				<key>spriteSourceSize</key>
-				<string>{140,107}</string>
+				<string>{65,132}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{145,966},{140,107}}</string>
+				<string>{{292,170},{65,132}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>robe_mon_test010000</key>
+			<key>2-frontshoulder0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{322,544}}</string>
+				<string>{{0,0},{98,126}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{322,544}</string>
+				<string>{98,126}</string>
 				<key>spriteSourceSize</key>
-				<string>{322,544}</string>
+				<string>{98,126}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{288,466},{322,544}}</string>
+				<string>{{0,381},{98,126}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>shadowMC0000</key>
+			<key>4-head-hair0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{158,14}}</string>
+				<string>{{0,0},{114,141}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{158,14}</string>
+				<string>{114,141}</string>
 				<key>spriteSourceSize</key>
-				<string>{158,14}</string>
+				<string>{114,141}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{286,1011},{158,14}}</string>
+				<string>{{0,239},{114,141}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>sprite 800000</key>
+			<key>5-head-face0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{35,41}}</string>
+				<string>{{0,0},{83,106}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{35,41}</string>
+				<string>{83,106}</string>
 				<key>spriteSourceSize</key>
-				<string>{35,41}</string>
+				<string>{83,106}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{937,550},{35,41}}</string>
+				<string>{{290,365},{83,106}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>weapon_test010000</key>
+			<key>7-idlefoot0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{287,965}}</string>
+				<string>{{0,0},{49,98}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{287,965}</string>
+				<string>{49,98}</string>
 				<key>spriteSourceSize</key>
-				<string>{287,965}</string>
+				<string>{49,98}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{0,0},{287,965}}</string>
+				<string>{{389,0},{49,98}}</string>
+				<key>textureRotated</key>
+				<false/>
+			</dict>
+			<key>8-frontshin0000</key>
+			<dict>
+				<key>aliases</key>
+				<array/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{80,176}}</string>
+				<key>spriteOffset</key>
+				<string>{0,0}</string>
+				<key>spriteSize</key>
+				<string>{80,176}</string>
+				<key>spriteSourceSize</key>
+				<string>{80,176}</string>
+				<key>spriteTrimmed</key>
+				<false/>
+				<key>textureRect</key>
+				<string>{{211,188},{80,176}}</string>
+				<key>textureRotated</key>
+				<false/>
+			</dict>
+			<key>9-frontthigh0000</key>
+			<dict>
+				<key>aliases</key>
+				<array/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{95,167}}</string>
+				<key>spriteOffset</key>
+				<string>{0,0}</string>
+				<key>spriteSize</key>
+				<string>{95,167}</string>
+				<key>spriteSourceSize</key>
+				<string>{95,167}</string>
+				<key>spriteTrimmed</key>
+				<false/>
+				<key>textureRect</key>
+				<string>{{115,239},{95,167}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
@@ -238,13 +276,13 @@
 			<key>format</key>
 			<integer>3</integer>
 			<key>size</key>
-			<string>{1024,2048}</string>
+			<string>{512,512}</string>
 			<key>target</key>
 			<dict>
 				<key>name</key>
-				<string>test01_mon_res.png</string>
+				<string>AvatarDefult_M.png</string>
 				<key>textureFileName</key>
-				<string>test01_mon_res</string>
+				<string>AvatarDefult_M</string>
 				<key>textureFileExtension</key>
 				<string>png</string>
 				<key>premultipliedAlpha</key>

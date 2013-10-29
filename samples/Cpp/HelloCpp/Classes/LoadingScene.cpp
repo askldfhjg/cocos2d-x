@@ -34,8 +34,8 @@ bool LoadingScene::init()
 	CCTextureCache::sharedTextureCache()->addImageAsync("pic/bg.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
     CCTextureCache::sharedTextureCache()->addImageAsync("pic/CloseNormal.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
     CCTextureCache::sharedTextureCache()->addImageAsync("pic/CloseSelected.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
-	CCTextureCache::sharedTextureCache()->addImageAsync("pic/boneeffect/AvatarSklMeffect.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
-	m_nNumberOfSprites = 4;
+	//CCTextureCache::sharedTextureCache()->addImageAsync("pic/boneeffect/AvatarSklMeffect.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
+	m_nNumberOfSprites = 3;
 	m_nNumberOfSkl = 0;
     return true;
 }

@@ -68,7 +68,6 @@ void CCBone::Reset()
 	setRotationY(m_fStartAngleY);
 	setScaleX(m_fStartScaleX);
 	setScaleY(m_fStartAngleY);
-
 }
 
 const char *CCBone::getName()

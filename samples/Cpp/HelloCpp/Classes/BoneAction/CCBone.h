@@ -49,7 +49,6 @@ public:
 	static CCGLProgram *getShader();
 	virtual void draw(void);
 
-
 public:
 	CCPoint m_startPosition;
 	CCPoint m_startArch;

@@ -89,6 +89,10 @@ void CCBoneSpriteLayer::resetBoneTexture(const char *textureName, const char *eq
 	{
 		return;
 	}
+	if(textureName == NULL || equipName == NULL)
+	{
+		return ;
+	}
 	CCSpriteFrameCache *cache = CCSpriteFrameCache::sharedSpriteFrameCache();
 	Json* root = CCBoneTextureManager::sharedManager()->getEquip(const_cast<char*>(textureName));
 	if(root == NULL)
@@ -96,6 +100,7 @@ void CCBoneSpriteLayer::resetBoneTexture(const char *textureName, const char *eq
 		return;
 	}
 	Json *source = Json_getItem(root, equipName);
+	source = Json_getItem(source, "part");
 	if(!source)
 	{
 		return;
@@ -128,6 +133,10 @@ void CCBoneSpriteLayer::changeBoneTexture(const char *textureName, const char *e
 	{
 		return;
 	}
+	if(textureName == NULL || equipName == NULL)
+	{
+		return ;
+	}
 	CCSpriteFrameCache *cache = CCSpriteFrameCache::sharedSpriteFrameCache();
 	Json* root = CCBoneTextureManager::sharedManager()->getEquip(const_cast<char*>(textureName));
 	if(root == NULL)
@@ -153,7 +162,6 @@ void CCBoneSpriteLayer::changeBoneTexture(const char *textureName, const char *e
 			{
 				continue;
 			}
-			
 			tmpBone->removeFromParentAndCleanup(false);
 			int fCount = Json_getSize(info);
 			if(fCount <= 0)
@@ -411,7 +419,6 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 		heads->m_frame = Json_getItem(animation, heads->getName());
 		m_bone->addObject(heads);
 	}
-
 	this->ignoreAnchorPointForPosition(true);
 	this->setAnchorPoint(ccp(0,0));
     return true;

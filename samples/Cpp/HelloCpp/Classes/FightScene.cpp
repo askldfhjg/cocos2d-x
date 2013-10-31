@@ -226,6 +226,7 @@ void FightScene::checkSkl()
 
 	size_t size = dirRoot.length();
 	wchar_t *buffer = new wchar_t[size+1];
+	memset(buffer,0,sizeof(wchar_t)*(size+1));
 	MultiByteToWideChar( CP_ACP, 0, dirRoot.c_str(), size, buffer, size * sizeof(wchar_t) );
 	buffer[size] = 0;  // 确保以 '\0' 结尾  
 
@@ -299,6 +300,7 @@ void FightScene::checkMontion()
 	dirRoot += "\\bone\\*.motion";
 	size_t size = dirRoot.length();
 	wchar_t *buffer = new wchar_t[size+1];
+	memset(buffer,0,sizeof(wchar_t)*(size+1));
 	MultiByteToWideChar( CP_ACP, 0, dirRoot.c_str(), size, buffer, size * sizeof(wchar_t) );
 	buffer[size] = 0;
 	actionList->removeAllObjects();

@@ -33,6 +33,7 @@ public:
     /** creates the action */
     static CCBone *createWithSpriteFrame(CCSpriteFrame *pSpriteFrame, std::string &name);
 	static CCBone *create(std::string &name);
+	static void setFrame(CCArray *boneArray, int frameInAll, int frameInAction);
 	void changeTexture(CCTexture2D * texture);
 	const char *getName();
 	void setStartStatus(bool del);
@@ -47,6 +48,7 @@ public:
 	float getAlpha();
 	static CCGLProgram *getShader();
 	virtual void draw(void);
+
 
 public:
 	CCPoint m_startPosition;

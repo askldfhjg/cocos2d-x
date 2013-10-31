@@ -13,13 +13,14 @@ public:
 		:m_effectInfo(NULL)
 		,m_frameIndex(-1)
 		,m_add(false)
-		,m_lastFrame(0)
+		,m_lastFrame(-1)
 	{};
 	virtual ~CCEffect(void);
 
 public:
     /** creates the action */
 	static CCEffect *create(std::string &name);
+	static void setFrame(CCArray *effectArray, int frameInAll, int frameInAction);
 	bool setAnimatime(std::string name, bool show, int index);
 	bool getAdd();
 	void setAdd(bool add);
@@ -36,6 +37,7 @@ class CCBoneClip : public CCClippingNode
 {
 public:
     static CCBoneClip* create();
+
 public:
 	CCBoneClip()
 		:m_effectInfo(NULL)
@@ -52,7 +54,7 @@ public:
     virtual void onExit();
 
 	void setBoneStencil(std::string name, float posX, float posY, bool visable);
-
+	void setFrame(int frame);
 public:
 	Json *m_frame;
 	Json *m_effectInfo;

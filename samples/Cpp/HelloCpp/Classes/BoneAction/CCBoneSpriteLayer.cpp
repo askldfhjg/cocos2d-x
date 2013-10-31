@@ -317,6 +317,11 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 				m_effect->addObject(effect);
 			}
 		}
+		if(m_clip)
+		{
+			m_clip->setFrame(0);
+		}
+		CCEffect::setFrame(m_effect, 0, 0);
 	}
 
 	for(int i = 0; i< count; i++)

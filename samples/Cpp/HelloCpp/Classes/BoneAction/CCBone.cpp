@@ -1,6 +1,7 @@
 #include "cocos2d.h"
 #include "CCBone.h"
-
+#include "Function.h"
+#include "CCEffect.h"
 USING_NS_CC;
 
 CCBone *CCBone::createWithSpriteFrame(CCSpriteFrame *pSpriteFrame, std::string &name)
@@ -224,4 +225,87 @@ void CCBone::draw(void)
     CC_INCREMENT_GL_DRAWS(1);
 
     CC_PROFILER_STOP_CATEGORY(kCCProfilerCategorySprite, "CCSprite - draw");
+}
+
+void CCBone::setFrame(CCArray *boneArray, int frameInAll, int frameInAction)
+{
+	CCObject* child = NULL;
+	char str[256]={0};
+	Func::itostr(frameInAll, str);
+	CCARRAY_FOREACH(boneArray, child)
+	{
+		CCBone *ch = (CCBone *)child;
+		if(frameInAll > ch->endFrame)
+		{
+			ch->setVisible(false);
+			continue;
+		}
+		Json *source = Json_getItem(ch->m_frame, str);
+		if (source)
+		{
+			int c = Json_getSize(source);
+			if(c <= 0)
+			{
+				return;
+			}
+			CCAssert(c == 8, "count error");
+			float posX = Json_getItemAt(source, 0)->valuefloat;
+			float posY = Json_getItemAt(source, 1)->valuefloat;
+			float scaleX = Json_getItemAt(source, 2)->valuefloat;
+			float scaleY = Json_getItemAt(source, 3)->valuefloat;
+			float skewX = Json_getItemAt(source, 4)->valuefloat;
+			float skewY = Json_getItemAt(source, 5)->valuefloat;
+			float visable = Json_getItemAt(source, 6)->valuefloat;
+			float brightness = Json_getItemAt(source, 7)->valuefloat;
+
+			ch->setBrightness(brightness);
+			float fX = 0;
+			float fY = 0;
+			if(ch->m_masked)
+			{
+				CCBoneClip *tm = (CCBoneClip *)ch->getParent();
+				fX = tm->m_offsetX;
+				fY = tm->m_offsetY;
+			}
+			ch->setPosition(ccp(ch->m_startPosition.x + posX - fX, ch->m_startPosition.y + posY - fY));
+			ch->setRotationX(ch->m_fStartAngleX + skewX);
+			ch->setRotationY(ch->m_fStartAngleY + skewY);
+			ch->setScaleX(ch->m_fStartScaleX * scaleX);
+			ch->setScaleY(ch->m_fStartScaleY * scaleY);
+
+			bool vis = ch->isVisible();
+
+			float alf = ch->getAlpha();
+			if(vis != (bool)(int)visable || alf != visable)
+			{ 
+				if((bool)(int)visable)
+				{
+					ch->setVisible(true);
+					ch->setAlpha(1.0f);
+				}
+				else if(visable <= 0)
+				{
+					ch->setVisible(false);
+					ch->setAlpha(0);
+				}
+				else
+				{
+					ch->setVisible(true);
+					ch->setAlpha(visable);
+				}
+			}
+		}
+		else
+		{
+			if(frameInAction == 0)
+			{
+				ch->setPosition(ccp(ch->m_startPosition.x, ch->m_startPosition.y));
+				ch->setRotationX(ch->m_fStartAngleX);
+				ch->setRotationY(ch->m_fStartAngleY);
+				ch->setScaleX(ch->m_fStartScaleX);
+				ch->setScaleY(ch->m_fStartScaleY);
+				ch->setVisible((bool)ch->m_startVisable);
+			}
+		}
+	}
 }

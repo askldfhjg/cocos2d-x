@@ -4,10 +4,153 @@
 	<dict>
 		<key>frames</key>
 		<dict>
+			<key>Bitmap 11</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,0},{282,234}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{282,234}}</string>
+				<key>sourceSize</key>
+				<string>{282,234}</string>
+			</dict>
+			<key>Bitmap 12</key>
+			<dict>
+				<key>frame</key>
+				<string>{{284,0},{64,57}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{64,57}}</string>
+				<key>sourceSize</key>
+				<string>{64,57}</string>
+			</dict>
+			<key>Bitmap 13</key>
+			<dict>
+				<key>frame</key>
+				<string>{{350,0},{99,201}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{99,201}}</string>
+				<key>sourceSize</key>
+				<string>{99,201}</string>
+			</dict>
+			<key>Bitmap 14</key>
+			<dict>
+				<key>frame</key>
+				<string>{{451,0},{93,207}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{93,207}}</string>
+				<key>sourceSize</key>
+				<string>{93,207}</string>
+			</dict>
+			<key>Bitmap 15</key>
+			<dict>
+				<key>frame</key>
+				<string>{{546,0},{82,198}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{82,198}}</string>
+				<key>sourceSize</key>
+				<string>{82,198}</string>
+			</dict>
+			<key>Bitmap 16</key>
+			<dict>
+				<key>frame</key>
+				<string>{{630,0},{79,198}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{79,198}}</string>
+				<key>sourceSize</key>
+				<string>{79,198}</string>
+			</dict>
+			<key>Bitmap 17</key>
+			<dict>
+				<key>frame</key>
+				<string>{{711,0},{77,198}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{77,198}}</string>
+				<key>sourceSize</key>
+				<string>{77,198}</string>
+			</dict>
+			<key>Bitmap 3</key>
+			<dict>
+				<key>frame</key>
+				<string>{{790,0},{222,201}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{222,201}}</string>
+				<key>sourceSize</key>
+				<string>{222,201}</string>
+			</dict>
+			<key>Bitmap 4</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,236},{222,199}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{222,199}}</string>
+				<key>sourceSize</key>
+				<string>{222,199}</string>
+			</dict>
+			<key>Bitmap 8</key>
+			<dict>
+				<key>frame</key>
+				<string>{{224,236},{338,324}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{338,324}}</string>
+				<key>sourceSize</key>
+				<string>{338,324}</string>
+			</dict>
+			<key>Bitmap 9</key>
+			<dict>
+				<key>frame</key>
+				<string>{{564,236},{232,325}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{232,325}}</string>
+				<key>sourceSize</key>
+				<string>{232,325}</string>
+			</dict>
 			<key>shape 10000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,0},{152,13}}</string>
+				<string>{{798,236},{152,13}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -17,6 +160,279 @@
 				<key>sourceSize</key>
 				<string>{152,13}</string>
 			</dict>
+			<key>shape 980000</key>
+			<dict>
+				<key>frame</key>
+				<string>{{952,236},{54,12}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{54,12}}</string>
+				<key>sourceSize</key>
+				<string>{54,12}</string>
+			</dict>
+			<key>vertigo 1</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,563},{114,62}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{114,62}}</string>
+				<key>sourceSize</key>
+				<string>{114,62}</string>
+			</dict>
+			<key>vertigo 10</key>
+			<dict>
+				<key>frame</key>
+				<string>{{116,563},{92,60}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{92,60}}</string>
+				<key>sourceSize</key>
+				<string>{92,60}</string>
+			</dict>
+			<key>vertigo 11</key>
+			<dict>
+				<key>frame</key>
+				<string>{{210,563},{112,60}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{112,60}}</string>
+				<key>sourceSize</key>
+				<string>{112,60}</string>
+			</dict>
+			<key>vertigo 12</key>
+			<dict>
+				<key>frame</key>
+				<string>{{324,563},{118,56}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{118,56}}</string>
+				<key>sourceSize</key>
+				<string>{118,56}</string>
+			</dict>
+			<key>vertigo 13</key>
+			<dict>
+				<key>frame</key>
+				<string>{{444,563},{102,50}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{102,50}}</string>
+				<key>sourceSize</key>
+				<string>{102,50}</string>
+			</dict>
+			<key>vertigo 14</key>
+			<dict>
+				<key>frame</key>
+				<string>{{548,563},{87,50}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{87,50}}</string>
+				<key>sourceSize</key>
+				<string>{87,50}</string>
+			</dict>
+			<key>vertigo 15</key>
+			<dict>
+				<key>frame</key>
+				<string>{{637,563},{101,56}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{101,56}}</string>
+				<key>sourceSize</key>
+				<string>{101,56}</string>
+			</dict>
+			<key>vertigo 16</key>
+			<dict>
+				<key>frame</key>
+				<string>{{740,563},{113,63}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{113,63}}</string>
+				<key>sourceSize</key>
+				<string>{113,63}</string>
+			</dict>
+			<key>vertigo 17</key>
+			<dict>
+				<key>frame</key>
+				<string>{{855,563},{110,60}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{110,60}}</string>
+				<key>sourceSize</key>
+				<string>{110,60}</string>
+			</dict>
+			<key>vertigo 18</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,628},{90,56}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{90,56}}</string>
+				<key>sourceSize</key>
+				<string>{90,56}</string>
+			</dict>
+			<key>vertigo 19</key>
+			<dict>
+				<key>frame</key>
+				<string>{{92,628},{79,53}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{79,53}}</string>
+				<key>sourceSize</key>
+				<string>{79,53}</string>
+			</dict>
+			<key>vertigo 2</key>
+			<dict>
+				<key>frame</key>
+				<string>{{173,628},{114,57}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{114,57}}</string>
+				<key>sourceSize</key>
+				<string>{114,57}</string>
+			</dict>
+			<key>vertigo 20</key>
+			<dict>
+				<key>frame</key>
+				<string>{{289,628},{97,60}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{97,60}}</string>
+				<key>sourceSize</key>
+				<string>{97,60}</string>
+			</dict>
+			<key>vertigo 3</key>
+			<dict>
+				<key>frame</key>
+				<string>{{388,628},{100,51}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{100,51}}</string>
+				<key>sourceSize</key>
+				<string>{100,51}</string>
+			</dict>
+			<key>vertigo 4</key>
+			<dict>
+				<key>frame</key>
+				<string>{{490,628},{90,49}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{90,49}}</string>
+				<key>sourceSize</key>
+				<string>{90,49}</string>
+			</dict>
+			<key>vertigo 5</key>
+			<dict>
+				<key>frame</key>
+				<string>{{582,628},{107,56}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{107,56}}</string>
+				<key>sourceSize</key>
+				<string>{107,56}</string>
+			</dict>
+			<key>vertigo 6</key>
+			<dict>
+				<key>frame</key>
+				<string>{{691,628},{114,63}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{114,63}}</string>
+				<key>sourceSize</key>
+				<string>{114,63}</string>
+			</dict>
+			<key>vertigo 7</key>
+			<dict>
+				<key>frame</key>
+				<string>{{807,628},{106,59}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{106,59}}</string>
+				<key>sourceSize</key>
+				<string>{106,59}</string>
+			</dict>
+			<key>vertigo 8</key>
+			<dict>
+				<key>frame</key>
+				<string>{{915,628},{90,53}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{90,53}}</string>
+				<key>sourceSize</key>
+				<string>{90,53}</string>
+			</dict>
+			<key>vertigo 9</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,693},{75,53}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{75,53}}</string>
+				<key>sourceSize</key>
+				<string>{75,53}</string>
+			</dict>
 		</dict>
 		<key>metadata</key>
 		<dict>
@@ -25,7 +441,7 @@
 			<key>realTextureFileName</key>
 			<string>test01_mon_reseffect.png</string>
 			<key>size</key>
-			<string>{256,256}</string>
+			<string>{1024,1024}</string>
 			<key>textureFileName</key>
 			<string>test01_mon_reseffect.png</string>
 		</dict>

@@ -9,6 +9,8 @@
 #include "direct.h" 
 #include <strsafe.h>
 #include "vld.h"
+#else
+#include <dirent.h>
 #endif
 
 USING_NS_CC;
@@ -289,12 +291,25 @@ void FightScene::checkSkl()
     equipList->addObject(ff);
 #endif
 }
-
-
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
+int custom_filter_motion( const struct dirent *dp )
+{
+    if(strstr(dp->d_name, ".motion"))
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+#endif
 void FightScene::checkMontion()
 {
+    actionList->removeAllObjects();
+	motionList->removeAllObjects();
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
-	std::vector<std::string>::const_iterator searchPathsIter = CCFileUtils::sharedFileUtils()->getSearchPaths().begin();
+    std::vector<std::string>::const_iterator searchPathsIter = CCFileUtils::sharedFileUtils()->getSearchPaths().begin();
 	std::string root = *searchPathsIter;
 	std::string dirRoot = root.substr(0, root.length() - 1);
 	dirRoot += "\\bone\\*.motion";
@@ -303,12 +318,8 @@ void FightScene::checkMontion()
 	memset(buffer,0,sizeof(wchar_t)*(size+1));
 	MultiByteToWideChar( CP_ACP, 0, dirRoot.c_str(), size, buffer, size * sizeof(wchar_t) );
 	buffer[size] = 0;
-	actionList->removeAllObjects();
-	motionList->removeAllObjects();
 	WIN32_FIND_DATA FindFileData; 
 	HANDLE hFind = FindFirstFile(buffer, &FindFileData);
-	bool found = true;
-	int sec = 0;
 	if(hFind != INVALID_HANDLE_VALUE)
 	{
 		do
@@ -317,16 +328,6 @@ void FightScene::checkMontion()
 				continue;
 			if(!(FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
 			{
-				/*LARGE_INTEGER date, adjust;
-				date.HighPart = FindFileData.ftLastWriteTime.dwHighDateTime;
-				date.LowPart = FindFileData.ftLastWriteTime.dwLowDateTime;
-				adjust.QuadPart = 11644473600000 * 10000;
-				date.QuadPart -= adjust.QuadPart;
-				if(date.QuadPart / 10000000 < sec)
-				{
-					continue;
-				}
-				sec = date.QuadPart / 10000000;*/
 				char str[MAX_PATH]={0};
 				WideCharToMultiByte(CP_ACP, 0, FindFileData.cFileName, sizeof(FindFileData.cFileName) + 1, str, MAX_PATH, NULL, NULL);
 				std::string fgg = std::string(str);
@@ -335,11 +336,8 @@ void FightScene::checkMontion()
 				while (index!=std::string::npos)
 				{
 					std::string fggg = fgg.substr(last,index-last);
-					if(found)
-					{
-						motionList->addObject(CCString::create(fggg.c_str()));
-						break;
-					}
+                    motionList->addObject(CCString::create(fggg.c_str()));
+                    break;
 					/*CCBoneActionManager::sharedManager()->replaceAnimation(const_cast<char *>(fggg.c_str()));
 					found = true;
 					if(def != NULL)
@@ -366,23 +364,21 @@ void FightScene::checkMontion()
 	delete []buffer;
 	FindClose(hFind);
 #else
-    actionList->removeAllObjects();
-    std::string fggg = std::string("AvatarSklM");
-    CCBoneActionManager::sharedManager()->replaceAnimation(const_cast<char *>(fggg.c_str()));
-    if(def != NULL)
+    std::string dirRoot = CCFileUtils::sharedFileUtils()->fullPathForFilename("bone");
+    struct dirent **namelist;
+    int total = scandir(dirRoot.c_str(), &namelist, custom_filter_motion, alphasort);
+    for(int i =0;i<total;i++)
     {
-        this->removeChild(def);
+        std::string fgg = std::string(namelist[i]->d_name);
+        size_t last = 0;
+        size_t index = fgg.find_first_of(".",last);
+        while (index!=std::string::npos)
+        {
+            std::string fggg = fgg.substr(last,index-last);
+            motionList->addObject(CCString::create(fggg.c_str()));
+            break;
+        }
     }
-    def = CCBoneSpriteLayer::create(const_cast<char *>(fggg.c_str()), "AvatarEquip_defultM");
-    def->setPosition(ccp(400, 50));
-    def->setScale(0.5f);
-    
-    def->changeBoneTexture("sword", "BallinBlade");
-    this->addChild(def, 3);
-    
-    CC_SAFE_RELEASE(actionList);
-    actionList = def->allLabel();
-    actionList->retain();
 #endif
 }
 
@@ -429,4 +425,3 @@ CCRenderTexture* FightScene::createStroke(CCSprite* label, int size, ccColor3B c
 
     return rt;
 }
-

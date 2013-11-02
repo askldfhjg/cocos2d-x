@@ -200,10 +200,10 @@ void FightScene::afterAttack(CCObject *dd)
 	}
 	CCString *ff = (CCString *)dd;
 	CCBoneActionManager::sharedManager()->addAnimation(const_cast<char *>(ff->getCString()));
-	//def = CCBoneSpriteLayer::create(ff->getCString(), "test01_mon_res");
-	def = CCBoneSpriteLayer::create(ff->getCString(), "AvatarEquip_defultM");
+	def = CCBoneSpriteLayer::create(ff->getCString(), "test01_mon_res");
+	//def = CCBoneSpriteLayer::create(ff->getCString(), "AvatarEquip_defultM");
 	def->setPosition(ccp(500, 100));
-	def->setScale(0.5f);
+	//def->setScale(0.5f);
 
 	this->addChild(def, 3);
 

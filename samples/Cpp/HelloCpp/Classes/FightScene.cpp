@@ -216,23 +216,45 @@ void FightScene::afterAttack(CCObject *dd)
 	view->updateList(this->actionList);
 }
 
+#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
+int custom_filter_motion( const struct dirent *dp )
+{
+    if(strstr(dp->d_name, ".motion"))
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+int custom_filter_equip( const struct dirent *dp )
+{
+    if(strstr(dp->d_name, ".equip"))
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+#endif
+
 void FightScene::checkSkl()
 {
-	CCSpriteFrameCache *cache = CCSpriteFrameCache::sharedSpriteFrameCache();
+	equipList->removeAllObjects();
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 	std::vector<std::string>::const_iterator searchPathsIter = CCFileUtils::sharedFileUtils()->getSearchPaths().begin();
 	std::string root = *searchPathsIter;
 	std::string dirRoot = root.substr(0, root.length() - 1);
 	dirRoot += "\\bone\\*.equip";
 	WIN32_FIND_DATA FindFileData; 
-
 	size_t size = dirRoot.length();
 	wchar_t *buffer = new wchar_t[size+1];
 	memset(buffer,0,sizeof(wchar_t)*(size+1));
 	MultiByteToWideChar( CP_ACP, 0, dirRoot.c_str(), size, buffer, size * sizeof(wchar_t) );
 	buffer[size] = 0;  // 确保以 '\0' 结尾  
-
-	equipList->removeAllObjects();
 	HANDLE hFind = FindFirstFile(buffer, &FindFileData);
 	if(hFind != INVALID_HANDLE_VALUE)
 	{
@@ -284,26 +306,48 @@ void FightScene::checkSkl()
 	delete []buffer;
 	FindClose(hFind);
 #else
-    equipList->removeAllObjects();
-    CCString *ff = CCString::create("weapon");
-    equipList->addObject(ff);
-    ff = CCString::create("goldGlory_M");
-    equipList->addObject(ff);
+    std::string dirRoot = CCFileUtils::sharedFileUtils()->fullPathForFilename("bone");
+    struct dirent **namelist;
+    int total = scandir(dirRoot.c_str(), &namelist, custom_filter_equip, alphasort);
+    for(int i =0;i<total;i++)
+    {
+        std::string fgg = std::string(namelist[i]->d_name);
+		if(fgg == "AvatarEquip_defultM.equip")
+		{
+			continue;
+		}
+		size_t last = 0;
+		size_t index = fgg.find_first_of(".",last);
+		while (index!=std::string::npos)
+		{
+			std::string fggg = fgg.substr(last,index-last);
+			std::string path = CCBoneSpriteConfig::getBoneUrl() + fggg + ".equip";
+			std::string fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(path.c_str());
+			unsigned long size;
+			char* buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
+			Json* root = Json_create(buffer);
+			CC_SAFE_DELETE_ARRAY(buffer);
+			int count = Json_getSize(root);
+			for(int i = 0; i< count; i++)
+			{
+				Json *tmp = Json_getItemAt(root, i);
+				std::string tmpString = tmp->name;
+				if(tmpString == "full")
+				{
+					continue;
+				}
+				std::string ggg = fggg+"+"+tmpString;
+				CCString *ff = CCString::create(ggg);
+				CCLog(ff->getCString());
+				equipList->addObject(ff);
+			}
+			Json_dispose(root);
+			break;
+		}
+    }
 #endif
 }
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_WIN32)
-int custom_filter_motion( const struct dirent *dp )
-{
-    if(strstr(dp->d_name, ".motion"))
-    {
-        return 1;
-    }
-    else
-    {
-        return 0;
-    }
-}
-#endif
+
 void FightScene::checkMontion()
 {
     actionList->removeAllObjects();
@@ -337,24 +381,6 @@ void FightScene::checkMontion()
 				{
 					std::string fggg = fgg.substr(last,index-last);
                     motionList->addObject(CCString::create(fggg.c_str()));
-                    break;
-					/*CCBoneActionManager::sharedManager()->replaceAnimation(const_cast<char *>(fggg.c_str()));
-					found = true;
-					if(def != NULL)
-					{
-						this->removeChild(def);
-					}
-					def = CCBoneSpriteLayer::create(fggg.c_str(), "AvatarEquip_defultM");
-					def->setPosition(ccp(400, 50));
-					def->setScale(0.5f);
-
-					//def->changeBoneTexture("sword", "BallinBlade");
-					this->addChild(def, 3);
-
-					CC_SAFE_RELEASE(actionList);
-					actionList = def->allLabel();
-					actionList->retain();
-					motionList->addObject(CCString::create(fggg.c_str()));*/
 					break;
 				}
 			}

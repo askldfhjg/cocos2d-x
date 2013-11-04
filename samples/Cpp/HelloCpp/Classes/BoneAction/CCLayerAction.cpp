@@ -105,7 +105,7 @@ void CCLayerAction::startWithTarget(CCNode* pTarget)
 
 bool CCLayerAction::isDone(void)
 {
-	bool actionDone = false;
+	/*bool actionDone = false;
 	if(action == NULL)
 	{
 		actionDone = true;
@@ -115,17 +115,18 @@ bool CCLayerAction::isDone(void)
 		actionDone = true;
 	}
 
-	return m_isDone && actionDone;
+	return m_isDone && actionDone;*/
+	return m_isDone;
 }
 
 void CCLayerAction::update(float frame)
 {
-	if(action != NULL && !action->isDone())
+	/*if(action != NULL && !action->isDone())
 	{
 		action->setTarget(m_pTarget); 
 		action->setOriginalTarget(m_pTarget);
 		action->update(frame);
-	}
+	}*/
 	if(m_isDone)
 	{
 		return;
@@ -135,6 +136,7 @@ void CCLayerAction::update(float frame)
 	int n = (int)(frame * totalFrameCount);
 	nowFrame = n + startFrame[nowStage];
 	//nowFrame = 7;
+	layer->frameIndex = nowFrame;
 	if(layer->m_clip)
 	{
 		layer->m_clip->setFrame(nowFrame);

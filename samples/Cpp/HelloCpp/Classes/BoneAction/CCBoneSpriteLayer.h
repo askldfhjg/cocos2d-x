@@ -18,6 +18,7 @@ public:
 		,interval(1.0/24)
 		,isBatch(false)
 		,isEffect(false)
+		,frameIndex(0)
     {}
 	~CCBoneSpriteLayer(void);
 	virtual bool init(const char *animationName, const char *defaultSkl, bool isBatch);
@@ -36,10 +37,12 @@ public:
 	CCAction *randomLayerAction();
 	CCAction *indexLayerAction(int index);
 	void setBoneAction(const char *name);
+	const char *getBoneAction();
 	CCSize getLayerSize();
 	
 public:
 	bool getLabel(const char *name, int &startFrame, int &endFrame);
+	const char *getLabelNamebyFrame(int frame);
 	CCRenderTexture* createStroke(CCSprite* label, int size, ccColor3B color, GLubyte opacity);
 	bool haveEffect();
 	CCAction *runAction(CCAction* action, bool stopBefore = true);
@@ -48,13 +51,13 @@ public:
 	CCArray *m_bone; 
 	CCArray *m_effect;
 	CCBoneClip *m_clip;
+	int frameIndex;
 
 private:
 	double interval;
 	Json *m_label;
 	bool isBatch;
 	bool isEffect;
-	
 };
 
 #endif //__LAYER_BONE_SPRITE_H__

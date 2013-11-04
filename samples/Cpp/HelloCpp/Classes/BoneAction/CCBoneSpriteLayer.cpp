@@ -67,6 +67,21 @@ bool CCBoneSpriteLayer::getLabel(const char *name, int &startFrame, int &endFram
 	return true;
 }
 
+const char *CCBoneSpriteLayer::getLabelNamebyFrame(int frame)
+{
+	int count = Json_getSize(m_label);
+	for(int i = 0;i < count;i++)
+	{
+		Json *lb = Json_getItemAt(m_label, i);
+		int start = Json_getItemAt(lb, 0)->valueint;
+		int end = Json_getItemAt(lb, 1)->valueint;
+		if(frame >= start && frame <= end)
+		{
+			return lb->name;
+		}
+	}
+	return NULL;
+}
 CCBone *CCBoneSpriteLayer::getBoneByName(const char *name)
 {
     if(m_bone != NULL && m_bone->count() > 0)
@@ -592,6 +607,7 @@ void CCBoneSpriteLayer::setBoneAction(const char *name)
 		{
 			CCEffect::setFrame(m_effect, start, 0);
 		}
+		frameIndex = start;
 	}
 	else
 	{
@@ -599,3 +615,16 @@ void CCBoneSpriteLayer::setBoneAction(const char *name)
 	}
 }
 
+const char *CCBoneSpriteLayer::getBoneAction()
+{
+	const char *name = getLabelNamebyFrame(frameIndex);
+	if(!name)
+	{
+		CCLog("frameindex %d no label", frameIndex);
+		return "";
+	}
+	else
+	{
+		return name;
+	}
+}

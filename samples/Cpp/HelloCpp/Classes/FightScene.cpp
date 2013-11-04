@@ -172,11 +172,7 @@ void FightScene::startAttack(CCObject *dd)
 	CCString *ff = (CCString *)dd;
 	CCSequence *gg = CCSequence::create(def->createAction(ff->getCString()), NULL);
 	def->runAction(gg);
-	CCSize size = def->getLayerSize();
-	CCLog("width:%f,height:%f,",size.width, size.height);
-	hpBar->removeFromParentAndCleanup(false);
-	hpBar->setPosition(ccp(500, (size.height)*2));
-	addChild(hpBar);
+	CCLog("%s", def->getBoneAction());
 }
 
 void FightScene::streakMove(CCObject *dd)

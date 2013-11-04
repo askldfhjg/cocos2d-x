@@ -35,6 +35,7 @@ public:
 	CCAction *testLayerAction();
 	CCAction *randomLayerAction();
 	CCAction *indexLayerAction(int index);
+	void setBoneAction(const char *name);
 	CCSize getLayerSize();
 	
 public:

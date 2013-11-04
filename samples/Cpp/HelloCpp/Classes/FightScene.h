@@ -9,6 +9,7 @@ class FightScene : public cocos2d::CCLayerColor
 public:
 	FightScene()
 		:def(NULL)
+		,hpBar(NULL)
 		,equipList(NULL)
 		,actionList(NULL)
 	{};
@@ -30,6 +31,7 @@ private:
 	void checkMontion();
 protected:
 	CCBoneSpriteLayer *def;
+	CCSprite *hpBar;
 	CCArray *equipList;
 	CCArray *actionList;
 	CCArray *motionList;

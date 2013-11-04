@@ -573,5 +573,29 @@ CCSize CCBoneSpriteLayer::getLayerSize()
 		ch->getContentSize();
 	}
 
-	return CCSizeMake(maxX - minX, maxY - minY);
+	return CCSizeMake(maxX - minX, maxY);
 }
+void CCBoneSpriteLayer::setBoneAction(const char *name)
+{
+	int count = 0;
+	int start, end;
+
+	bool hasLabel = getLabel(name, start, end);
+	if(hasLabel)
+	{
+		CCBone::setFrame(m_bone, start, 0);
+		if(m_clip)
+		{
+			m_clip->setFrame(start);
+		}
+		if(haveEffect())
+		{
+			CCEffect::setFrame(m_effect, start, 0);
+		}
+	}
+	else
+	{
+		CCLog("no label %s", name);
+	}
+}
+

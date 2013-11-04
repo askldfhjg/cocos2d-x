@@ -27,6 +27,7 @@ FightScene::~FightScene(void)
 {
 	equipList->removeAllObjects();
 	CC_SAFE_RELEASE(equipList);
+	CC_SAFE_RELEASE(hpBar);
 }
 
 bool FightScene::init()
@@ -171,9 +172,11 @@ void FightScene::startAttack(CCObject *dd)
 	CCString *ff = (CCString *)dd;
 	CCSequence *gg = CCSequence::create(def->createAction(ff->getCString()), NULL);
 	def->runAction(gg);
-	CCRect rect = def->boundingBox();
 	CCSize size = def->getLayerSize();
 	CCLog("width:%f,height:%f,",size.width, size.height);
+	hpBar->removeFromParentAndCleanup(false);
+	hpBar->setPosition(ccp(500, (size.height)*2));
+	addChild(hpBar);
 }
 
 void FightScene::streakMove(CCObject *dd)
@@ -206,11 +209,19 @@ void FightScene::afterAttack(CCObject *dd)
 	CCString *ff = (CCString *)dd;
 	CCBoneActionManager::sharedManager()->addAnimation(const_cast<char *>(ff->getCString()));
 	def = CCBoneSpriteLayer::create(ff->getCString(), "test01_mon_res");
+	hpBar = CCSprite::create("pic/hpbar.png");
+	hpBar->setAnchorPoint(ccp(0.5, 0.5));
+	hpBar->retain();
 	//def = CCBoneSpriteLayer::create(ff->getCString(), "AvatarEquip_defultM");
-	def->setPosition(ccp(500, 100));
-	//def->setScale(0.5f);
+	def->setPosition(ccp(500, 0));
+	def->setScale(2.0f);
 	this->addChild(def, 3);
 
+	def->setBoneAction("mon_idle");
+	CCSize size = def->getLayerSize();
+	hpBar->setPosition(ccp(500, (size.height)*2));
+	CCLog("width:%f,height:%f,",size.width, size.height);
+	addChild(hpBar);
 	CC_SAFE_RELEASE(actionList);
 	actionList = def->allLabel();
 	actionList->retain();

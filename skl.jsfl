@@ -68,7 +68,11 @@ for(var i =0;i < select.length;i++)
 {
 	var elem = select[i];
 	var ac = elem.libraryItem.linkageClassName;
-	if(elem.libraryItem.linkageClassName == "AvatarSkelM")
+	if(!ac)
+	{
+		ac = elem.libraryItem.name;
+	}
+	if(ac == "AvatarSkelM" || ac == "mon_start")
 	{
 		select = arrayRemove(select, i);
 		select.push(elem)
@@ -513,6 +517,10 @@ function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, e
 		}
 		else
 		{
+			if(layerType != "normal")
+			{
+				spriteList[layerName][0] = layerType;
+			}
 			spriteList[layerName][11] = endFrame;
 		}
 	}
@@ -597,7 +605,7 @@ function getEffectTrans(element)
 	setX(element, startX);
 	setY(element, startY);
 	element.rotation = oldRot;
-	return [name[name.length - 1], transXNormal, transYNormal];
+	return [name[name.length - 1], transXNormal, transYNormal, startX, startY];
 }
 
 function getEffect(elem, frameIndex, effectList, effectpng, layerType)
@@ -643,7 +651,7 @@ function getEffect(elem, frameIndex, effectList, effectpng, layerType)
 		{
 			effectList[kk] = {};
 			effectList[kk]["type"] = "mask";
-			effectList[kk]['info'] = [ttt[1], -ttt[2], elem.width, elem.height];
+			effectList[kk]['info'] = [ttt[1], -ttt[2], elem.width, elem.height, ttt[3], ttt[4]];
 		}
 
 	}
@@ -914,11 +922,41 @@ function rotInfo(rot1, rot2, divice, id)
 	}
 }
 
+function configCheck(contents, effectAction)
+{
+	var label = contents["label"];
+	for(var name in label)
+	{
+		var st = label[name][0];
+		for(var effectName in effectAction)
+		{
+			if(!effectAction[effectName].hasOwnProperty(st))
+			{
+				effectAction[effectName][st] = [0,0,1,1,0,0,0,0,""];
+			}
+		}
+		for(var boneName in contents)
+		{
+			if(boneName == "skl" || boneName == "label" || boneName == "effect")
+			{
+				continue;
+			}
+			if(!contents[boneName].hasOwnProperty(st))
+			{
+				contents[boneName][st] = [0,0,1,1,0,0,0,0];
+			}
+		}
+	}
+	return [contents, effectAction];
+}
 function saveMotionXML(alltoge, contents, png, effectpng, sprite, equipList, effectList, effectAction, haveMask, effectLayerOrder)
 {
 	if (!contents) {
 		return false;
 	}
+	var tmp = configCheck(contents, effectAction);
+	contents = tmp[0];
+	effectAction = tmp[1];
 	/*var fileURL = fl.browseForFolderURL("save", "fffffff");
 	if (!fileURL || !fileURL.length) {
 		return false;

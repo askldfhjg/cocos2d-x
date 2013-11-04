@@ -542,3 +542,36 @@ CCRenderTexture* CCBoneSpriteLayer::createStroke(CCSprite* label, int size, ccCo
 	//rt->setAnchorPoint(label->getAnchorPoint());
     return rt;
 }
+
+CCSize CCBoneSpriteLayer::getLayerSize()
+{
+	CCObject* child = NULL;
+	float minY = 66666666;
+	float maxY = -8888888;
+	float minX = 88888888;
+	float maxX = -8888888;
+	CCARRAY_FOREACH(m_bone, child)
+	{
+		CCBone *ch = (CCBone *)child;
+		CCRect rect = ch->boundingBox();
+		if(rect.getMinY() < minY)
+		{
+			minY = rect.getMinY();
+		}
+		if(rect.getMinX() < minX)
+		{
+			minX = rect.getMinX();
+		}
+		if(rect.getMaxY() > maxY)
+		{
+			maxY = rect.getMaxY();
+		}
+		if(rect.getMaxX() > maxX)
+		{
+			maxX = rect.getMaxX();
+		}
+		ch->getContentSize();
+	}
+
+	return CCSizeMake(maxX - minX, maxY - minY);
+}

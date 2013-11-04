@@ -127,12 +127,12 @@ Json *CCBoneActionManager::addAnimation(const char *name)
 		fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(path.c_str());
 		size = 0;
 		buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
-		root = Json_create(buffer);
+		Json *effectRoot = Json_create(buffer);
 		CC_SAFE_DELETE_ARRAY(buffer);
 		actionName = std::string(name) + "_effect";
 		CCString *key2 = CCString::create(actionName);
 		key2->retain();
-		m_pAnimationData->insert(char_json::value_type(key2, root));
+		m_pAnimationData->insert(char_json::value_type(key2, effectRoot));
 	}
 	return root;
 }

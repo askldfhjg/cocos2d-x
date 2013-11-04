@@ -35,6 +35,7 @@ public:
 	CCAction *testLayerAction();
 	CCAction *randomLayerAction();
 	CCAction *indexLayerAction(int index);
+	CCSize getLayerSize();
 	
 public:
 	bool getLabel(const char *name, int &startFrame, int &endFrame);

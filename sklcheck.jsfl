@@ -86,7 +86,7 @@ for(var i =0;i < lll;i++)
 	var asName = elem.libraryItem.linkageClassName;
 	if(asName == null)
 	{
-		elem.libraryItem.linkageClassName = elem.libraryItem.name;
+		//elem.libraryItem.linkageClassName = elem.libraryItem.name;
 		asName = elem.libraryItem.name;
 	}
 	getActionList(boneName, asName);
@@ -163,7 +163,7 @@ function getActionList(boneName, asName)
 			{
 				if(boneOtherLayer >= 4)
 				{
-					fl.trace(asName+" attacklayer over count");
+					//fl.trace(asName+" attacklayer over count");
 				}
 				currentLayer.name = "effect" + boneOtherLayer;
 				
@@ -303,10 +303,15 @@ function getFrameXML(labelLayerId, currentLayer, asName, flagggg, maskLayer) {
 			}
 			else
 			{
+
 				fl.getDocumentDOM().selectNone();
 				selectFrame(f);
 				elemfff.selected = true;
-
+				var transfg = getEffectTrans(elemfff);
+				elemfff.setTransformationPoint({x:transfg[2], y:transfg[3]});
+				fl.getDocumentDOM().selectNone();
+				selectFrame(f);
+				elemfff.selected = true;
 				fl.getDocumentDOM().enterEditMode('inPlace');
 				var timeline = fl.getDocumentDOM().getTimeline();
 				if(timeline.layers.length > 1)
@@ -343,7 +348,6 @@ function getFrameXML(labelLayerId, currentLayer, asName, flagggg, maskLayer) {
 					if(maskLayer)
 					{
 						fr.selected = true;
-						fl.trace(66666666666);
 						fl.getDocumentDOM().setFillColor('#cdcdcd');
 					}
 					if(fr.elementType == "shape")

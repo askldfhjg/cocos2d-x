@@ -119,21 +119,41 @@ float CCBone::getLeftOffset()
      return m_leftOffset;
 }
 
-float CCBone::getBrightness()
+void CCBone::setRedPercent(float red)
 {
-	return m_brightness;
+	if(red > 1)
+	{
+		red = 1.0f;
+	}
+	if(red < -1)
+	{
+		red = -1.0f;
+	}
+	m_redPercent = red;
 }
-void CCBone::setBrightness(float brightness)
+void CCBone::setGreenPercent(float green)
 {
-	if(brightness > 1)
+	if(green > 1)
 	{
-		brightness = 1.0f;
+		green = 1.0f;
 	}
-	if(brightness < -1)
+	if(green < -1)
 	{
-		brightness = -1.0f;
+		green = -1.0f;
 	}
-	m_brightness = brightness;
+	m_greenPercent = green;
+}
+void CCBone::setBluePercent(float blue)
+{
+	if(blue > 1)
+	{
+		blue = 1.0f;
+	}
+	if(blue < -1)
+	{
+		blue = -1.0f;
+	}
+	m_bluePercent = blue;
 }
 
 void CCBone::setAlpha(float alpha)
@@ -190,11 +210,14 @@ void CCBone::draw(void)
     diff = offsetof( ccV3F_C4B_T2F, colors);
     glVertexAttribPointer(kCCVertexAttrib_Color, 4, GL_UNSIGNED_BYTE, GL_TRUE, kQuadSize, (void*)(offset + diff));
 
-	GLint c0 = glGetUniformLocation(getShaderProgram()->getProgram(), "brightness");
-	glUniform1f(c0, m_brightness);
-
-	GLint c1 = glGetUniformLocation(getShaderProgram()->getProgram(), "alpha");
-	glUniform1f(c1, m_alpha);
+	GLint c0 = glGetUniformLocation(getShaderProgram()->getProgram(), "red");
+	glUniform1f(c0, m_redPercent);
+	GLint c1 = glGetUniformLocation(getShaderProgram()->getProgram(), "green");
+	glUniform1f(c1, m_greenPercent);
+	GLint c2 = glGetUniformLocation(getShaderProgram()->getProgram(), "blue");
+	glUniform1f(c2, m_bluePercent);
+	GLint c3 = glGetUniformLocation(getShaderProgram()->getProgram(), "alpha");
+	glUniform1f(c3, m_alpha);
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
@@ -255,9 +278,11 @@ void CCBone::setFrame(CCArray *boneArray, int frameInAll, int frameInAction)
 			float skewX = Json_getItemAt(source, 4)->valuefloat;
 			float skewY = Json_getItemAt(source, 5)->valuefloat;
 			float visable = Json_getItemAt(source, 6)->valuefloat;
-			float brightness = Json_getItemAt(source, 7)->valuefloat;
+			Json* color = Json_getItemAt(source, 7);
 
-			ch->setBrightness(brightness);
+			ch->setRedPercent(Json_getItemAt(color, 0)->valuefloat);
+			ch->setGreenPercent(Json_getItemAt(color, 1)->valuefloat);
+			ch->setBluePercent(Json_getItemAt(color, 2)->valuefloat);
 			float fX = 0;
 			float fY = 0;
 			if(ch->m_masked)

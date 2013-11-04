@@ -21,7 +21,9 @@ public:
 	CCBone()
 		:m_frame(NULL)
 		,m_pic(NULL)
-		,m_brightness(0)
+		,m_redPercent(0)
+		,m_greenPercent(0)
+		,m_bluePercent(0)
 		,m_startZOrder(0)
 		,m_picLowWeight(NULL)
 		,m_picNowWeight(NULL)
@@ -42,8 +44,9 @@ public:
 	float getLeftOffset();
 	void setStartArch(const CCPoint& anchor);
 	void Reset();
-	float getBrightness();
-	void setBrightness(float brightness);
+	void setRedPercent(float red);
+	void setGreenPercent(float green);
+	void setBluePercent(float blue);
 	void setAlpha(float alpha);
 	float getAlpha();
 	static CCGLProgram *getShader();
@@ -63,7 +66,9 @@ public:
 	int m_startZOrder;
 	CCSpriteFrame *m_pic;
 	Json *m_frame;
-	float m_brightness;
+	float m_redPercent;
+	float m_greenPercent;
+	float m_bluePercent;
 	float m_alpha;
 	CCBonePicWeight *m_picLowWeight;
 	CCBonePicWeight *m_picNowWeight;

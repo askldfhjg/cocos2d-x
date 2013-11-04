@@ -31,12 +31,17 @@ precision lowp float;						\n\
 varying vec4 v_fragmentColor;				\n\
 varying vec2 v_texCoord;					\n\
 uniform sampler2D CC_Texture0;				\n\
-uniform float brightness;					\n\
+uniform float red;							\n\
+uniform float blue;							\n\
+uniform float green;						\n\
 uniform float alpha;						\n\
 											\n\
 void main()									\n\
 {											\n\
 	vec4 textureColor = v_fragmentColor * texture2D(CC_Texture0, v_texCoord);			\n\
-	gl_FragColor = vec4((textureColor.rgb / textureColor.a + vec3(brightness)) * textureColor.a * alpha, textureColor.a * alpha); \n\
+	float r = (textureColor.r / textureColor.a + red) * textureColor.a * alpha;			\n\
+	float g = (textureColor.g / textureColor.a + green) * textureColor.a * alpha;		\n\
+	float b = (textureColor.b / textureColor.a + blue) * textureColor.a * alpha;		\n\
+	gl_FragColor = vec4(r, g, b, textureColor.a * alpha);								\n\
 }											\n\
 ";

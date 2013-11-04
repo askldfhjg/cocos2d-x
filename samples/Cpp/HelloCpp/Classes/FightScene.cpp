@@ -210,7 +210,7 @@ void FightScene::afterAttack(CCObject *dd)
 	hpBar->retain();
 	//def = CCBoneSpriteLayer::create(ff->getCString(), "AvatarEquip_defultM");
 	def->setPosition(ccp(500, 0));
-	def->setScale(2.0f);
+	//def->setScale(0.5f);
 	this->addChild(def, 3);
 
 	def->setBoneAction("mon_idle");

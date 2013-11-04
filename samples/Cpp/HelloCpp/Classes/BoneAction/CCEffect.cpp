@@ -110,10 +110,12 @@ void CCEffect::setFrame(CCArray *effectArray, int frameInAll, int frameInAction)
 			float skewX = Json_getItemAt(source, 4)->valuefloat;
 			float skewY = Json_getItemAt(source, 5)->valuefloat;
 			float visable = Json_getItemAt(source, 6)->valuefloat;
-			float brightness = Json_getItemAt(source, 7)->valuefloat;
+			Json* color = Json_getItemAt(source, 7);
 			const char *pic = Json_getItemAt(source, 8)->valuestring;
 
-			ch->setBrightness(brightness);
+			ch->setRedPercent(Json_getItemAt(color, 0)->valuefloat);
+			ch->setGreenPercent(Json_getItemAt(color, 1)->valuefloat);
+			ch->setBluePercent(Json_getItemAt(color, 2)->valuefloat);
 			ch->setPosition(ccp(ch->m_startPosition.x + posX, ch->m_startPosition.y + posY));
 			ch->setRotationX(ch->m_fStartAngleX + skewX);
 			ch->setRotationY(ch->m_fStartAngleY + skewY);

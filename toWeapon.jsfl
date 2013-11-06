@@ -126,7 +126,13 @@ function getTransformationPointForElement(element)
 	element.selected = oldSelected;
 	return pt;
 }
-
+function conventMv(element)
+{
+	var oldSelected = element.selected;
+	element.selected = true;
+	fl.getDocumentDOM().convertToSymbol('movie clip', '', 'center');
+	element.selected = oldSelected;
+}
 function setTransformationPointForElement(element, transPoint)
 {
 	var oldSelected = element.selected;

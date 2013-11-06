@@ -9,7 +9,10 @@ for (var i = elem.length - 1; i >= 0; i--) {
 		document.enterEditMode('inPlace');
 	}
 };*/
-
+var boneName = ["weapon",
+				"hair",
+				"weaponoff"];
+var actionList = {};
 fl.getDocumentDOM().setTransformationPoint({x:0, y:0});
 
 var file = fl.configURI + 'Commands/json2.jsfl';
@@ -31,6 +34,10 @@ function getActionList(startIndex)
 		if(currentLayer.name.toLowerCase() == "label") {
 			continue;
 		}
+		if(inArray(boneName, currentLayer.name.toLowerCase()))
+		{
+			continue;
+		}
 		selectLayer(layerIndex);
 		selectFrame(0);
 		var currentFrame = frames[0];
@@ -38,6 +45,10 @@ function getActionList(startIndex)
 		{
 			spriteList[currentLayer.name.toLowerCase()] = [];
 			continue;
+		}
+		if(currentFrame.elements[0].libraryItem instanceof BitmapItem)
+		{
+			conventMv(currentFrame.elements[0]);
 		}
 		var tmp = getSourceXML(currentFrame.elements[0], currentLayer.name.toLowerCase(), spriteList, exportPng);
 		spriteList = tmp['spriteList'];
@@ -84,7 +95,15 @@ function getSourceXML(element, layerName, spriteList, exportPng){
 	setY(element, startY);
 
 	setTransformationPointForElement(element, orgPoint);
-	spriteList[layerName] = [name[name.length - 1]+"0000", leftOffset, topOffset];
+	if(element.libraryItem instanceof BitmapItem)
+    {
+    	var name = name[name.length - 1];
+    }
+    else
+    {
+    	var name = name[name.length - 1]+"0000";
+    }
+	spriteList[layerName] = [name, leftOffset, topOffset];
 	return {"exportPng":exportPng, "spriteList":spriteList};
 }
 function selectFrame(frameIndex) {
@@ -108,7 +127,13 @@ function getTransformationPointForElement(element)
 	element.selected = oldSelected;
 	return pt;
 }
-
+function conventMv(element)
+{
+	var oldSelected = element.selected;
+	element.selected = true;
+	fl.getDocumentDOM().convertToSymbol('movie clip', '', 'center');
+	element.selected = oldSelected;
+}
 function setTransformationPointForElement(element, transPoint)
 {
 	var oldSelected = element.selected;
@@ -208,7 +233,8 @@ function saveMotionXML(png, sprite)
 	if (!fileURL || !fileURL.length) {
 		return false;
 	}*/
-	var fileURL = "file:///E|/equipview/ipad";
+	//var fileURL = "file:///E|/equipview/ipad";
+	var fileURL = fl.browseForFolderURL("save", "fffffff");
 	if(fileURL.charAt(fileURL.length-1) != '/')
 	{
 		fileURL += '/';
@@ -226,8 +252,14 @@ function saveMotionXML(png, sprite)
 
 	var index = 0;
 	for (var j = 0; j < png.length; j++) {
-		exporter.addSymbol(png[j].libraryItem);
-		fl.trace(png[j].libraryItem.name);
+		if(png[j].libraryItem instanceof BitmapItem)
+	    {
+	    	exporter.addBitmap(png[j].libraryItem);
+	    }
+	    else
+	    {
+	    	exporter.addSymbol(png[j].libraryItem);
+	    }
 	}
 	
 	var name = fl.getDocumentDOM().name.split(".")[0];

@@ -158,7 +158,7 @@ function getActionList(startIndex, xOffset, yOffset, archX, archY, exportPng, ef
 							"skewX" : 0,
 							"skewY" : 0,
 							"colorMode" : 0,
-							"brightness" : 0,
+							"brightness" : [0,0,0],
 							"pic" :"",
 							"transX" : 0,
 							"transY" : 0,
@@ -305,6 +305,7 @@ function getFrameXML(frame, frameIndex, frames, startStatus, lastFrameStatus, cu
 			}
 			effectAction[name][end + startIndex] = createEffectTransformInfo(endStatus);
 		}
+		fl.trace(endStatus);
 	}
 	else if(!statusEqual(endStatus, lastFrameStatus)) {
 		//actionList[currentFrame.elements[0].name][end + startIndex] = createTransformInfo(endStatus, end);
@@ -346,7 +347,7 @@ function getTransform(element, startStatus)
 		"skewX" : 0,
 		"skewY" : 0,
 		"colorMode" : 0,
-		"brightness" :0,
+		"brightness" :[0,0,0],
 		"tranX" :0,
 		"tranY" :0,
 	};
@@ -373,7 +374,11 @@ function getTransform(element, startStatus)
 
 	var ggg = getColorXML(element);
 	result.colorMode = ggg[1];
-	result.brightness = ggg[0] - startStatus.brightness;
+	result.brightness = [];
+	for(var i = 0;i <startStatus.brightness.length;i++)
+	{
+		result.brightness[i] = ggg[0][i] - startStatus.brightness[i];
+	}
 	if(result.positionY != 0)
 	{
 		result.positionY = -result.positionY;
@@ -383,35 +388,40 @@ function getTransform(element, startStatus)
 
 function getColorXML(element)
 {
-	if (!element) return 0;
+	if (!element) return [[0,0,0], 0];
 	var colorMode = element.colorMode;
 	if (!colorMode)
-		return 1;
+		return [[0,0,0], 1];
 	var visable = element.visible;
 	if(visable === false)
 	{
-		return 0;
+		return [[0,0,0], 0];
 	}
 	switch (colorMode)
 	{
 		case 'none':
-			return [0, 1];
+			return [[0,0,0], 1];
 			break;
 		case 'brightness':
-			return [(element.brightness/100), 1];
+			var lt = roundToTwip(element.brightness/100);
+			return [[lt,lt,lt], 1];
 			break;
 		case 'tint':
-			return [0, 1];
+			return [[0,0,0], 1];
 			break;
 		case 'alpha':
-			return [0, (element.colorAlphaPercent/100)];
+			return [[0,0,0], roundToTwip(element.colorAlphaPercent/100)];
 			break;
 		case 'advanced':
-			return [0, (element.colorAlphaPercent/100*255+element.colorAlphaAmount)/255];
+			var red = roundToTwip(element.colorRedAmount/255);
+			var green = roundToTwip(element.colorGreenAmount/255);
+			var blue = roundToTwip(element.colorBlueAmount/255);
+			var alf = roundToTwip((element.colorAlphaPercent/100*255+element.colorAlphaAmount)/255);
+			return [[red,green,blue], alf];
 			break;
 		default:
 			alert("54545333");
-			return [0, 1];
+			return [[0,0,0], 1];
 	}
 }
 function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, equipList, exportPng, effectpng, xOffset, yOffset, endFrame, show, newLayer, layerType){
@@ -438,7 +448,8 @@ function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, e
 	element.skewY = 0;
 	element.skewX = 0;
 	var transPoint = getTransformationPointForElement(element);
-
+	fl.trace(transPoint.x);
+	fl.trace(transPoint.y);
 	var mat = element.matrix;
 	//var identityMatrix = {a:1, b:0, c:0, d:1, tx:mat.tx, ty:mat.ty};
 	//element.matrix = identityMatrix;
@@ -534,7 +545,7 @@ function getSourceXML(element, zIndex, startFrameIndex, layerName, spriteList, e
 				"skewX" : 0,
 				"skewY" : 0,
 				"colorMode" : 0,
-				"brightness" : 0,
+				"brightness" : [0,0,0],
 				"tranX" :0,
 				"tranY" :0,
 			};
@@ -611,7 +622,6 @@ function getEffectTrans(element)
 function getEffect(elem, frameIndex, effectList, effectpng, layerType)
 {
 	var kk = elem.libraryItem.name.split('/');
-	fl.trace(elem.libraryItem.name);
 	kk = kk[kk.length - 1];
 	if(!effectList.hasOwnProperty(kk))
 	{
@@ -663,6 +673,7 @@ function createTransformInfo(result) {
 }
 
 function createEffectTransformInfo(result) {
+	fl.trace(result.brightness);
 	return [result.tranX, result.tranY, result.scaleX, result.scaleY, result.skewX, result.skewY, result.colorMode, result.brightness, result.pic];
 }
 
@@ -706,9 +717,15 @@ function getStatusDivise(rotConfig, status1, status2, divice , id, tween) {
 	var rotX = rotInfo(status1.skewX, status2.skewX, divice, id);
 	var rotY = rotInfo(status1.skewY, status2.skewY, divice, id);
 	var alf = status1.colorMode;
+	var lt = status1.brightness;
 	if(tween)
 	{
 		alf = roundToTwip(status1.colorMode + (status2.colorMode - status1.colorMode) / divice * id);
+		lt = [];
+		for(var i = 0;i <status1.brightness.length;i++)
+		{
+			lt[i] = roundToTwip(status1.brightness[i] + (status2.brightness[i] - status1.brightness[i]) / divice * id);
+		}
 	}
 	return {
 		"positionX" : roundToTwip(status1.positionX + (status2.positionX - status1.positionX) / divice * id),
@@ -720,7 +737,7 @@ function getStatusDivise(rotConfig, status1, status2, divice , id, tween) {
 		"skewX" : roundToTwip(status1.skewX + rotX),
 		"skewY" : roundToTwip(status1.skewY + rotY),
 		"colorMode" : alf,
-		"brightness" : roundToTwip(status1.brightness + (status2.brightness - status1.brightness) / divice * id),
+		"brightness" : lt,
 		"pic" : status1.pic,
 		"transX" :status1.transX,
 		"transY" :status1.trasnY,
@@ -756,7 +773,13 @@ function setTransformationPointForElement(element, transPoint)
 	element.setTransformationPoint(transPoint);
 	element.selected = oldSelected;
 }
-
+function conventMv(element)
+{
+	var oldSelected = element.selected;
+	element.selected = true;
+	fl.getDocumentDOM().convertToSymbol('movie clip', '', 'center');
+	element.selected = oldSelected;
+}
 function getX(element)
 {
 	return roundToTwip(element.transformX);
@@ -932,7 +955,7 @@ function configCheck(contents, effectAction)
 		{
 			if(!effectAction[effectName].hasOwnProperty(st))
 			{
-				effectAction[effectName][st] = [0,0,1,1,0,0,0,0,""];
+				effectAction[effectName][st] = [0,0,1,1,0,0,0,[0,0,0],""];
 			}
 		}
 		for(var boneName in contents)
@@ -943,7 +966,7 @@ function configCheck(contents, effectAction)
 			}
 			if(!contents[boneName].hasOwnProperty(st))
 			{
-				contents[boneName][st] = [0,0,1,1,0,0,0,0];
+				contents[boneName][st] = [0,0,1,1,0,0,0,[0,0,0]];
 			}
 		}
 	}

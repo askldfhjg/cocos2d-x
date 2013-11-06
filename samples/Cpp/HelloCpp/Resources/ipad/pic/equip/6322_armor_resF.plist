@@ -4,288 +4,250 @@
 	<dict>
 		<key>frames</key>
 		<dict>
-			<key>1-fronthand_defult_M0000</key>
+			<key>1-fronthand_6322_armor_F0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{53,160}}</string>
+				<string>{{0,0},{51,156}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{53,160}</string>
+				<string>{51,156}</string>
 				<key>spriteSourceSize</key>
-				<string>{53,160}</string>
+				<string>{51,156}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{451,168},{53,160}}</string>
+				<string>{{88,245},{51,156}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>10-hip_defult_M0000</key>
+			<key>10-hip_6322_armor_F0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{111,75}}</string>
+				<string>{{0,0},{121,87}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{111,75}</string>
+				<string>{121,87}</string>
 				<key>spriteSourceSize</key>
-				<string>{111,75}</string>
+				<string>{121,87}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{84,429},{111,75}}</string>
+				<string>{{372,319},{121,87}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>11-chest_defult_M0000</key>
+			<key>11-chest_6322_armor_F0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{176,238}}</string>
+				<string>{{0,0},{205,244}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{176,238}</string>
+				<string>{205,244}</string>
 				<key>spriteSourceSize</key>
-				<string>{176,238}</string>
+				<string>{205,244}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{0,117},{176,238}}</string>
+				<string>{{0,0},{205,244}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>12-backfoot_defult_M0000</key>
+			<key>12-backfoot_6322_armor_F0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{84,71}}</string>
+				<string>{{0,0},{81,73}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{84,71}</string>
+				<string>{81,73}</string>
 				<key>spriteSourceSize</key>
-				<string>{84,71}</string>
+				<string>{81,73}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{84,356},{84,71}}</string>
+				<string>{{197,324},{81,73}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>13-backshin_defult_M0000</key>
+			<key>13-backshin_6322_armor_F0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{77,187}}</string>
+				<string>{{0,0},{46,175}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{77,187}</string>
+				<string>{46,175}</string>
 				<key>spriteSourceSize</key>
-				<string>{77,187}</string>
+				<string>{46,175}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{292,117},{77,187}}</string>
+				<string>{{465,0},{46,175}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>14-backthigh_defult_M0000</key>
+			<key>14-backthigh_6322_armor_F0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{79,169}}</string>
+				<string>{{0,0},{84,184}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{79,169}</string>
+				<string>{84,184}</string>
 				<key>spriteSourceSize</key>
-				<string>{79,169}</string>
+				<string>{84,184}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{177,259},{79,169}}</string>
+				<string>{{206,139},{84,184}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>16-backhand_defult_M0000</key>
+			<key>16-backhand_6322_armor_F0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{78,130}}</string>
+				<string>{{0,0},{87,134}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{78,130}</string>
+				<string>{87,134}</string>
 				<key>spriteSourceSize</key>
-				<string>{78,130}</string>
+				<string>{87,134}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{356,345},{78,130}}</string>
+				<string>{{0,245},{87,134}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>17-backshoulder_defult_M0000</key>
+			<key>17-backshoulder_6322_armor_F0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{65,132}}</string>
+				<string>{{0,0},{56,129}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{65,132}</string>
+				<string>{56,129}</string>
 				<key>spriteSourceSize</key>
-				<string>{65,132}</string>
+				<string>{56,129}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{435,345},{65,132}}</string>
+				<string>{{140,245},{56,129}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>2-frontshoulder_defult_M0000</key>
+			<key>2-frontshoulder_6322_armor_F0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{98,126}}</string>
+				<string>{{0,0},{100,122}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{98,126}</string>
+				<string>{100,122}</string>
 				<key>spriteSourceSize</key>
-				<string>{98,126}</string>
+				<string>{100,122}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{257,305},{98,126}}</string>
+				<string>{{372,196},{100,122}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>4-head-hair_defult_M0000</key>
+			<key>6-robe_6322_armor_F0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{114,141}}</string>
+				<string>{{0,0},{151,138}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{114,141}</string>
+				<string>{151,138}</string>
 				<key>spriteSourceSize</key>
-				<string>{114,141}</string>
+				<string>{151,138}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{177,117},{114,141}}</string>
+				<string>{{206,0},{151,138}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>5-head-face_defult_M0000</key>
+			<key>7-idlefoot_6322_armor_F0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{83,106}}</string>
+				<string>{{0,0},{51,97}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{83,106}</string>
+				<string>{51,97}</string>
 				<key>spriteSourceSize</key>
-				<string>{83,106}</string>
+				<string>{51,97}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{0,356},{83,106}}</string>
+				<string>{{140,375},{51,97}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>7-idlefoot_defult_M0000</key>
+			<key>8-frontshin_6322_armor_F0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{49,98}}</string>
+				<string>{{0,0},{80,190}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{49,98}</string>
+				<string>{80,190}</string>
 				<key>spriteSourceSize</key>
-				<string>{49,98}</string>
+				<string>{80,190}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{196,429},{49,98}}</string>
+				<string>{{291,196},{80,190}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
-			<key>8-frontshin_defult_M0000</key>
+			<key>9-frontthigh_6322_armor_F0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{80,176}}</string>
+				<string>{{0,0},{106,195}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{80,176}</string>
+				<string>{106,195}</string>
 				<key>spriteSourceSize</key>
-				<string>{80,176}</string>
+				<string>{106,195}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{370,168},{80,176}}</string>
-				<key>textureRotated</key>
-				<false/>
-			</dict>
-			<key>9-frontthigh_defult_M0000</key>
-			<dict>
-				<key>aliases</key>
-				<array/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{95,167}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
-				<string>{95,167}</string>
-				<key>spriteSourceSize</key>
-				<string>{95,167}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{401,0},{95,167}}</string>
-				<key>textureRotated</key>
-				<false/>
-			</dict>
-			<key>元件 10000</key>
-			<dict>
-				<key>aliases</key>
-				<array/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{400,116}}</string>
-				<key>spriteOffset</key>
-				<string>{0,0}</string>
-				<key>spriteSize</key>
-				<string>{400,116}</string>
-				<key>spriteSourceSize</key>
-				<string>{400,116}</string>
-				<key>spriteTrimmed</key>
-				<false/>
-				<key>textureRect</key>
-				<string>{{0,0},{400,116}}</string>
+				<string>{{358,0},{106,195}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
@@ -295,13 +257,13 @@
 			<key>format</key>
 			<integer>3</integer>
 			<key>size</key>
-			<string>{512,1024}</string>
+			<string>{512,512}</string>
 			<key>target</key>
 			<dict>
 				<key>name</key>
-				<string>AvatarDefult_M.png</string>
+				<string>6322_armor_resF.png</string>
 				<key>textureFileName</key>
-				<string>AvatarDefult_M</string>
+				<string>6322_armor_resF</string>
 				<key>textureFileExtension</key>
 				<string>png</string>
 				<key>premultipliedAlpha</key>

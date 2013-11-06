@@ -150,6 +150,14 @@ function getActionList(boneName, asName)
 			continue;
 		}
 		if(currentLayer.name.toLowerCase() == "shadow") {
+			selectLayer(layerIndex);
+			selectFrame(0);
+			var frames = currentLayer.frames;
+			var currentFrame = frames[0];
+			if(currentFrame.elements[0].libraryItem instanceof BitmapItem)
+			{
+				conventMv(currentFrame.elements[0]);
+			}
 			continue;
 		}
 		if(currentLayer.layerType == "mask")
@@ -171,6 +179,21 @@ function getActionList(boneName, asName)
 				flag = true
 				boneOtherLayer++;
 				effectLayerFrameCount.push(layerIndex);
+			}
+			else
+			{
+				selectLayer(layerIndex);
+				selectFrame(0);
+				var frames = currentLayer.frames;
+				var currentFrame = frames[0];
+				if(currentFrame.elements[0])
+				{
+					if(currentFrame.elements[0].libraryItem instanceof BitmapItem)
+					{
+						conventMv(currentFrame.elements[0]);
+					}
+				}
+
 			}
 		}
 
@@ -592,5 +615,14 @@ function setTransformationPointForElement(element, transPoint)
 	var oldSelected = element.selected;
 	element.selected = true;
 	element.setTransformationPoint(transPoint);
+	element.selected = oldSelected;
+}
+
+
+function conventMv(element)
+{
+	var oldSelected = element.selected;
+	element.selected = true;
+	fl.getDocumentDOM().convertToSymbol('movie clip', '', 'center');
 	element.selected = oldSelected;
 }

@@ -146,6 +146,8 @@ void FightScene::menuSpeedCallback(CCObject* pSender)
 void FightScene::menuCloseCallback(CCObject* pSender)
 {
 	m_pActionManager->removeAllActionsFromTarget(def);
+	CCSpriteFrameCache::sharedSpriteFrameCache()->removeUnusedSpriteFrames();
+	CCTextureCache::sharedTextureCache()->removeAllTextures();
 	checkSkl();
 	checkMontion();
 	if(def != NULL)
@@ -204,19 +206,18 @@ void FightScene::afterAttack(CCObject *dd)
 	}
 	CCString *ff = (CCString *)dd;
 	CCBoneActionManager::sharedManager()->addAnimation(const_cast<char *>(ff->getCString()));
-	def = CCBoneSpriteLayer::create(ff->getCString(), "test01_mon_res");
+	//def = CCBoneSpriteLayer::create(ff->getCString(), "test01_mon_res");
 	hpBar = CCSprite::create("pic/hpbar.png");
 	hpBar->setAnchorPoint(ccp(0.5, 0.5));
 	hpBar->retain();
-	//def = CCBoneSpriteLayer::create(ff->getCString(), "AvatarEquip_defultM");
+	def = CCBoneSpriteLayer::create(ff->getCString(), "AvatarDefult_M");
 	def->setPosition(ccp(500, 0));
-	//def->setScale(0.5f);
+	def->setScale(0.7f);
 	this->addChild(def, 3);
 
 	def->setBoneAction("mon_idle");
 	CCSize size = def->getLayerSize();
 	hpBar->setPosition(ccp(500, (size.height)*2));
-	CCLog("width:%f,height:%f,",size.width, size.height);
 	addChild(hpBar);
 	CC_SAFE_RELEASE(actionList);
 	actionList = def->allLabel();
@@ -276,7 +277,7 @@ void FightScene::checkSkl()
 				char str[MAX_PATH]={0};
 				WideCharToMultiByte(CP_ACP, 0, FindFileData.cFileName, sizeof(FindFileData.cFileName) + 1, str, MAX_PATH, NULL, NULL);
 				std::string fgg = std::string(str);
-				if(fgg == "AvatarEquip_defultM.equip")
+				if(fgg == "AvatarEquip_defultM.equip" || fgg == "test01_mon_res.equip" || fgg == "AvatarDefult_M.equip")
 				{
 					continue;
 				}

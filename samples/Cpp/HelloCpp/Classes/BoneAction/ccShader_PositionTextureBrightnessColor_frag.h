@@ -35,13 +35,20 @@ uniform float red;							\n\
 uniform float blue;							\n\
 uniform float green;						\n\
 uniform float alpha;						\n\
-											\n\
+uniform vec2 tcOffset[25];					\n\
 void main()									\n\
 {											\n\
 	vec4 textureColor = v_fragmentColor * texture2D(CC_Texture0, v_texCoord);			\n\
 	float r = (textureColor.r / textureColor.a + red) * textureColor.a * alpha;			\n\
 	float g = (textureColor.g / textureColor.a + green) * textureColor.a * alpha;		\n\
 	float b = (textureColor.b / textureColor.a + blue) * textureColor.a * alpha;		\n\
-	gl_FragColor = vec4(r, g, b, textureColor.a * alpha);								\n\
-}											\n\
+	vec4 sample[25];																	\n\
+	float minValue = 666;\n\
+	for (int i = 0; i < 25; i++)\n\
+	{\n\
+		sample[i] = texture2D(CC_Texture0, v_texCoord + tcOffset[i]);    \n\
+		minValue = min(sample[i].a, minValue);\n\
+	}\n\
+	gl_FragColor = vec4(r,g,b,textureColor.a * alpha);\n\
+}\n\
 ";

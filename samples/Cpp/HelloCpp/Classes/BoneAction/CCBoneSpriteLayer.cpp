@@ -267,6 +267,7 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
     {
         return false;
     }
+
     CCSpriteFrameCache *cache = CCSpriteFrameCache::sharedSpriteFrameCache();
 	Json *animation = CCBoneActionManager::sharedManager()->getAnimation(animationName);
 	Json *root = Json_getItem(animation, "skl");
@@ -369,6 +370,7 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 		int endFrame = Json_getItemAt(tmp, 11)->valueint;
 		float brightness = Json_getItemAt(tmp, 12)->valuefloat;
 
+		CCSprite *gg;
 		bool havePic = false;
 		CCBone *heads = NULL;
 		if(haveSkl)
@@ -384,6 +386,7 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 					float picTopOffset = Json_getItemAt(info, 2)->valuefloat;
 
 					heads = CCBone::createWithSpriteFrame(cache->spriteFrameByName(pic), tmpString);
+					gg = CCSprite::createWithSpriteFrame(cache->spriteFrameByName(pic));
 
 					CCRect rect = heads->getTextureRect();
 					float archX = (picLeftOffset + leftOffset) / rect.size.width;
@@ -420,15 +423,21 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 				if(haveMask && layerType == "masked")
 				{
 					heads->m_masked = true;
-					m_clip->addChild(heads, order);
+					//m_clip->addChild(heads, order);
 				}
 				else
 				{
 					this->addChild(heads, order);
+					gg->setAnchorPoint(heads->getAnchorPoint());
+					gg->setPosition(heads->getPosition());
+					//gg->setScale(heads->getScale());
+					gg->setRotation(heads->getRotation());
+					this->addChild(gg, order+1);
+
 				}
 				
-				CCRenderTexture* tex = createStroke(heads, 2, ccc3(0, 255, 0), 50);
-				this->addChild(tex, heads->getZOrder() - 1);
+				//CCRenderTexture* tex = createStroke(heads, 7, ccc3(0, 255, 0), 50);
+				//this->addChild(tex, heads->getZOrder() - 1);
 			}
 		}
 		heads->m_frame = Json_getItem(animation, heads->getName());
@@ -516,45 +525,46 @@ CCAction *CCBoneSpriteLayer::runAction(CCAction* action, bool stopBefore)
 
 CCRenderTexture* CCBoneSpriteLayer::createStroke(CCSprite* label, int size, ccColor3B color, GLubyte opacity)
 {
-    CCRenderTexture* rt = CCRenderTexture::create(
-        label->getTexture()->getContentSize().width + size * 2,
-        label->getTexture()->getContentSize().height+size * 2
-        );
-
+	struct cc_timeval now; 
+	CCTime::gettimeofdayCocos2d(&now, NULL); 
+	CCLog("%d,%d", now.tv_sec, now.tv_usec);
+	CCRenderTexture* rt = CCRenderTexture::create(label->getTexture()->getContentSize().width + size * 2,
+                                                    label->getTexture()->getContentSize().height+size * 2);
     CCPoint originalPos = label->getPosition();
     ccColor3B originalColor = label->getColor();
     GLubyte originalOpacity = label->getOpacity();
-    bool originalVisibility = label->isVisible();
     label->setColor(color);
     label->setOpacity(opacity);
-    label->setVisible(true);
+    bool originalVisibility = label->isVisible();
     ccBlendFunc originalBlend = label->getBlendFunc();
     ccBlendFunc bf = {GL_SRC_ALPHA, GL_ONE};
     label->setBlendFunc(bf);
     CCPoint bottomLeft = ccp(
-        label->getTexture()->getContentSize().width * label->getAnchorPoint().x + size, 
-        label->getTexture()->getContentSize().height * label->getAnchorPoint().y + size);
-    CCPoint positionOffset= ccp(
-        - label->getTexture()->getContentSize().width / 2,
-        - label->getTexture()->getContentSize().height / 2);
+                                label->getTexture()->getContentSize().width * label->getAnchorPoint().x + size,
+                                label->getTexture()->getContentSize().height * label->getAnchorPoint().y + size);
+    CCPoint positionOffset = CCPointZero;
+	positionOffset.x = (label->getAnchorPoint().x - 0.5)*label->getTexture()->getContentSize().width;
+	positionOffset.y = (label->getAnchorPoint().y - 0.5)*label->getTexture()->getContentSize().height;
     CCPoint position = ccpSub(originalPos, positionOffset);
-    rt->begin();
-    for (int i=0; i<360; i+= 15) // you should optimize that for your needs
-    {
-        label->setPosition(
-            ccp(bottomLeft.x + sin(CC_DEGREES_TO_RADIANS(i))*size, bottomLeft.y + cos(CC_DEGREES_TO_RADIANS(i))*size)
-            );
-        label->visit();
-    }
-    rt->end();
-
+	rt->begin();
+	for (int i=0; i<360; i+= 15) // you should optimize that for your needs
+	{
+		label->setPosition(
+			ccp(bottomLeft.x + sin(CC_DEGREES_TO_RADIANS(i))*size, bottomLeft.y + cos(CC_DEGREES_TO_RADIANS(i))*size)
+			);
+		label->visit();
+	}
+	rt->end();
     label->setPosition(originalPos);
     label->setColor(originalColor);
     label->setBlendFunc(originalBlend);
-	label->setVisible(originalVisibility);
+    label->setVisible(originalVisibility);
     label->setOpacity(originalOpacity);
-    rt->setPosition(ccp(0,0));
-	//rt->setAnchorPoint(label->getAnchorPoint());
+    rt->setPosition(position);
+    rt->getSprite()->getTexture()->setAntiAliasTexParameters();
+	CCTime::gettimeofdayCocos2d(&now, NULL); 
+	CCLog("%d,%d", now.tv_sec, now.tv_usec);
+	CCLog("++++++++++++++++++++++++");
     return rt;
 }
 

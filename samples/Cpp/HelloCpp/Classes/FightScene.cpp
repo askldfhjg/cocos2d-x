@@ -32,7 +32,7 @@ FightScene::~FightScene(void)
 
 bool FightScene::init()
 {
-	if (!CCLayerColor::initWithColor(ccc4(214, 214, 214, 255)))
+	if (!CCLayerColor::initWithColor(ccc4(215, 215, 215, 255)))
 	//if (!CCLayer::init())
     {
         return false;
@@ -119,7 +119,13 @@ bool FightScene::init()
 	motionLayer->setAnchorPoint(ccp(0, 0));
 	motionLayer->setPosition(ccp(visibleSize.width-200, 0));
 	this->addChild(motionLayer);
-    return true;
+    
+
+	/*CCSprite *ff = CCSprite::create("pic/CloseNormal.png");
+	ff->setAnchorPoint(ccp(0.3, 0.8));
+	ff->setPosition(ccp(400, 400));
+	addChild(ff, 666);*/
+	return true;
 }
 
 void FightScene::menuSpeedCallback(CCObject* pSender)
@@ -419,44 +425,39 @@ void FightScene::checkMontion()
 
 CCRenderTexture* FightScene::createStroke(CCSprite* label, int size, ccColor3B color, GLubyte opacity)
 {
-    CCRenderTexture* rt = CCRenderTexture::create(
-        label->getTexture()->getContentSize().width + size * 2,
-        label->getTexture()->getContentSize().height+size * 2
-        );
-
-    CCPoint originalPos = label->getPosition();
-    ccColor3B originalColor = label->getColor();
-    GLubyte originalOpacity = label->getOpacity();
-    bool originalVisibility = label->isVisible();
-    label->setColor(color);
-    label->setOpacity(opacity);
-    label->setVisible(true);
-    ccBlendFunc originalBlend = label->getBlendFunc();
-    ccBlendFunc bf = {GL_SRC_ALPHA, GL_ONE};
-    label->setBlendFunc(bf);
-    CCPoint bottomLeft = ccp(
-        label->getTexture()->getContentSize().width * label->getAnchorPoint().x + size, 
-        label->getTexture()->getContentSize().height * label->getAnchorPoint().y + size);
-    CCPoint positionOffset= ccp(
-        - label->getTexture()->getContentSize().width / 2,
-        - label->getTexture()->getContentSize().height / 2);
-    CCPoint position = ccpSub(originalPos, positionOffset);
-    rt->begin();
-    for (int i=0; i<360; i+= 15) // you should optimize that for your needs
-    {
-        label->setPosition(
-            ccp(bottomLeft.x + sin(CC_DEGREES_TO_RADIANS(i))*size, bottomLeft.y + cos(CC_DEGREES_TO_RADIANS(i))*size)
-            );
-        label->visit();
+        CCRenderTexture* rt = CCRenderTexture::create(label->getTexture()->getContentSize().width + size * 2,
+                                                      label->getTexture()->getContentSize().height+size * 2);
+        CCPoint originalPos = label->getPosition();
+        ccColor3B originalColor = label->getColor();
+        GLubyte originalOpacity = label->getOpacity();
+        label->setColor(color);
+        label->setOpacity(opacity);
+        bool originalVisibility = label->isVisible();
+        ccBlendFunc originalBlend = label->getBlendFunc();
+        ccBlendFunc bf = {GL_SRC_ALPHA, GL_ONE};
+        label->setBlendFunc(bf);
+        CCPoint bottomLeft = ccp(
+                                 label->getTexture()->getContentSize().width * label->getAnchorPoint().x + size,
+                                 label->getTexture()->getContentSize().height * label->getAnchorPoint().y + size);
+        CCPoint positionOffset = CCPointZero;
+		positionOffset.x = (label->getAnchorPoint().x - 0.5)*label->getTexture()->getContentSize().width;
+		positionOffset.y = (label->getAnchorPoint().y - 0.5)*label->getTexture()->getContentSize().height;
+        CCPoint position = ccpSub(originalPos, positionOffset);
+		rt->begin();
+		for (int i=0; i<360; i+= 15) // you should optimize that for your needs
+		{
+			label->setPosition(
+				ccp(bottomLeft.x + sin(CC_DEGREES_TO_RADIANS(i))*size, bottomLeft.y + cos(CC_DEGREES_TO_RADIANS(i))*size)
+				);
+			label->visit();
+		}
+		rt->end();
+        label->setPosition(originalPos);
+        label->setColor(originalColor);
+        label->setBlendFunc(originalBlend);
+        label->setVisible(originalVisibility);
+        label->setOpacity(originalOpacity);
+        rt->setPosition(position);
+        rt->getSprite()->getTexture()->setAntiAliasTexParameters();
+        return rt;
     }
-    rt->end();
-
-    label->setPosition(originalPos);
-    label->setColor(originalColor);
-    label->setBlendFunc(originalBlend);
-	label->setVisible(originalVisibility);
-    label->setOpacity(originalOpacity);
-    rt->setPosition(position);
-
-    return rt;
-}

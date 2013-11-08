@@ -194,6 +194,20 @@ void CCBone::draw(void)
     }
 
     ccGLEnableVertexAttribs( kCCVertexAttribFlag_PosColorTex );
+	GLfloat step = 1.0f;
+	CCSize tmp = getTexture()->getContentSize();
+	float xInc = step / (GLfloat)(tmp.width);
+	float yInc = step / (GLfloat)(tmp.height);
+
+	GLfloat texCoordOffsets[50];
+	for(int i = 0; i < 5; i++)
+	{
+		for (int j = 0; j < 5; j++)
+		{
+			texCoordOffsets[(((i*5)+j)*2)+0] = (-2.0f * xInc) + ((GLfloat)i * xInc);
+			texCoordOffsets[(((i*5)+j)*2)+1] = (-2.0f * yInc) + ((GLfloat)j * yInc);
+		}
+	}
 
 #define kQuadSize sizeof(m_sQuad.bl)
     long offset = (long)&m_sQuad;
@@ -218,6 +232,8 @@ void CCBone::draw(void)
 	glUniform1f(c2, m_bluePercent);
 	GLint c3 = glGetUniformLocation(getShaderProgram()->getProgram(), "alpha");
 	glUniform1f(c3, m_alpha);
+	GLint c4 = glGetUniformLocation(getShaderProgram()->getProgram(), "tcOffset");
+	glUniform2fv(c4, 25, texCoordOffsets);
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 

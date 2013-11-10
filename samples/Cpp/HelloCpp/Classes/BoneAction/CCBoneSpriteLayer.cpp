@@ -432,7 +432,7 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 					gg->setPosition(heads->getPosition());
 					//gg->setScale(heads->getScale());
 					gg->setRotation(heads->getRotation());
-					this->addChild(gg, order+1);
+					//this->addChild(gg, order+1);
 
 				}
 				

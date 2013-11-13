@@ -17,20 +17,15 @@ CocosGUITestScene::CocosGUITestScene(bool bPortrait)
 
 CocosGUITestScene::~CocosGUITestScene()
 {
-	cocos2d::extension::CCSSceneReader::sharedSceneReader()->purgeSceneReader();
+	cocos2d::extension::SceneReader::sharedSceneReader()->purgeSceneReader();
 	cocos2d::extension::ActionManager::purgeActionManager();
-	cocos2d::extension::UIHelper::purgeUIHelper();
 }
 
 void CocosGUITestScene::runThisTest()
 {
     
 	CCDirector::sharedDirector()->replaceScene(this);
-    
-    ul = UILayer::create();
-    ul->scheduleUpdate();
-    this->addChild(ul);
-    
+        
     CCSize s = CCDirector::sharedDirector()->getWinSize();
     
     m_pItemMenu = CCMenu::create();
@@ -46,10 +41,31 @@ void CocosGUITestScene::runThisTest()
         m_pItemMenu->addChild(pItem);
     }
     addChild(m_pItemMenu);
+    
+    UILayout* l = UILayout::create();
+    l->setSize(CCSizeMake(100, 100));
+    l->setPosition(ccp(100, 100));
+    l->setBackGroundColor(ccGREEN);
+    l->setBackGroundColorType(LAYOUT_COLOR_SOLID);
+    l->setLayoutType(LAYOUT_LINEAR_VERTICAL);
+    
+    for (int i=0; i<10; i++)
+    {
+        UIButton* b = UIButton::create();
+        b->loadTextures("cocosgui/animationbuttonnormal.png", "", "");
+        l->addChild(b);
+//        ((UILinearLayoutParameter*)(b->getLayoutParameter(LAYOUT_PARAMETER_LINEAR)))->setGravity(LINEAR_GRAVITY_CENTER_HORIZONTAL);
+        ((UILinearLayoutParameter*)(b->getLayoutParameter(LAYOUT_PARAMETER_LINEAR)))->setGravity(LINEAR_GRAVITY_RIGHT);
+    }
+    
+    UILayer* ul = UILayer::create();
+    ul->addWidget(l);
+    addChild(ul);
+    l->doLayout();
 }
+
 void CocosGUITestScene::MainMenuCallback(CCObject* pSender)
 {
-    ul->removeFromParent();
     TestScene::MainMenuCallback(pSender);
 }
 
@@ -58,8 +74,6 @@ void CocosGUITestScene::toCocosGUIExampleScene(CCObject* pSender)
     ((UIScrollView*)pSender)->setDirection(SCROLLVIEW_DIR_HORIZONTAL);
     ((UIScrollView*)pSender)->getChildByName("backtotopbutton")->disable();
     CCLOG("p2 click");
-    ul->removeFromParent();
-    
 }
 
 void CocosGUITestScene::load(CCObject *pSender, int count)

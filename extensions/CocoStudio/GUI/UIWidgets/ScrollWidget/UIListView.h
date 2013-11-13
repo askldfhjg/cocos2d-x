@@ -26,7 +26,7 @@
 #define __UILISTVIEW_H__
 
 /* gui mark */
-#include "../../Layouts/Layout.h"
+#include "../../Layouts/UILayout.h"
 /**/
 
 NS_CC_EXT_BEGIN
@@ -72,7 +72,7 @@ typedef void (cocos2d::CCObject::*SEL_ListViewUpdateChildEvent)(cocos2d::CCObjec
 #define coco_ListView_UpdateChild_selector(_SELECTOR) (SEL_ListViewUpdateChildEvent)(&_SELECTOR)
 /************************/
 
-class UIListView : public Layout
+class UIListView : public UILayout
 {
 public:
     UIListView();
@@ -137,7 +137,7 @@ public:
     /**
      *  add event
      */
-    void addEventListenter(cocos2d::CCObject* target, SEL_ListViewEvent selector);
+    void addEventListenterListView(cocos2d::CCObject* target, SEL_ListViewEvent selector);
     /*******Compatible*******/
     /**
      *  add init child event
@@ -206,7 +206,10 @@ protected:
     void updateChild();
     
     void initChildEvent();
-    void updateChildEvent();        
+    void updateChildEvent();
+    virtual UIWidget* createCloneInstance();
+    virtual void copySpecialProperties(UIWidget* model);
+    virtual void copyClonedWidgetChildren(UIWidget* model);
     
     /*compatible*/
     /**
@@ -214,7 +217,7 @@ protected:
      */
     virtual void setClippingEnable(bool is){setClippingEnabled(is);};
     /************/
-    virtual void setClippingEnabled(bool able){Layout::setClippingEnabled(able);};
+    virtual void setClippingEnabled(bool able){UILayout::setClippingEnabled(able);};
 protected:
     ListViewDirection m_eDirection;
     ListViewMoveDirection m_eMoveDirection;
@@ -257,8 +260,8 @@ protected:
     float m_fDisBoundaryToChild_0;
     float m_fDisBetweenChild;
     
-    CCObject* m_pEventListener;
-    SEL_ListViewEvent m_pfnEventSelector;
+    CCObject* m_pListViewEventListener;
+    SEL_ListViewEvent m_pfnListViewEventSelector;
     
     /*compatible*/
     cocos2d::CCObject* m_pInitChildListener;

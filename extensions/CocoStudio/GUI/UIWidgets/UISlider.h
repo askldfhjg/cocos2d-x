@@ -168,7 +168,7 @@ public:
     /**
      * Add call back function called when slider's percent has changed to slider.
      */
-    void addEventListener(CCObject* target,SEL_SlidPercentChangedEvent selector);
+    void addEventListenerSlider(CCObject* target,SEL_SlidPercentChangedEvent selector);
     
     //override "onTouchBegan" method of widget.
     virtual bool onTouchBegan(const CCPoint &touchPoint);
@@ -195,6 +195,8 @@ public:
      * Returns the "class name" of widget.
      */
     virtual const char* getDescription() const;
+    
+
     
     /*Compatible*/
     /**
@@ -225,6 +227,8 @@ protected:
     virtual void onSizeChanged();
     void barRendererScaleChangedWithSize();
     void progressBarRendererScaleChangedWithSize();
+    virtual UIWidget* createCloneInstance();
+    virtual void copySpecialProperties(UIWidget* model);
 protected:
     CCNode*  m_pBarRenderer;
     CCNode* m_pProgressBarRenderer;
@@ -249,8 +253,8 @@ protected:
     CCRect m_capInsetsBarRenderer;
     CCRect m_capInsetsProgressBarRenderer;
 
-    CCObject*       m_pSlidPercentListener;
-    SEL_SlidPercentChangedEvent    m_pfnSlidPercentSelector;
+    CCObject*       m_pSliderEventListener;
+    SEL_SlidPercentChangedEvent    m_pfnSliderEventSelector;
     TextureResType m_eBarTexType;
     TextureResType m_eProgressBarTexType;
     TextureResType m_eBallNTexType;

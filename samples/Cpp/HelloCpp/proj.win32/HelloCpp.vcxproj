@@ -120,7 +120,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
-    <ClCompile Include="..\Classes\BoneAction\CCBone.cpp" />
+    <ClCompile Include="..\Classes\BoneAction\CCBones.cpp" />
     <ClCompile Include="..\Classes\BoneAction\CCBoneActionManager.cpp" />
     <ClCompile Include="..\Classes\BoneAction\CCBoneSpriteLayer.cpp" />
     <ClCompile Include="..\Classes\BoneAction\CCBoneTextureManager.cpp" />
@@ -136,7 +136,7 @@
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\AppMacros.h" />
     <ClInclude Include="..\Classes\BoneAction\BoneAction.h" />
-    <ClInclude Include="..\Classes\BoneAction\CCBone.h" />
+    <ClInclude Include="..\Classes\BoneAction\CCBones.h" />
     <ClInclude Include="..\Classes\BoneAction\CCBoneActionManager.h" />
     <ClInclude Include="..\Classes\BoneAction\CCBoneSpriteLayer.h" />
     <ClInclude Include="..\Classes\BoneAction\CCBoneTextureManager.h" />

@@ -13,7 +13,7 @@ CCEffect *CCEffect::create(std::string &name)
 		pobSprite->name = name;
 		pobSprite->m_pic = NULL;
 
-		pobSprite->setShaderProgram(CCBone::getShader());
+		pobSprite->setShaderProgram(CCBones::getShader());
         return pobSprite;
     }
     CC_SAFE_DELETE(pobSprite);

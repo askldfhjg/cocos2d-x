@@ -15,10 +15,10 @@ struct CCBonePicWeight
 	int weight;
 };
 
-class CCBone : public CCSprite
+class CCBones : public CCSprite
 {
 public:
-	CCBone()
+	CCBones()
 		:m_frame(NULL)
 		,m_pic(NULL)
 		,m_redPercent(0)
@@ -29,12 +29,12 @@ public:
 		,m_picNowWeight(NULL)
 		,m_masked(false)
 	{};
-	virtual ~CCBone(void);
+	virtual ~CCBones(void);
 
 public:
     /** creates the action */
-    static CCBone *createWithSpriteFrame(CCSpriteFrame *pSpriteFrame, std::string &name);
-	static CCBone *create(std::string &name);
+    static CCBones *createWithSpriteFrame(CCSpriteFrame *pSpriteFrame, std::string &name);
+	static CCBones *create(std::string &name);
 	static void setFrame(CCArray *boneArray, int frameInAll, int frameInAction);
 	void changeTexture(CCTexture2D * texture);
 	const char *getName();

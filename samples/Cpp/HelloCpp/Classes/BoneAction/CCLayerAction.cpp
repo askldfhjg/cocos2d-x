@@ -1,5 +1,5 @@
 #include "cocos2d.h"
-#include "CCBone.h"
+#include "CCBones.h"
 #include "CCEffect.h"
 #include "CCLayerAction.h"
 #include "Function.h"
@@ -145,7 +145,7 @@ void CCLayerAction::update(float frame)
 	{
 		CCEffect::setFrame(layer->m_effect, nowFrame, n);
 	}
-	CCBone::setFrame(layer->m_bone, nowFrame, n);
+	CCBones::setFrame(layer->m_bone, nowFrame, n);
 	nowFrame++;
 	if(nowFrame > endFrame[nowStage])
 	{

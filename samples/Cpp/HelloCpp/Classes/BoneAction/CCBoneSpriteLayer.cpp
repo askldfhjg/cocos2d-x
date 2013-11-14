@@ -3,7 +3,7 @@
 #include "CCBoneSpriteLayer.h"
 #include "CCBoneActionManager.h"
 #include "CCBoneTextureManager.h"
-#include "CCBone.h"
+#include "CCBones.h"
 #include "CCEffect.h"
 #include "../../extensions/spine/Json.h"
 USING_NS_CC;
@@ -82,14 +82,14 @@ const char *CCBoneSpriteLayer::getLabelNamebyFrame(int frame)
 	}
 	return NULL;
 }
-CCBone *CCBoneSpriteLayer::getBoneByName(const char *name)
+CCBones *CCBoneSpriteLayer::getBoneByName(const char *name)
 {
     if(m_bone != NULL && m_bone->count() > 0)
     {
         CCObject* child;
         CCARRAY_FOREACH(m_bone, child)
         {
-            CCBone* pNode = (CCBone*) child;
+            CCBones* pNode = (CCBones*) child;
 			const char * tmp = pNode->getName();
 			if(pNode && !strcmp(tmp,name))
                 return pNode;
@@ -125,7 +125,7 @@ void CCBoneSpriteLayer::resetBoneTexture(const char *textureName, const char *eq
         CCObject* child;
         CCARRAY_FOREACH(m_bone, child)
         {
-            CCBone* tmpBone = (CCBone*) child;
+            CCBones* tmpBone = (CCBones*) child;
 			Json *info = Json_getItem(source, tmpBone->getName());
 			if(info == NULL)
 			{
@@ -171,7 +171,7 @@ void CCBoneSpriteLayer::changeBoneTexture(const char *textureName, const char *e
         CCObject* child;
         CCARRAY_FOREACH(m_bone, child)
         {
-            CCBone* tmpBone = (CCBone*) child;
+            CCBones* tmpBone = (CCBones*) child;
 			Json *info = Json_getItem(source, tmpBone->getName());
 			if(info == NULL)
 			{
@@ -372,7 +372,7 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 
 		CCSprite *gg;
 		bool havePic = false;
-		CCBone *heads = NULL;
+		CCBones *heads = NULL;
 		if(haveSkl)
 		{
 			Json *info = Json_getItem(skl, tmpString.c_str());
@@ -385,7 +385,7 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 					float picLeftOffset = Json_getItemAt(info, 1)->valuefloat;
 					float picTopOffset = Json_getItemAt(info, 2)->valuefloat;
 
-					heads = CCBone::createWithSpriteFrame(cache->spriteFrameByName(pic), tmpString);
+					heads = CCBones::createWithSpriteFrame(cache->spriteFrameByName(pic), tmpString);
 					gg = CCSprite::createWithSpriteFrame(cache->spriteFrameByName(pic));
 
 					CCRect rect = heads->getTextureRect();
@@ -399,7 +399,7 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 		}
 		if(!havePic)
 		{
-			heads = CCBone::create(tmpString);
+			heads = CCBones::create(tmpString);
 		}
 		heads->setPosition(ccp(posX, posY));
 		heads->setScaleX(scaleX);
@@ -577,7 +577,7 @@ CCSize CCBoneSpriteLayer::getLayerSize()
 	float maxX = -8888888;
 	CCARRAY_FOREACH(m_bone, child)
 	{
-		CCBone *ch = (CCBone *)child;
+		CCBones *ch = (CCBones *)child;
 		CCRect rect = ch->boundingBox();
 		if(rect.getMinY() < minY)
 		{
@@ -608,7 +608,7 @@ void CCBoneSpriteLayer::setBoneAction(const char *name)
 	bool hasLabel = getLabel(name, start, end);
 	if(hasLabel)
 	{
-		CCBone::setFrame(m_bone, start, 0);
+		CCBones::setFrame(m_bone, start, 0);
 		if(m_clip)
 		{
 			m_clip->setFrame(start);

@@ -1,41 +1,41 @@
 #include "cocos2d.h"
-#include "CCBone.h"
+#include "CCBones.h"
 #include "Function.h"
 #include "CCEffect.h"
 USING_NS_CC;
 
-CCBone *CCBone::createWithSpriteFrame(CCSpriteFrame *pSpriteFrame, std::string &name)
+CCBones *CCBones::createWithSpriteFrame(CCSpriteFrame *pSpriteFrame, std::string &name)
 {
-	CCBone *pobSprite = new CCBone();
+	CCBones *pobSprite = new CCBones();
     if (pSpriteFrame && pobSprite && pobSprite->initWithSpriteFrame(pSpriteFrame))
     {
         pobSprite->autorelease();
 		pobSprite->name = name;
 		pobSprite->m_pic = pSpriteFrame;
 
-		pobSprite->setShaderProgram(CCBone::getShader());
+		pobSprite->setShaderProgram(CCBones::getShader());
         return pobSprite;
     }
     CC_SAFE_DELETE(pobSprite);
     return NULL;
 }
 
-CCBone *CCBone::create(std::string &name)
+CCBones *CCBones::create(std::string &name)
 {
-	CCBone *pobSprite = new CCBone();
+	CCBones *pobSprite = new CCBones();
 	if (pobSprite && pobSprite->init())
     {
         pobSprite->autorelease();
 		pobSprite->name = name;
 
-		pobSprite->setShaderProgram(CCBone::getShader());
+		pobSprite->setShaderProgram(CCBones::getShader());
         return pobSprite;
     }
     CC_SAFE_DELETE(pobSprite);
     return NULL;
 }
 
-CCGLProgram *CCBone::getShader()
+CCGLProgram *CCBones::getShader()
 {
 	CCGLProgram *shader = CCShaderCache::sharedShaderCache()->programForKey("boneshader");
 	if (!shader)
@@ -56,12 +56,12 @@ CCGLProgram *CCBone::getShader()
 	return shader;
 }
 
-CCBone::~CCBone(void)
+CCBones::~CCBones(void)
 {
 	CC_SAFE_DELETE(m_picLowWeight);
 	CC_SAFE_DELETE(m_picNowWeight);
 }
-void CCBone::Reset()
+void CCBones::Reset()
 {
 	setPosition(m_startPosition);
 	setRotationX(m_fStartAngleX);
@@ -70,19 +70,19 @@ void CCBone::Reset()
 	setScaleY(m_fStartAngleY);
 }
 
-const char *CCBone::getName()
+const char *CCBones::getName()
 {
 	return this->name.c_str();
 }
 
-void CCBone::changeTexture(CCTexture2D * texture)
+void CCBones::changeTexture(CCTexture2D * texture)
 {
 	CCRect rect = CCRectZero;
 	rect.size = texture->getContentSize();
 	setTexture(texture);
 	setTextureRect(rect, false, rect.size);
 }
-void CCBone::setStartStatus(bool del)
+void CCBones::setStartStatus(bool del)
 {
 	if(!del)
 	{
@@ -101,25 +101,25 @@ void CCBone::setStartStatus(bool del)
 }
 
 
-void CCBone::setOffset(float top, float left)
+void CCBones::setOffset(float top, float left)
 {
      this->m_topOffset = top;
      this->m_leftOffset = left;
 }
-void CCBone::setStartArch(const CCPoint& anchor)
+void CCBones::setStartArch(const CCPoint& anchor)
 {
      this->m_startArch = anchor;
 }
-float CCBone::getTopOffset()
+float CCBones::getTopOffset()
 {
      return m_topOffset;
 }
-float CCBone::getLeftOffset()
+float CCBones::getLeftOffset()
 {
      return m_leftOffset;
 }
 
-void CCBone::setRedPercent(float red)
+void CCBones::setRedPercent(float red)
 {
 	if(red > 1)
 	{
@@ -131,7 +131,7 @@ void CCBone::setRedPercent(float red)
 	}
 	m_redPercent = red;
 }
-void CCBone::setGreenPercent(float green)
+void CCBones::setGreenPercent(float green)
 {
 	if(green > 1)
 	{
@@ -143,7 +143,7 @@ void CCBone::setGreenPercent(float green)
 	}
 	m_greenPercent = green;
 }
-void CCBone::setBluePercent(float blue)
+void CCBones::setBluePercent(float blue)
 {
 	if(blue > 1)
 	{
@@ -156,7 +156,7 @@ void CCBone::setBluePercent(float blue)
 	m_bluePercent = blue;
 }
 
-void CCBone::setAlpha(float alpha)
+void CCBones::setAlpha(float alpha)
 {
 	if(alpha > 1)
 	{
@@ -169,12 +169,12 @@ void CCBone::setAlpha(float alpha)
 	m_alpha = alpha;
 }
 
-float CCBone::getAlpha()
+float CCBones::getAlpha()
 {
 	return m_alpha;
 }
 
-void CCBone::draw(void)
+void CCBones::draw(void)
 {
 	CC_PROFILER_START_CATEGORY(kCCProfilerCategorySprite, "CCSprite - draw");
 
@@ -198,7 +198,7 @@ void CCBone::draw(void)
 	CCSize tmp = getTexture()->getContentSize();
 	float xInc = step / (GLfloat)(tmp.width);
 	float yInc = step / (GLfloat)(tmp.height);
-
+	/*
 	GLfloat texCoordOffsets[50];
 	for(int i = 0; i < 5; i++)
 	{
@@ -208,7 +208,7 @@ void CCBone::draw(void)
 			texCoordOffsets[(((i*5)+j)*2)+1] = (-2.0f * yInc) + ((GLfloat)j * yInc);
 		}
 	}
-
+	*/
 #define kQuadSize sizeof(m_sQuad.bl)
     long offset = (long)&m_sQuad;
 
@@ -232,8 +232,8 @@ void CCBone::draw(void)
 	glUniform1f(c2, m_bluePercent);
 	GLint c3 = glGetUniformLocation(getShaderProgram()->getProgram(), "alpha");
 	glUniform1f(c3, m_alpha);
-	GLint c4 = glGetUniformLocation(getShaderProgram()->getProgram(), "tcOffset");
-	glUniform2fv(c4, 25, texCoordOffsets);
+	/*GLint c4 = glGetUniformLocation(getShaderProgram()->getProgram(), "tcOffset");
+	glUniform2fv(c4, 25, texCoordOffsets);*/
 
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
@@ -265,14 +265,14 @@ void CCBone::draw(void)
     CC_PROFILER_STOP_CATEGORY(kCCProfilerCategorySprite, "CCSprite - draw");
 }
 
-void CCBone::setFrame(CCArray *boneArray, int frameInAll, int frameInAction)
+void CCBones::setFrame(CCArray *boneArray, int frameInAll, int frameInAction)
 {
 	CCObject* child = NULL;
 	char str[256]={0};
 	Func::itostr(frameInAll, str);
 	CCARRAY_FOREACH(boneArray, child)
 	{
-		CCBone *ch = (CCBone *)child;
+		CCBones *ch = (CCBones *)child;
 		if(frameInAll > ch->endFrame)
 		{
 			ch->setVisible(false);

@@ -29,9 +29,6 @@
     <ClCompile Include="..\Classes\TableViewTestScene.cpp">
       <Filter>Classes</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\BoneAction\CCBone.cpp">
-      <Filter>Classes\BoneAction</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\BoneAction\CCBoneActionManager.cpp">
       <Filter>Classes\BoneAction</Filter>
     </ClCompile>
@@ -48,6 +45,9 @@
       <Filter>Classes\BoneAction</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\BoneAction\CCEffect.cpp">
+      <Filter>Classes\BoneAction</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\BoneAction\CCBones.cpp">
       <Filter>Classes\BoneAction</Filter>
     </ClCompile>
   </ItemGroup>
@@ -73,9 +73,6 @@
     <ClInclude Include="..\Classes\BoneAction\BoneAction.h">
       <Filter>Classes\BoneAction</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\BoneAction\CCBone.h">
-      <Filter>Classes\BoneAction</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\BoneAction\CCBoneActionManager.h">
       <Filter>Classes\BoneAction</Filter>
     </ClInclude>
@@ -98,6 +95,9 @@
       <Filter>Classes\BoneAction</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\BoneAction\CCEffect.h">
+      <Filter>Classes\BoneAction</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\BoneAction\CCBones.h">
       <Filter>Classes\BoneAction</Filter>
     </ClInclude>
   </ItemGroup>

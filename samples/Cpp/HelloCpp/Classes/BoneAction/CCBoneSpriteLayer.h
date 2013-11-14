@@ -1,7 +1,7 @@
 #ifndef __LAYER_BONE_SPRITE_H__
 #define __LAYER_BONE_SPRITE_H__
 #include "CCLayerAction.h"
-#include "CCBone.h"
+#include "CCBones.h"
 #include "CCEffect.h"
 #include "cocos2d.h"
 USING_NS_CC;
@@ -29,7 +29,7 @@ public:
 	static CCBoneSpriteLayer *createWithBatch(const char *animationName, char *defaultSkl);
 	CCLayerAction *createAction(const char *BoneMove, float time);
 	CCLayerAction *createAction(const char *BoneMove);
-	CCBone *getBoneByName(const char *name);
+	CCBones *getBoneByName(const char *name);
 	void changeBoneTexture(const char *textureName, const char *equipName);
 	void resetBoneTexture(const char *textureName, const char *equipName);
 	void setAnimationInterval(double interval);

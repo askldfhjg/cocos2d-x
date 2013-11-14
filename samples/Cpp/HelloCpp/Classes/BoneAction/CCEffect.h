@@ -2,11 +2,11 @@
 #define __EFFECT_H__
 #include "cocos2d.h"
 #include "../../extensions/spine/Json.h"
-#include "CCBone.h"
+#include "CCBones.h"
 USING_NS_CC;
 using namespace cocos2d::extension;
 
-class CCEffect : public CCBone
+class CCEffect : public CCBones
 {
 public:
 	CCEffect()

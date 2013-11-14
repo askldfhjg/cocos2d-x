@@ -104,8 +104,9 @@ void CCBoneSpriteLayer::resetBoneTexture(const char *textureName, const char *eq
 	{
 		return;
 	}
-	if(textureName == NULL || equipName == NULL)
+	if(textureName == NULL || equipName == NULL || !strcmp(textureName,"0") || !strcmp(equipName,"0"))
 	{
+		CCLog("resetBoneTexture parame error %s %s", textureName, equipName);
 		return ;
 	}
 	CCSpriteFrameCache *cache = CCSpriteFrameCache::sharedSpriteFrameCache();
@@ -148,8 +149,9 @@ void CCBoneSpriteLayer::changeBoneTexture(const char *textureName, const char *e
 	{
 		return;
 	}
-	if(textureName == NULL || equipName == NULL)
+	if(textureName == NULL || equipName == NULL || !strcmp(textureName,"0") || !strcmp(equipName,"0"))
 	{
+		CCLog("resetBoneTexture parame error %s %s", textureName, equipName);
 		return ;
 	}
 	CCSpriteFrameCache *cache = CCSpriteFrameCache::sharedSpriteFrameCache();
@@ -163,7 +165,7 @@ void CCBoneSpriteLayer::changeBoneTexture(const char *textureName, const char *e
 	{
 		return;
 	}
-	bool isFull = (bool)Json_getItem(root, "full")->valueint;
+	int isFull = Json_getItem(root, "full")->valueint;
 	int type = Json_getItem(source, "type")->valueint;
 	source = Json_getItem(source, "part");
 	if(m_bone != NULL && m_bone->count() > 0)
@@ -267,9 +269,12 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
     {
         return false;
     }
-
     CCSpriteFrameCache *cache = CCSpriteFrameCache::sharedSpriteFrameCache();
 	Json *animation = CCBoneActionManager::sharedManager()->getAnimation(animationName);
+	if(!animation)
+	{
+		return false;
+	}
 	Json *root = Json_getItem(animation, "skl");
 	int count = Json_getSize(root);
 	m_bone = CCArray::create();
@@ -292,6 +297,10 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 				haveSkl = true;
 			}
 		}
+		else
+		{
+			return false;
+		}
 	}
 	if(isBatch && haveSkl)
 	{
@@ -305,7 +314,7 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 
 	this->m_label = Json_getItem(animation, "label");
 	int haveMask = 0;
-	bool effect = (bool)Json_getItem(animation, "effect")->valueint;
+	int effect = Json_getItem(animation, "effect")->valueint;
 	if(effect)
 	{
 		Json *effectAnimation = CCBoneActionManager::sharedManager()->getEffectAnimation(animationName);
@@ -370,7 +379,6 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 		int endFrame = Json_getItemAt(tmp, 11)->valueint;
 		float brightness = Json_getItemAt(tmp, 12)->valuefloat;
 
-		CCSprite *gg;
 		bool havePic = false;
 		CCBones *heads = NULL;
 		if(haveSkl)
@@ -386,7 +394,6 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 					float picTopOffset = Json_getItemAt(info, 2)->valuefloat;
 
 					heads = CCBones::createWithSpriteFrame(cache->spriteFrameByName(pic), tmpString);
-					gg = CCSprite::createWithSpriteFrame(cache->spriteFrameByName(pic));
 
 					CCRect rect = heads->getTextureRect();
 					float archX = (picLeftOffset + leftOffset) / rect.size.width;
@@ -423,20 +430,14 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 				if(haveMask && layerType == "masked")
 				{
 					heads->m_masked = true;
-					//m_clip->addChild(heads, order);
+					m_clip->addChild(heads, order);
 				}
 				else
 				{
 					this->addChild(heads, order);
-					gg->setAnchorPoint(heads->getAnchorPoint());
-					gg->setPosition(heads->getPosition());
-					//gg->setScale(heads->getScale());
-					//gg->setRotation(heads->getRotation());
-					//this->addChild(gg, order+1);
-
 				}
 				
-				//CCRenderTexture* tex = createStroke(heads, 7, ccc3(0, 255, 0), 50);
+				//CCRenderTexture* tex = createStroke(heads, 2, ccc3(0, 255, 0), 50);
 				//this->addChild(tex, heads->getZOrder() - 1);
 			}
 		}
@@ -571,7 +572,7 @@ CCRenderTexture* CCBoneSpriteLayer::createStroke(CCSprite* label, int size, ccCo
 CCSize CCBoneSpriteLayer::getLayerSize()
 {
 	CCObject* child = NULL;
-	float minY = 66666666;
+	float minY = 66666666.0f;
 	float maxY = -8888888;
 	float minX = 88888888;
 	float maxX = -8888888;

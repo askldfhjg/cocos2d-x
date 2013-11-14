@@ -60,14 +60,14 @@ char *CCBoneTextureManager::addTextureByAsync(CCNode *target, void *data1, void 
     char* buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
     Json* root = Json_create(buffer);
 	CC_SAFE_DELETE_ARRAY(buffer);
-	if(!buffer)
+	if(!root)
 	{
 		return NULL;
 	}
 
 	newKey->retain();
 	m_pTextureData->insert(char_json::value_type(newKey, root));
-	bool isFull = (bool)Json_getItem(root, "full")->valueint;
+	int isFull = Json_getItem(root, "full")->valueint;
 	if(isFull)
 	{
 		char* ret = new char[255];
@@ -104,8 +104,12 @@ Json *CCBoneTextureManager::addEquip(char *name)
     char* buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
     Json* root = Json_create(buffer);
 	CC_SAFE_DELETE_ARRAY(buffer);
+	if(!root)
+	{
+		return NULL;
+	}
 	m_pTextureData->insert(char_json::value_type(newKey, root));
-	bool isFull = (bool)Json_getItem(root, "full")->valueint;
+	int isFull = Json_getItem(root, "full")->valueint;
 	if(isFull)
 	{
 		CCSpriteFrameCache::sharedSpriteFrameCache()->addSpriteFramesWithFile(texturePic.c_str());
@@ -135,7 +139,10 @@ Json *CCBoneTextureManager::getEquip(char *name)
 	{
 		tmp = it->second;
 	}
-	CCAssert(tmp != NULL, "no animation");
+	if(!tmp)
+	{
+		CCLog("no equip %s", name);
+	}
 	return tmp;
 }
 

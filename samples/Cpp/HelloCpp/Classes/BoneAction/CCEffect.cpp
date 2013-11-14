@@ -123,11 +123,12 @@ void CCEffect::setFrame(CCArray *effectArray, int frameInAll, int frameInAction)
 			ch->setScaleY(ch->m_fStartScaleY * scaleY);
 
 			bool vis = ch->isVisible();
+			bool boolVisable = (bool)(int)visable;
 
 			float alf = ch->getAlpha();
-			if(vis != (bool)(int)visable || alf != visable)
+			if(vis != boolVisable || alf != visable)
 			{ 
-				if((bool)(int)visable)
+				if(boolVisable)
 				{
 					ch->setVisible(true);
 					ch->setAlpha(1.0f);
@@ -273,6 +274,6 @@ void CCBoneClip::setFrame(int frame)
 		float posY = Json_getItemAt(source, 1)->valuefloat;
 		int visable = Json_getItemAt(source, 6)->valueint;
 		const char *pic = Json_getItemAt(source, 8)->valuestring;
-		this->setBoneStencil(std::string(pic), posX, posY, (bool)visable);
+		this->setBoneStencil(std::string(pic), posX, posY, visable);
 	}
 }

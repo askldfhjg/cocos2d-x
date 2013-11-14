@@ -314,11 +314,11 @@ void CCBones::setFrame(CCArray *boneArray, int frameInAll, int frameInAction)
 			ch->setScaleY(ch->m_fStartScaleY * scaleY);
 
 			bool vis = ch->isVisible();
-
+			bool boolVisable = (bool)(int)visable;
 			float alf = ch->getAlpha();
-			if(vis != (bool)(int)visable || alf != visable)
+			if(vis != boolVisable || alf != visable)
 			{ 
-				if((bool)(int)visable)
+				if(boolVisable)
 				{
 					ch->setVisible(true);
 					ch->setAlpha(1.0f);

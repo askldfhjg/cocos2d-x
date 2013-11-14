@@ -57,17 +57,17 @@ char *CCBoneActionManager::addAnimationByAsync(CCNode *target, void *data1, void
 
     unsigned long size;
     char* buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
-	if(!buffer)
+	Json* root = Json_create(buffer);
+	CC_SAFE_DELETE_ARRAY(buffer);
+	if(!root)
 	{
 		return NULL;
 	}
-	Json* root = Json_create(buffer);
-	CC_SAFE_DELETE_ARRAY(buffer);
 	m_pAnimationData->insert(char_json::value_type(key, root));
 
 	std::string actionName = std::string(name);
 	Json *source = Json_getItem(root, "effect");
-	bool isEffect = (bool)source->valueint;
+	int isEffect = source->valueint;
 	if(isEffect)
 	{
 		path =  CCBoneSpriteConfig::getBoneUrl() + std::string(name) + ".effect";
@@ -112,12 +112,15 @@ Json *CCBoneActionManager::addAnimation(const char *name)
     char* buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
     Json* root = Json_create(buffer);
 	CC_SAFE_DELETE_ARRAY(buffer);
-	
+	if(!root)
+	{
+		return NULL;
+	}
 	m_pAnimationData->insert(char_json::value_type(key, root));
 
 	std::string actionName = std::string(name);
 	Json *source = Json_getItem(root, "effect");
-	bool isEffect = (bool)source->valueint;
+	int isEffect = source->valueint;
 	if(isEffect)
 	{
 		actionName =  CCBoneSpriteConfig::getEffectUrl() + actionName +"effect.plist";
@@ -153,12 +156,15 @@ Json *CCBoneActionManager::replaceAnimation(char *name)
     char* buffer = (char*)CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rt", &size);
     Json* root = Json_create(buffer);
 	CC_SAFE_DELETE_ARRAY(buffer);
-	
+	if(!root)
+	{
+		return NULL;
+	}
 	m_pAnimationData->insert(char_json::value_type(key, root));
 
 	std::string actionName = std::string(name);
 	Json *source = Json_getItem(root, "effect");
-	bool isEffect = (bool)source->valueint;
+	int isEffect = source->valueint;
 	if(isEffect)
 	{
 		actionName =  CCBoneSpriteConfig::getEffectUrl() + actionName +"effect.plist";
@@ -197,9 +203,10 @@ Json *CCBoneActionManager::getAnimation(const char *name)
 	{
 		tmp = it->second;
 	}
-
-
-	CCAssert(tmp != NULL, "no animation");
+	if(!tmp)
+	{
+		CCLog("no Animation %s", name);
+	}
 	return tmp;
 }
 

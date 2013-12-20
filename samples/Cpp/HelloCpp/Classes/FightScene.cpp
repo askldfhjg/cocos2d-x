@@ -33,6 +33,7 @@ FightScene::~FightScene(void)
 bool FightScene::init()
 {
 	if (!CCLayerColor::initWithColor(ccc4(215, 215, 215, 255)))
+	//if (!CCLayerColor::initWithColor(ccc4(0, 0, 0, 255)))
 	//if (!CCLayer::init())
     {
         return false;
@@ -217,10 +218,10 @@ void FightScene::afterAttack(CCObject *dd)
 	hpBar->setAnchorPoint(ccp(0.5, 0.5));
 	hpBar->retain();
 	def = CCBoneSpriteLayer::create(ff->getCString(), "AvatarDefult_M");
-	def->changeBoneTexture("6322_armor_resM", "6322_armor_resM");
-	def->changeBoneTexture("6323_armor_resM", "6323_armor_resM");
+	//def->changeBoneTexture("6322_armor_resM", "6322_armor_resM");
+	//def->changeBoneTexture("6323_armor_resM", "6323_armor_resM");
 	def->setPosition(ccp(500, 0));
-	def->setScale(0.7f);
+	def->setScale(0.2f);
 	this->addChild(def, 3);
 
 	def->setBoneAction("mon_idle");

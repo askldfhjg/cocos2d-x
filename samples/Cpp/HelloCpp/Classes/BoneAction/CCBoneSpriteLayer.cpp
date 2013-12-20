@@ -11,8 +11,14 @@ using namespace cocos2d::extension;
 
 CCBoneSpriteLayer::~CCBoneSpriteLayer(void)
 {
-	m_bone->removeAllObjects();
-	m_effect->removeAllObjects();
+	if(m_bone)
+	{
+		m_bone->removeAllObjects();
+	}
+	if(m_effect)
+	{
+		m_effect->removeAllObjects();
+	}
 	CC_SAFE_RELEASE(m_bone);
 	CC_SAFE_RELEASE(m_effect);
 }
@@ -109,7 +115,6 @@ void CCBoneSpriteLayer::resetBoneTexture(const char *textureName, const char *eq
 		CCLog("resetBoneTexture parame error %s %s", textureName, equipName);
 		return ;
 	}
-	CCSpriteFrameCache *cache = CCSpriteFrameCache::sharedSpriteFrameCache();
 	Json* root = CCBoneTextureManager::sharedManager()->getEquip(const_cast<char*>(textureName));
 	if(root == NULL)
 	{
@@ -270,12 +275,13 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
         return false;
     }
     CCSpriteFrameCache *cache = CCSpriteFrameCache::sharedSpriteFrameCache();
-	Json *animation = CCBoneActionManager::sharedManager()->getAnimation(animationName);
+	CCBoneActionData *animation = CCBoneActionManager::sharedManager()->getAnimation(animationName);
 	if(!animation)
 	{
 		return false;
 	}
-	Json *root = Json_getItem(animation, "skl");
+
+	Json *root = animation->skl;
 	int count = Json_getSize(root);
 	m_bone = CCArray::create();
 	m_effect = CCArray::create();
@@ -305,56 +311,56 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 	if(isBatch && haveSkl)
 	{
 		std::string pngPath = CCBoneSpriteConfig::getEquipUrl() +std::string(defaultSkl)+".png";
+		CCTexture2D::setDefaultAlphaPixelFormat(kCCTexture2DPixelFormat_RGBA4444);
 		batchNode = CCSpriteBatchNode::create(pngPath.c_str(), 40);
+		CCTexture2D::setDefaultAlphaPixelFormat(kCCTexture2DPixelFormat_RGBA8888);
 		batchNode->setAnchorPoint(ccp(0, 0));
 		batchNode->setPosition(ccp(0, 0));
 		this->addChild(batchNode, 0);
 		this->isBatch = true;
 	}
 
-	this->m_label = Json_getItem(animation, "label");
+	this->m_label = animation->label;
 	int haveMask = 0;
-	int effect = Json_getItem(animation, "effect")->valueint;
-	if(effect)
+	if(animation->effect)
 	{
-		Json *effectAnimation = CCBoneActionManager::sharedManager()->getEffectAnimation(animationName);
 		isEffect = true;
-		Json *motion = Json_getItem(effectAnimation, "motion");
-		Json *info = Json_getItem(effectAnimation, "effect");
-		Json *effectOrder = Json_getItem(effectAnimation, "order");
-		haveMask = Json_getItem(effectAnimation, "mask")->valueint;
-		int count = Json_getSize(motion);
-		for(int i = 0;i < count;i++)
+		char_frame *motion = animation->effectMotion;
+		char_effect *info = animation->effect;
+		Json *effectOrder = animation->effectOrder;
+		haveMask = animation->mask;
+		char_frame::iterator iter;
+		for(iter = motion->begin(); iter != motion->end();)
 		{
-			Json *tmp = Json_getItemAt(motion, i);
-			std::string tmpString = tmp->name;
-			Json * tt = Json_getItem(effectOrder, tmpString.c_str());
+			const char* name = iter->first->getCString();
+			Json * tt = Json_getItem(effectOrder, name);
 			std::string layerT = Json_getItemAt(tt, 0)->valuestring;
 			int od = Json_getItemAt(tt, 1)->valueint;
 			if(layerT == "mask")
 			{
 				m_clip = CCBoneClip::create();
 				m_clip->setAnchorPoint(ccp(0,0));
-				m_clip->m_frame = tmp;
+				m_clip->m_boneData = motion->find(CCString::create(name))->second;
 				m_clip->m_effectInfo = info;
 				this->addChild(m_clip, od);
 			}
 			else
 			{
-				CCEffect *effect = CCEffect::create(tmpString);
-				effect->m_frame = tmp;
+				CCEffect *effect = CCEffect::create(name);
+				effect->m_boneData = motion->find(CCString::create(name))->second;
 				effect->m_effectInfo = info;
 				effect->setStartStatus(false);
 				effect->setVisible(false);
 				this->addChild(effect, od);
 				m_effect->addObject(effect);
 			}
+			iter++;
 		}
 		if(m_clip)
 		{
 			m_clip->setFrame(0);
 		}
-		CCEffect::setFrame(m_effect, 0, 0);
+		CCEffect::setFrame(m_effect, 0, 0, true);
 	}
 
 	for(int i = 0; i< count; i++)
@@ -377,7 +383,7 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 		float leftOffset = Json_getItemAt(tmp, 9)->valuefloat;
 		float topOffset = Json_getItemAt(tmp, 10)->valuefloat;
 		int endFrame = Json_getItemAt(tmp, 11)->valueint;
-		float brightness = Json_getItemAt(tmp, 12)->valuefloat;
+		Json *color = Json_getItemAt(tmp, 12);
 
 		bool havePic = false;
 		CCBones *heads = NULL;
@@ -419,6 +425,9 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 		heads->endFrame = endFrame;
 		heads->m_startZOrder = order;
 		heads->setStartStatus(false);
+		heads->setRedPercent(Json_getItemAt(color, 0)->valuefloat);
+		heads->setGreenPercent(Json_getItemAt(color, 1)->valuefloat);
+		heads->setBluePercent(Json_getItemAt(color, 2)->valuefloat);
 		if(havePic)
 		{
 			if(this->isBatch)
@@ -441,7 +450,7 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 				//this->addChild(tex, heads->getZOrder() - 1);
 			}
 		}
-		heads->m_frame = Json_getItem(animation, heads->getName());
+		heads->m_boneData = animation->frame->find(CCString::create(heads->getName()))->second;
 		m_bone->addObject(heads);
 	}
 	this->ignoreAnchorPointForPosition(true);
@@ -469,17 +478,6 @@ void CCBoneSpriteLayer::setAnimationInterval(double interval)
 	}
 }
 
-CCAction *CCBoneSpriteLayer::testLayerAction()
-{
-	int count = Json_getSize(m_label);
-	CCArray *ar = CCArray::create();
-	for(int i = 0; i< count; i++)
-	{
-		Json *tmp = Json_getItemAt(m_label, i);
-		ar->addObject(createAction(tmp->name, NULL));
-	}
-	return CCSequence::create(ar);
-}
 
 CCArray* CCBoneSpriteLayer::allLabel()
 {
@@ -491,25 +489,6 @@ CCArray* CCBoneSpriteLayer::allLabel()
 		ar->addObject(CCString::create(tmp->name));
 	}
 	return ar;
-}
-CCAction *CCBoneSpriteLayer::randomLayerAction()
-{
-	int count = Json_getSize(m_label);
-	int index = rand() % count;
-	Json *tmp = Json_getItemAt(m_label, index);
-	return createAction(tmp->name, NULL);
-}
-
-CCAction *CCBoneSpriteLayer::indexLayerAction(int index)
-{
-	int count = Json_getSize(m_label);
-	if(index >= count)
-	{
-		index = count - 1;
-	}
-	Json *tmp = Json_getItemAt(m_label, index);
-	return createAction(tmp->name, NULL);
-	return createAction(tmp->name, NULL);
 }
 
 CCAction *CCBoneSpriteLayer::runAction(CCAction* action, bool stopBefore)
@@ -616,7 +595,7 @@ void CCBoneSpriteLayer::setBoneAction(const char *name)
 		}
 		if(haveEffect())
 		{
-			CCEffect::setFrame(m_effect, start, 0);
+			CCEffect::setFrame(m_effect, start, 0, false);
 		}
 		frameIndex = start;
 	}

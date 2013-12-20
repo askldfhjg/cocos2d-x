@@ -17,6 +17,7 @@ public:
 		,m_isDone(true)
 		,actionTime(0)
 		,action(NULL)
+		,sameNameContinue(false)
 	{};
 	~CCLayerAction(void);
 
@@ -26,7 +27,9 @@ public:
     /** returns true if the action has finished */
     virtual bool isDone(void);
 	virtual void update(float frame);
+	virtual void step(float dt);
 	void startWithTarget(CCNode* pTarget);
+	void setSameNameContinue(bool flag);
 
 public:
     /** creates the action */
@@ -45,6 +48,7 @@ protected:
 	int totalFrameCount;
 	float actionTime;
 	CCAction *action;
+	bool sameNameContinue;
 };
 
 

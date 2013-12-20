@@ -4,13 +4,13 @@
 
 USING_NS_CC;
 
-CCEffect *CCEffect::create(std::string &name)
+CCEffect *CCEffect::create(const char *name)
 {
 	CCEffect *pobSprite = new CCEffect();
     if (pobSprite && pobSprite->init())
     {
         pobSprite->autorelease();
-		pobSprite->name = name;
+		pobSprite->name = std::string(name);
 		pobSprite->m_pic = NULL;
 
 		pobSprite->setShaderProgram(CCBones::getShader());
@@ -25,9 +25,9 @@ CCEffect::~CCEffect(void)
 	
 }
 
-bool CCEffect::setAnimatime(std::string name, bool show, int index)
+bool CCEffect::setAnimatime(const char *name, bool show, int index, bool done)
 {
-	if(!show || name.length() <= 0)
+	if(!show || !name)
 	{
 		m_frameIndex = -1;
 		m_lastFrame = -1;
@@ -42,38 +42,43 @@ bool CCEffect::setAnimatime(std::string name, bool show, int index)
 	{
 		m_frameIndex = 0;
 	}
-	Json *animation = Json_getItem(m_effectInfo, name.c_str());
-	if(animation == NULL)
+	char_effect::iterator it = m_effectInfo->find(CCString::create(name));
+	if(it == m_effectInfo->end())
 	{
 		setVisible(false);
 		return false;
 	}
-	Json *arch = Json_getItem(animation, "info");
-	float archX = Json_getItemAt(arch, 0)->valuefloat;
-	float archY = Json_getItemAt(arch, 1)->valuefloat;
+	float archX = it->second->archX;
+	float archY = it->second->archY;
 	setAnchorPoint(ccp(archX , archY));
-	int count = Json_getSize(animation);
+
 	//ÔÚeffectÖÐÅÅ³ýtypeºÍinfo
-	if(m_frameIndex + 2 >= count)
+	if(m_frameIndex >= it->second->info->size())
 	{
 		m_frameIndex = 0;
 	}
-
-	char str[256]={0};
-	Func::itostr(m_frameIndex, str);
-	Json *source = Json_getItem(animation, str);
-	const char *pic = Json_getItemAt(source, 0)->valuestring;
-	float scaleX = Json_getItemAt(source, 1)->valuefloat;
-	float scaleY = Json_getItemAt(source, 2)->valuefloat;
-	float positionX = Json_getItemAt(source, 3)->valuefloat;
-	float positionY = Json_getItemAt(source, 4)->valuefloat;
-
+	
+	CCBoneJson *source = it->second->info->find(m_frameIndex)->second;
+	const char *pic = source->pic;
+	float scaleX = source->scaleX;
+	float scaleY = source->scaleY;
+	float positionX = source->posX;
+	float positionY = source->posY;
+	if(strlen(pic) <= 0)
+	{
+		setVisible(false);
+		return true;
+	}
 	setDisplayFrame(CCSpriteFrameCache::sharedSpriteFrameCache()->spriteFrameByName(pic));
 	CCPoint anch = getAnchorPoint();
 	setPositionX(getPositionX() + positionX * getScaleX() + (anch.x - 0.5) * getTextureRect().size.width);
 	setPositionY(-(getPositionY() + positionY * getScaleY()) + (anch.y - 0.5) * getTextureRect().size.height);
 	setScaleX(getScaleX() * scaleX);
 	setScaleY(getScaleY() * scaleY);
+	if(done)
+	{
+		m_frameIndex = it->second->info->size();
+	}
 	return true;
 }
 
@@ -86,42 +91,50 @@ void CCEffect::setAdd(bool add)
 	m_add = add;
 }
 
-void CCEffect::setFrame(CCArray *effectArray, int frameInAll, int frameInAction)
+void CCEffect::setFrame(CCArray *effectArray, int frameInAll, int frameInAction, bool done)
 {
 	CCObject* child = NULL;
-	char str[256]={0};
-	Func::itostr(frameInAll, str);
 	CCARRAY_FOREACH(effectArray, child)
 	{
 		CCEffect *ch = (CCEffect *)child;
-		Json *source = Json_getItem(ch->m_frame, str);
-		if (source)
+		int_json::iterator it = ch->m_boneData->find(frameInAll);
+		bool found = false;
+		if (it != ch->m_boneData->end())
 		{
-			int c = Json_getSize(source);
-			if(c <= 0)
+			found = true;
+		}
+		if(found || ch->m_lastData)
+		{
+			CCBoneJson *dd;
+			if(found)
 			{
-				continue;
+				dd = it->second;
 			}
-			CCAssert(c == 9, "count error");
-			float posX = Json_getItemAt(source, 0)->valuefloat;
-			float posY = Json_getItemAt(source, 1)->valuefloat;
-			float scaleX = Json_getItemAt(source, 2)->valuefloat;
-			float scaleY = Json_getItemAt(source, 3)->valuefloat;
-			float skewX = Json_getItemAt(source, 4)->valuefloat;
-			float skewY = Json_getItemAt(source, 5)->valuefloat;
-			float visable = Json_getItemAt(source, 6)->valuefloat;
-			Json* color = Json_getItemAt(source, 7);
-			const char *pic = Json_getItemAt(source, 8)->valuestring;
-
-			ch->setRedPercent(Json_getItemAt(color, 0)->valuefloat);
-			ch->setGreenPercent(Json_getItemAt(color, 1)->valuefloat);
-			ch->setBluePercent(Json_getItemAt(color, 2)->valuefloat);
+			else
+			{
+				dd = ch->m_lastData;
+			}
+			float posX = dd->posX;
+			float posY = dd->posY;
+			float scaleX = dd->scaleX;
+			float scaleY = dd->scaleY;
+			float skewX = dd->skewX;
+			float skewY = dd->skewY;
+			float visable = dd->visable;
+			ch->setRedPercent(dd->colorRed);
+			ch->setGreenPercent(dd->colorGreen);
+			ch->setBluePercent(dd->colorBlue);
+			const char *pic = dd->pic;
 			ch->setPosition(ccp(ch->m_startPosition.x + posX, ch->m_startPosition.y + posY));
 			ch->setRotationX(ch->m_fStartAngleX + skewX);
 			ch->setRotationY(ch->m_fStartAngleY + skewY);
 			ch->setScaleX(ch->m_fStartScaleX * scaleX);
 			ch->setScaleY(ch->m_fStartScaleY * scaleY);
-
+			ch->m_lastData = dd;
+			if(done)
+			{
+				ch->m_lastData = NULL;
+			}
 			bool vis = ch->isVisible();
 			bool boolVisable = (bool)(int)visable;
 
@@ -135,7 +148,7 @@ void CCEffect::setFrame(CCArray *effectArray, int frameInAll, int frameInAction)
 				}
 				else if(visable <= 0)
 				{
-					ch->setVisible(false);
+					ch->setVisible(false);           
 					ch->setAlpha(0);
 				}
 				else
@@ -144,8 +157,7 @@ void CCEffect::setFrame(CCArray *effectArray, int frameInAll, int frameInAction)
 					ch->setAlpha(visable);
 				}
 			}
-			ch->setAnimatime(std::string(pic), ch->isVisible(), frameInAll);
-				
+			ch->setAnimatime(pic, ch->isVisible(), frameInAll, done);
 		}
 		else
 		{
@@ -227,22 +239,21 @@ void CCBoneClip::visit()
 	}
 }
 
-void CCBoneClip::setBoneStencil(std::string name, float posX, float posY, bool visable)
+void CCBoneClip::setBoneStencil(const char *name, float posX, float posY, bool visable)
 {
-	if(!getStencil())
+	if(!getStencil() && name)
 	{
-		Json *animation = Json_getItem(m_effectInfo, name.c_str());
-		if(animation == NULL)
+		char_effect::iterator it = m_effectInfo->find(CCString::create(name));
+		if(it == m_effectInfo->end())
 		{
 			return;
 		}
-		Json *arch = Json_getItem(animation, "info");
-		float archX = Json_getItemAt(arch, 0)->valuefloat;
-		float archY = Json_getItemAt(arch, 1)->valuefloat;
-		int width = Json_getItemAt(arch, 2)->valueint;
-		int height = Json_getItemAt(arch, 3)->valueint;
-		float poX = Json_getItemAt(arch, 4)->valuefloat;
-		float poY = Json_getItemAt(arch, 5)->valuefloat;
+		float archX = it->second->archX;
+		float archY = it->second->archY;
+		int width = it->second->width;
+		int height = it->second->height;
+		float poX = it->second->posX;
+		float poY = it->second->posY;
 		setContentSize(CCSizeMake(width, height));
 		m_offsetX = poX-archX*width;
 		m_offsetY = poY-archY*height;
@@ -263,17 +274,13 @@ void CCBoneClip::setBoneStencil(std::string name, float posX, float posY, bool v
 
 void CCBoneClip::setFrame(int frame)
 {
-	char str[256]={0};
-	Func::itostr(frame, str);
-	Json *source = Json_getItem(this->m_frame, str);
-	if (source)
+	int_json::iterator it = m_boneData->find(frame);
+	if (it != m_boneData->end())
 	{
-		int c = Json_getSize(source);
-		CCAssert(c == 9, "count error");
-		float posX = Json_getItemAt(source, 0)->valuefloat;
-		float posY = Json_getItemAt(source, 1)->valuefloat;
-		int visable = Json_getItemAt(source, 6)->valueint;
-		const char *pic = Json_getItemAt(source, 8)->valuestring;
-		this->setBoneStencil(std::string(pic), posX, posY, visable);
+		float posX = it->second->posX;
+		float posY = it->second->posY;
+		int visable = it->second->visable;
+		const char *pic = it->second->pic;
+		this->setBoneStencil(pic, posX, posY, visable);
 	}
 }

@@ -14,23 +14,25 @@ public:
 		,m_frameIndex(-1)
 		,m_add(false)
 		,m_lastFrame(-1)
+		,m_lastData(NULL)
 	{};
 	virtual ~CCEffect(void);
 
 public:
     /** creates the action */
-	static CCEffect *create(std::string &name);
-	static void setFrame(CCArray *effectArray, int frameInAll, int frameInAction);
-	bool setAnimatime(std::string name, bool show, int index);
+	static CCEffect *create(const char *name);
+	static void setFrame(CCArray *effectArray, int frameInAll, int frameInAction, bool done);
+	bool setAnimatime(const char *, bool show, int index, bool done);
 	bool getAdd();
 	void setAdd(bool add);
 public:
-	Json *m_effectInfo;
+	char_effect *m_effectInfo;
 	
 private:
 	int m_frameIndex;
 	bool m_add;
 	int m_lastFrame;
+	CCBoneJson *m_lastData;
 };
 
 class CCBoneClip : public CCClippingNode
@@ -41,7 +43,6 @@ public:
 public:
 	CCBoneClip()
 		:m_effectInfo(NULL)
-		,m_frame(NULL)
 		,m_visable(false)
 		,m_offsetX(0)
 		,m_offsetY(0)
@@ -53,11 +54,11 @@ public:
     virtual void onExitTransitionDidStart();
     virtual void onExit();
 
-	void setBoneStencil(std::string name, float posX, float posY, bool visable);
+	void setBoneStencil(const char *name, float posX, float posY, bool visable);
 	void setFrame(int frame);
 public:
-	Json *m_frame;
-	Json *m_effectInfo;
+	int_json *m_boneData;
+	char_effect *m_effectInfo;
 	bool m_visable;
 	float m_offsetX;
 	float m_offsetY;

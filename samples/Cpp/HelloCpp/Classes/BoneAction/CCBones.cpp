@@ -2,6 +2,7 @@
 #include "CCBones.h"
 #include "Function.h"
 #include "CCEffect.h"
+#include "CCBoneActionManager.h"
 USING_NS_CC;
 
 CCBones *CCBones::createWithSpriteFrame(CCSpriteFrame *pSpriteFrame, std::string &name)
@@ -194,10 +195,10 @@ void CCBones::draw(void)
     }
 
     ccGLEnableVertexAttribs( kCCVertexAttribFlag_PosColorTex );
-	GLfloat step = 1.0f;
-	CCSize tmp = getTexture()->getContentSize();
-	float xInc = step / (GLfloat)(tmp.width);
-	float yInc = step / (GLfloat)(tmp.height);
+	//GLfloat step = 1.0f;
+	//CCSize tmp = getTexture()->getContentSize();
+	//float xInc = step / (GLfloat)(tmp.width);
+	//float yInc = step / (GLfloat)(tmp.height);
 	/*
 	GLfloat texCoordOffsets[50];
 	for(int i = 0; i < 5; i++)
@@ -268,8 +269,6 @@ void CCBones::draw(void)
 void CCBones::setFrame(CCArray *boneArray, int frameInAll, int frameInAction)
 {
 	CCObject* child = NULL;
-	char str[256]={0};
-	Func::itostr(frameInAll, str);
 	CCARRAY_FOREACH(boneArray, child)
 	{
 		CCBones *ch = (CCBones *)child;
@@ -278,29 +277,27 @@ void CCBones::setFrame(CCArray *boneArray, int frameInAll, int frameInAction)
 			ch->setVisible(false);
 			continue;
 		}
-		Json *source = Json_getItem(ch->m_frame, str);
-		if (source)
+		int_json::iterator it = ch->m_boneData->find(frameInAll);
+		if(it != ch->m_boneData->end())
 		{
-			int c = Json_getSize(source);
-			if(c <= 0)
-			{
-				return;
-			}
-			CCAssert(c == 8, "count error");
-			float posX = Json_getItemAt(source, 0)->valuefloat;
-			float posY = Json_getItemAt(source, 1)->valuefloat;
-			float scaleX = Json_getItemAt(source, 2)->valuefloat;
-			float scaleY = Json_getItemAt(source, 3)->valuefloat;
-			float skewX = Json_getItemAt(source, 4)->valuefloat;
-			float skewY = Json_getItemAt(source, 5)->valuefloat;
-			float visable = Json_getItemAt(source, 6)->valuefloat;
-			Json* color = Json_getItemAt(source, 7);
+			float posX =it->second->posX;
+			float posY = it->second->posY;
+			float scaleX = it->second->scaleX;
+			float scaleY = it->second->scaleY;
+			float skewX = it->second->skewX;
+			float skewY = it->second->skewY;
+			float visable = it->second->visable;
 
-			ch->setRedPercent(Json_getItemAt(color, 0)->valuefloat);
-			ch->setGreenPercent(Json_getItemAt(color, 1)->valuefloat);
-			ch->setBluePercent(Json_getItemAt(color, 2)->valuefloat);
+			ch->setRedPercent(it->second->colorRed);
+			ch->setGreenPercent(it->second->colorGreen);
+			ch->setBluePercent(it->second->colorBlue);
+			
+			
 			float fX = 0;
 			float fY = 0;
+
+
+
 			if(ch->m_masked)
 			{
 				CCBoneClip *tm = (CCBoneClip *)ch->getParent();

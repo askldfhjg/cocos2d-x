@@ -1621,14 +1621,14 @@ void ActionCardinalSplineStacked::onEnter()
     CCSequence *seq = CCSequence::create(action, reverse, NULL);
     
     m_tamara->setPosition(ccp(50,50));
-    m_tamara->runAction(seq);
+    //m_tamara->runAction(seq);
     
-    m_tamara->runAction(
+    /*m_tamara->runAction(
      CCRepeatForever::create(
       CCSequence::create(
        CCMoveBy::create(0.05f, ccp(10,0)),
        CCMoveBy::create(0.05f, ccp(-10,0)),
-       NULL)));
+       NULL)));*/
     
     
     //

@@ -19,6 +19,7 @@ public:
 		,isBatch(false)
 		,isEffect(false)
 		,frameIndex(0)
+		,lastFrame(0)
     {}
 	~CCBoneSpriteLayer(void);
 	virtual bool init(const char *animationName, const char *defaultSkl, bool isBatch);
@@ -52,6 +53,7 @@ public:
 	CCArray *m_effect;
 	CCBoneClip *m_clip;
 	int frameIndex;
+	int lastFrame;
 
 private:
 	double interval;

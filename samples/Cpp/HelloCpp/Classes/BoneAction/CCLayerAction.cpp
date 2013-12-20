@@ -119,6 +119,38 @@ bool CCLayerAction::isDone(void)
 	return m_isDone;
 }
 
+void CCLayerAction::setSameNameContinue(bool flag)
+{
+	sameNameContinue = flag;
+}
+
+void CCLayerAction::step(float dt)
+{
+	if (m_bFirstTick)
+    {
+        m_bFirstTick = false;
+		m_elapsed = 0;
+		CCBoneSpriteLayer  *layer = (CCBoneSpriteLayer *)m_pTarget;
+		if(sameNameContinue && layer->lastFrame >= startFrame[nowStage] && layer->lastFrame <= endFrame[nowStage])
+		{
+			float n = layer->lastFrame - startFrame[nowStage];
+			m_elapsed += n * 1.0/24;
+		}
+        sameNameContinue = false;
+    }
+    else
+    {
+        m_elapsed += dt;
+    }
+    
+    this->update(MAX (0,                                  // needed for rewind. elapsed could be negative
+                      MIN(1, m_elapsed /
+                          MAX(m_fDuration, FLT_EPSILON)   // division by 0
+                          )
+                      )
+                 );
+}
+
 void CCLayerAction::update(float frame)
 {
 	/*if(action != NULL && !action->isDone())
@@ -141,22 +173,25 @@ void CCLayerAction::update(float frame)
 	{
 		layer->m_clip->setFrame(nowFrame);
 	}
-	if(layer->haveEffect())
-	{
-		CCEffect::setFrame(layer->m_effect, nowFrame, n);
-	}
 	CCBones::setFrame(layer->m_bone, nowFrame, n);
+	int frm = nowFrame;
 	nowFrame++;
+	layer->lastFrame = nowFrame;
 	if(nowFrame > endFrame[nowStage])
 	{
 		nowStage++;
 		if(nowStage >= totalStage)
 		{
 			m_isDone = true;
+			layer->lastFrame = startFrame[nowStage-1];
 		}
 		else
 		{
 			nowFrame = startFrame[nowStage];
 		}
+	}
+	if(layer->haveEffect())
+	{
+		CCEffect::setFrame(layer->m_effect, frm, n, m_isDone);
 	}
 }

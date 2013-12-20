@@ -1,6 +1,7 @@
 #ifndef __BONE_H__
 #define __BONE_H__
 #include "cocos2d.h"
+#include "CCboneActionManager.h"
 #include "../../extensions/spine/Json.h"
 USING_NS_CC;
 using namespace cocos2d::extension;
@@ -15,12 +16,25 @@ struct CCBonePicWeight
 	int weight;
 };
 
+struct CCBoneJsonData
+{
+	float posX;
+	float posY;
+	float scaleX;
+	float scaleY;
+	float skewX;
+	float skewY;
+	float visable;
+	float colorRed;
+	float colorGreen;
+	float colorBlue;
+};
+
 class CCBones : public CCSprite
 {
 public:
 	CCBones()
-		:m_frame(NULL)
-		,m_pic(NULL)
+		:m_pic(NULL)
 		,m_redPercent(0)
 		,m_greenPercent(0)
 		,m_bluePercent(0)
@@ -28,6 +42,7 @@ public:
 		,m_picLowWeight(NULL)
 		,m_picNowWeight(NULL)
 		,m_masked(false)
+		,m_boneData(NULL)
 	{};
 	virtual ~CCBones(void);
 
@@ -65,7 +80,7 @@ public:
 	int endFrame;
 	int m_startZOrder;
 	CCSpriteFrame *m_pic;
-	Json *m_frame;
+	int_json *m_boneData;
 	float m_redPercent;
 	float m_greenPercent;
 	float m_bluePercent;

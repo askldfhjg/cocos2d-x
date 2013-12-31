@@ -4,22 +4,41 @@
 	<dict>
 		<key>frames</key>
 		<dict>
-			<key>4-head-hair_helmTest01_M7001_helm_resM0000</key>
+			<key>4-head-hair8002_head_resF0000</key>
 			<dict>
 				<key>aliases</key>
 				<array/>
 				<key>sourceColorRect</key>
-				<string>{{0,0},{122,205}}</string>
+				<string>{{0,0},{131,146}}</string>
 				<key>spriteOffset</key>
 				<string>{0,0}</string>
 				<key>spriteSize</key>
-				<string>{122,205}</string>
+				<string>{131,146}</string>
 				<key>spriteSourceSize</key>
-				<string>{122,205}</string>
+				<string>{131,146}</string>
 				<key>spriteTrimmed</key>
 				<false/>
 				<key>textureRect</key>
-				<string>{{0,0},{122,205}}</string>
+				<string>{{0,0},{131,146}}</string>
+				<key>textureRotated</key>
+				<false/>
+			</dict>
+			<key>5-head-face8002_head_resF0000</key>
+			<dict>
+				<key>aliases</key>
+				<array/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{68,91}}</string>
+				<key>spriteOffset</key>
+				<string>{0,0}</string>
+				<key>spriteSize</key>
+				<string>{68,91}</string>
+				<key>spriteSourceSize</key>
+				<string>{68,91}</string>
+				<key>spriteTrimmed</key>
+				<false/>
+				<key>textureRect</key>
+				<string>{{132,0},{68,91}}</string>
 				<key>textureRotated</key>
 				<false/>
 			</dict>
@@ -29,13 +48,13 @@
 			<key>format</key>
 			<integer>3</integer>
 			<key>size</key>
-			<string>{128,256}</string>
+			<string>{256,256}</string>
 			<key>target</key>
 			<dict>
 				<key>name</key>
-				<string>7001_helm_resM.png</string>
+				<string>8002_head_resF.png</string>
 				<key>textureFileName</key>
-				<string>7001_helm_resM</string>
+				<string>8002_head_resF</string>
 				<key>textureFileExtension</key>
 				<string>png</string>
 				<key>premultipliedAlpha</key>

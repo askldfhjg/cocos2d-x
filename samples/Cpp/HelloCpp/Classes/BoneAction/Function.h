@@ -58,5 +58,9 @@ public:
 	static const char * getBoneUrl();
 	static const char * getEquipUrl();
 	static const char * getEffectUrl();
+	static void setBoneOrder(const char * order);
+	static int *getBoneOrder();
+	static int getBoneOrderLen();
+	static void purgeSharedCache();
 };
 #endif //__FUNCTION_H__

@@ -182,6 +182,9 @@ static std::string boneUrl;
 static std::string equipUrl;
 static std::string effectUrl;
 static std::string sklUrl;
+static int *boneOrder;
+static int boneOrderLen;
+
 
 void CCBoneSpriteConfig::setBoneUrl(const char * url)
 {
@@ -211,4 +214,45 @@ const char * CCBoneSpriteConfig::getEquipUrl()
 const char * CCBoneSpriteConfig::getEffectUrl()
 {
 	return effectUrl.c_str();
+}
+
+int *CCBoneSpriteConfig::getBoneOrder()
+{
+	return boneOrder;
+}
+
+int CCBoneSpriteConfig::getBoneOrderLen()
+{
+	return boneOrderLen;
+}
+void CCBoneSpriteConfig::setBoneOrder(const char * order)
+{
+	int len = 0;
+	char * p; 
+	if(strlen(order)%2 == 0)
+	{
+		len = strlen(order)/2;
+	}
+	else
+	{
+		len = strlen(order)/2+1;
+	}
+	boneOrderLen = len;
+	boneOrder = new int[len];
+	int index = 0;
+	char *cstr = new char[strlen(order)+1];
+    strcpy(cstr,order);
+	p = strtok(cstr, ";"); 
+	while(p!=NULL) 
+	{ 
+		boneOrder[index] = atoi(p);
+		index++;
+		p = strtok(NULL,";"); 
+	} 
+	CC_SAFE_DELETE_ARRAY(cstr);
+}
+
+void CCBoneSpriteConfig::purgeSharedCache()
+{
+	CC_SAFE_DELETE_ARRAY(boneOrder);
 }

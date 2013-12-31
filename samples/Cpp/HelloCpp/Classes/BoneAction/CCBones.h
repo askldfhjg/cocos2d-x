@@ -9,11 +9,10 @@ using namespace cocos2d::extension;
 struct CCBonePicWeight
 {
 	const char *pic;
-	int type;
 	float topOffset;
 	float leftOffset;
 	bool isFull;
-	int weight;
+	int prevent;
 };
 
 struct CCBoneJsonData
@@ -34,15 +33,14 @@ class CCBones : public CCSprite
 {
 public:
 	CCBones()
-		:m_pic(NULL)
+		:m_weightList(NULL)
 		,m_redPercent(0)
 		,m_greenPercent(0)
 		,m_bluePercent(0)
 		,m_startZOrder(0)
-		,m_picLowWeight(NULL)
-		,m_picNowWeight(NULL)
 		,m_masked(false)
 		,m_boneData(NULL)
+		,m_preventList(NULL)
 	{};
 	virtual ~CCBones(void);
 
@@ -57,19 +55,18 @@ public:
 	void setOffset(float top, float left);
 	float getTopOffset();
 	float getLeftOffset();
-	void setStartArch(const CCPoint& anchor);
 	void Reset();
 	void setRedPercent(float red);
 	void setGreenPercent(float green);
 	void setBluePercent(float blue);
 	void setAlpha(float alpha);
+	void clearWeightList();
 	float getAlpha();
 	static CCGLProgram *getShader();
 	virtual void draw(void);
 
 public:
 	CCPoint m_startPosition;
-	CCPoint m_startArch;
 	float m_fStartAngleX;
 	float m_fStartAngleY;
 	float m_fStartScaleX;
@@ -79,16 +76,16 @@ public:
 	float m_leftOffset;
 	int endFrame;
 	int m_startZOrder;
-	CCSpriteFrame *m_pic;
 	int_json *m_boneData;
 	float m_redPercent;
 	float m_greenPercent;
 	float m_bluePercent;
 	float m_alpha;
-	CCBonePicWeight *m_picLowWeight;
-	CCBonePicWeight *m_picNowWeight;
+	CCBonePicWeight **m_weightList;
+	int *m_preventList;
 	std::string name;
 	bool m_masked;
+	static int weightListLength;
 };
 
 

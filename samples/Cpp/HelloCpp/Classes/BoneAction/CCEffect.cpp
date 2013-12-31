@@ -11,7 +11,6 @@ CCEffect *CCEffect::create(const char *name)
     {
         pobSprite->autorelease();
 		pobSprite->name = std::string(name);
-		pobSprite->m_pic = NULL;
 
 		pobSprite->setShaderProgram(CCBones::getShader());
         return pobSprite;

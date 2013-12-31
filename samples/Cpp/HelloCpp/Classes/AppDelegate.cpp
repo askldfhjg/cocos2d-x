@@ -127,4 +127,5 @@ void AppDelegate::applicationWillEnterForeground() {
 void AppDelegate::applicationBeforeExit() {
 	CCBoneActionManager::sharedManager()->purgeSharedCache();
 	CCBoneTextureManager::sharedManager()->purgeSharedCache();
+	CCBoneSpriteConfig::purgeSharedCache();
 }

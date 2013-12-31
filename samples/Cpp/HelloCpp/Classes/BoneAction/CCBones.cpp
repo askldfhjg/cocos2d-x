@@ -5,6 +5,9 @@
 #include "CCBoneActionManager.h"
 USING_NS_CC;
 
+
+int CCBones::weightListLength = 5;
+
 CCBones *CCBones::createWithSpriteFrame(CCSpriteFrame *pSpriteFrame, std::string &name)
 {
 	CCBones *pobSprite = new CCBones();
@@ -12,8 +15,13 @@ CCBones *CCBones::createWithSpriteFrame(CCSpriteFrame *pSpriteFrame, std::string
     {
         pobSprite->autorelease();
 		pobSprite->name = name;
-		pobSprite->m_pic = pSpriteFrame;
-
+		pobSprite->m_weightList = new CCBonePicWeight*[weightListLength];
+		pobSprite->m_preventList = new int[weightListLength];
+		for(int i =0; i < weightListLength;i++)
+		{
+			pobSprite->m_weightList[i] = NULL;
+			pobSprite->m_preventList[i] = 0;
+		}
 		pobSprite->setShaderProgram(CCBones::getShader());
         return pobSprite;
     }
@@ -28,7 +36,13 @@ CCBones *CCBones::create(std::string &name)
     {
         pobSprite->autorelease();
 		pobSprite->name = name;
-
+		pobSprite->m_weightList = new CCBonePicWeight*[weightListLength];
+		pobSprite->m_preventList = new int[weightListLength];
+		for(int i =0; i < weightListLength;i++)
+		{
+			pobSprite->m_weightList[i] = NULL;
+			pobSprite->m_preventList[i] = 0;
+		}
 		pobSprite->setShaderProgram(CCBones::getShader());
         return pobSprite;
     }
@@ -59,8 +73,9 @@ CCGLProgram *CCBones::getShader()
 
 CCBones::~CCBones(void)
 {
-	CC_SAFE_DELETE(m_picLowWeight);
-	CC_SAFE_DELETE(m_picNowWeight);
+	clearWeightList();
+	CC_SAFE_DELETE_ARRAY(m_weightList);
+	CC_SAFE_DELETE_ARRAY(m_preventList);
 }
 void CCBones::Reset()
 {
@@ -76,6 +91,17 @@ const char *CCBones::getName()
 	return this->name.c_str();
 }
 
+void CCBones::clearWeightList()
+{
+	if(m_weightList)
+	{
+		for(int i =0; i < weightListLength;i++)
+		{
+			CC_SAFE_DELETE(m_weightList[i]);
+		}
+	}
+
+}
 void CCBones::changeTexture(CCTexture2D * texture)
 {
 	CCRect rect = CCRectZero;
@@ -107,10 +133,7 @@ void CCBones::setOffset(float top, float left)
      this->m_topOffset = top;
      this->m_leftOffset = left;
 }
-void CCBones::setStartArch(const CCPoint& anchor)
-{
-     this->m_startArch = anchor;
-}
+
 float CCBones::getTopOffset()
 {
      return m_topOffset;

@@ -31,6 +31,7 @@ bool LoadingScene::init()
 	CCBoneSpriteConfig::setBoneUrl("bone/");
 	CCBoneSpriteConfig::setEquipUrl("pic/equip/");
 	CCBoneSpriteConfig::setEffectUrl("pic/boneeffect/");
+	CCBoneSpriteConfig::setBoneOrder("3;2;4;1");
 	CCTextureCache::sharedTextureCache()->addImageAsync("pic/bg.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
     CCTextureCache::sharedTextureCache()->addImageAsync("pic/CloseNormal.png", this, callfuncO_selector(LoadingScene::loadingCallBack));
     CCTextureCache::sharedTextureCache()->addImageAsync("pic/CloseSelected.png", this, callfuncO_selector(LoadingScene::loadingCallBack));

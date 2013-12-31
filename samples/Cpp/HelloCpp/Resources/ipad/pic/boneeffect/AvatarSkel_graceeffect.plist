@@ -4,23 +4,10 @@
 	<dict>
 		<key>frames</key>
 		<dict>
-			<key>AvatarSkel_grace0jcym2136f0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{0,0},{180,147}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{180,147}}</string>
-				<key>sourceSize</key>
-				<string>{180,147}</string>
-			</dict>
 			<key>AvatarSkel_grace0jz3vpf3h40000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{182,0},{91,41}}</string>
+				<string>{{0,0},{91,41}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -30,49 +17,10 @@
 				<key>sourceSize</key>
 				<string>{91,41}</string>
 			</dict>
-			<key>AvatarSkel_grace0kwtc9r93p0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{275,0},{121,201}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{121,201}}</string>
-				<key>sourceSize</key>
-				<string>{121,201}</string>
-			</dict>
-			<key>AvatarSkel_grace0m27m69i690000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{398,0},{76,76}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{76,76}}</string>
-				<key>sourceSize</key>
-				<string>{76,76}</string>
-			</dict>
-			<key>AvatarSkel_grace0szrz3skl50000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{476,0},{240,226}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{240,226}}</string>
-				<key>sourceSize</key>
-				<string>{240,226}</string>
-			</dict>
 			<key>AvatarSkel_grace0wc26x3ypb0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{718,0},{66,41}}</string>
+				<string>{{93,0},{66,41}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -82,127 +30,10 @@
 				<key>sourceSize</key>
 				<string>{66,41}</string>
 			</dict>
-			<key>AvatarSkel_grace1rhkp9mqpz0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{786,0},{168,149}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{168,149}}</string>
-				<key>sourceSize</key>
-				<string>{168,149}</string>
-			</dict>
-			<key>AvatarSkel_grace55pg3csegj0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{956,0},{246,232}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{246,232}}</string>
-				<key>sourceSize</key>
-				<string>{246,232}</string>
-			</dict>
-			<key>AvatarSkel_grace57khxwq77u0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{825,1190},{191,186}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{191,186}}</string>
-				<key>sourceSize</key>
-				<string>{191,186}</string>
-			</dict>
-			<key>AvatarSkel_grace6bmbq0w2z50000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1204,0},{373,225}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{373,225}}</string>
-				<key>sourceSize</key>
-				<string>{373,225}</string>
-			</dict>
-			<key>AvatarSkel_grace6dtxqwjjaa0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1018,1190},{180,227}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{180,227}}</string>
-				<key>sourceSize</key>
-				<string>{180,227}</string>
-			</dict>
-			<key>AvatarSkel_grace747ni2btww0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1200,1190},{191,186}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{191,186}}</string>
-				<key>sourceSize</key>
-				<string>{191,186}</string>
-			</dict>
-			<key>AvatarSkel_grace7ki2qm07ew0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1579,0},{195,144}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{195,144}}</string>
-				<key>sourceSize</key>
-				<string>{195,144}</string>
-			</dict>
-			<key>AvatarSkel_grace9dzvmp42nk0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1776,0},{154,149}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{154,149}}</string>
-				<key>sourceSize</key>
-				<string>{154,149}</string>
-			</dict>
-			<key>AvatarSkel_gracea43jfwgr220000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{0,234},{196,149}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{196,149}}</string>
-				<key>sourceSize</key>
-				<string>{196,149}</string>
-			</dict>
 			<key>AvatarSkel_gracear4s86fs5z0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{198,234},{100,43}}</string>
+				<string>{{0,43},{100,43}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -212,23 +43,10 @@
 				<key>sourceSize</key>
 				<string>{100,43}</string>
 			</dict>
-			<key>AvatarSkel_graceb5e48592950000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{300,234},{198,151}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{198,151}}</string>
-				<key>sourceSize</key>
-				<string>{198,151}</string>
-			</dict>
 			<key>AvatarSkel_gracebhtqmn7li70000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{500,234},{65,41}}</string>
+				<string>{{102,43},{65,41}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -238,75 +56,10 @@
 				<key>sourceSize</key>
 				<string>{65,41}</string>
 			</dict>
-			<key>AvatarSkel_gracebieac4lnhd0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{567,234},{246,232}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{246,232}}</string>
-				<key>sourceSize</key>
-				<string>{246,232}</string>
-			</dict>
-			<key>AvatarSkel_gracebpzjhk03190000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{815,234},{121,203}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{121,203}}</string>
-				<key>sourceSize</key>
-				<string>{121,203}</string>
-			</dict>
-			<key>AvatarSkel_gracebwhozoi86y0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{938,234},{187,151}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{187,151}}</string>
-				<key>sourceSize</key>
-				<string>{187,151}</string>
-			</dict>
-			<key>AvatarSkel_graceckopkrkhhx0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1393,1190},{191,186}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{191,186}}</string>
-				<key>sourceSize</key>
-				<string>{191,186}</string>
-			</dict>
-			<key>AvatarSkel_gracectdvh1gvd50000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1127,234},{240,226}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{240,226}}</string>
-				<key>sourceSize</key>
-				<string>{240,226}</string>
-			</dict>
 			<key>AvatarSkel_graced8uln7f5au0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{1369,234},{97,44}}</string>
+				<string>{{0,88},{97,44}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -316,75 +69,10 @@
 				<key>sourceSize</key>
 				<string>{97,44}</string>
 			</dict>
-			<key>AvatarSkel_gracedtdbih9efv0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1468,234},{121,203}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{121,203}}</string>
-				<key>sourceSize</key>
-				<string>{121,203}</string>
-			</dict>
-			<key>AvatarSkel_gracef7spcteybe0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1586,1190},{191,186}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{191,186}}</string>
-				<key>sourceSize</key>
-				<string>{191,186}</string>
-			</dict>
-			<key>AvatarSkel_gracefl9minkdzf0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1779,1190},{191,186}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{191,186}}</string>
-				<key>sourceSize</key>
-				<string>{191,186}</string>
-			</dict>
-			<key>AvatarSkel_gracefur930mtmc0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1591,234},{187,151}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{187,151}}</string>
-				<key>sourceSize</key>
-				<string>{187,151}</string>
-			</dict>
-			<key>AvatarSkel_gracehql2rvnfux0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1780,234},{151,145}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{151,145}}</string>
-				<key>sourceSize</key>
-				<string>{151,145}</string>
-			</dict>
 			<key>AvatarSkel_gracei0apfhtfbw0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{1933,234},{80,42}}</string>
+				<string>{{99,88},{80,42}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -394,166 +82,10 @@
 				<key>sourceSize</key>
 				<string>{80,42}</string>
 			</dict>
-			<key>AvatarSkel_graceihabnmd3ho0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{0,468},{181,144}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{181,144}}</string>
-				<key>sourceSize</key>
-				<string>{181,144}</string>
-			</dict>
-			<key>AvatarSkel_gracej2cthtkvnc0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{183,468},{121,203}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{121,203}}</string>
-				<key>sourceSize</key>
-				<string>{121,203}</string>
-			</dict>
-			<key>AvatarSkel_gracek11tt8393k0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{0,1424},{191,186}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{191,186}}</string>
-				<key>sourceSize</key>
-				<string>{191,186}</string>
-			</dict>
-			<key>AvatarSkel_gracek33zbzuwdt0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{193,1424},{191,186}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{191,186}}</string>
-				<key>sourceSize</key>
-				<string>{191,186}</string>
-			</dict>
-			<key>AvatarSkel_gracek98jbky4pn0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{306,468},{196,149}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{196,149}}</string>
-				<key>sourceSize</key>
-				<string>{196,149}</string>
-			</dict>
-			<key>AvatarSkel_gracekjdrjlicei0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{504,468},{151,145}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{151,145}}</string>
-				<key>sourceSize</key>
-				<string>{151,145}</string>
-			</dict>
-			<key>AvatarSkel_gracekkkpn5jqrv0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{657,468},{240,226}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{240,226}}</string>
-				<key>sourceSize</key>
-				<string>{240,226}</string>
-			</dict>
-			<key>AvatarSkel_gracelpmdx0cmwv0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{386,1424},{191,186}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{191,186}}</string>
-				<key>sourceSize</key>
-				<string>{191,186}</string>
-			</dict>
-			<key>AvatarSkel_gracelpwlf0n6yb0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{899,468},{673,239}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{673,239}}</string>
-				<key>sourceSize</key>
-				<string>{673,239}</string>
-			</dict>
-			<key>AvatarSkel_graceltz3kt7a8d0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1574,468},{121,203}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{121,203}}</string>
-				<key>sourceSize</key>
-				<string>{121,203}</string>
-			</dict>
-			<key>AvatarSkel_gracelwus7mgiu90000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1697,468},{168,149}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{168,149}}</string>
-				<key>sourceSize</key>
-				<string>{168,149}</string>
-			</dict>
-			<key>AvatarSkel_gracemhqtrm9lpv0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1867,468},{121,203}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{121,203}}</string>
-				<key>sourceSize</key>
-				<string>{121,203}</string>
-			</dict>
 			<key>AvatarSkel_gracemwyoc1ynio0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,709},{97,44}}</string>
+				<string>{{0,134},{97,44}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -563,49 +95,10 @@
 				<key>sourceSize</key>
 				<string>{97,44}</string>
 			</dict>
-			<key>AvatarSkel_gracenpzar4bppw0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{99,709},{197,147}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{197,147}}</string>
-				<key>sourceSize</key>
-				<string>{197,147}</string>
-			</dict>
-			<key>AvatarSkel_graceo4vshg4mk60000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{298,709},{153,135}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{153,135}}</string>
-				<key>sourceSize</key>
-				<string>{153,135}</string>
-			</dict>
-			<key>AvatarSkel_gracepif9if8dqd0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{579,1424},{191,186}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{191,186}}</string>
-				<key>sourceSize</key>
-				<string>{191,186}</string>
-			</dict>
 			<key>AvatarSkel_gracepivdmz470g0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{453,709},{81,43}}</string>
+				<string>{{99,134},{81,43}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -615,127 +108,10 @@
 				<key>sourceSize</key>
 				<string>{81,43}</string>
 			</dict>
-			<key>AvatarSkel_graceqj9kdqntsc0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{536,709},{121,201}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{121,201}}</string>
-				<key>sourceSize</key>
-				<string>{121,201}</string>
-			</dict>
-			<key>AvatarSkel_gracess4puv78hj0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{659,709},{195,142}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{195,142}}</string>
-				<key>sourceSize</key>
-				<string>{195,142}</string>
-			</dict>
-			<key>AvatarSkel_gracesz2hpg0vux0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{856,709},{156,147}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{156,147}}</string>
-				<key>sourceSize</key>
-				<string>{156,147}</string>
-			</dict>
-			<key>AvatarSkel_gracet20qqs6wxm0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1014,709},{121,201}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{121,201}}</string>
-				<key>sourceSize</key>
-				<string>{121,201}</string>
-			</dict>
-			<key>AvatarSkel_gracet2o6j1jrl60000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{772,1424},{178,175}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{178,175}}</string>
-				<key>sourceSize</key>
-				<string>{178,175}</string>
-			</dict>
-			<key>AvatarSkel_gracet4vecx7ee50000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1137,709},{198,151}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{198,151}}</string>
-				<key>sourceSize</key>
-				<string>{198,151}</string>
-			</dict>
-			<key>AvatarSkel_gracetccjs12nly0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1337,709},{643,245}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{643,245}}</string>
-				<key>sourceSize</key>
-				<string>{643,245}</string>
-			</dict>
-			<key>AvatarSkel_gracetd85708dc60000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{952,1424},{191,186}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{191,186}}</string>
-				<key>sourceSize</key>
-				<string>{191,186}</string>
-			</dict>
-			<key>AvatarSkel_gracetfo070cx8h0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{0,956},{232,232}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{232,232}}</string>
-				<key>sourceSize</key>
-				<string>{232,232}</string>
-			</dict>
 			<key>AvatarSkel_gracetgutxblct50000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{234,956},{74,40}}</string>
+				<string>{{182,134},{74,40}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -745,23 +121,10 @@
 				<key>sourceSize</key>
 				<string>{74,40}</string>
 			</dict>
-			<key>AvatarSkel_gracetkr6or1cf90000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{310,956},{240,226}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{240,226}}</string>
-				<key>sourceSize</key>
-				<string>{240,226}</string>
-			</dict>
 			<key>AvatarSkel_graceu3i9j6089a0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{552,956},{69,40}}</string>
+				<string>{{0,180},{69,40}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -771,36 +134,10 @@
 				<key>sourceSize</key>
 				<string>{69,40}</string>
 			</dict>
-			<key>AvatarSkel_graceuf78a42ur90000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{623,956},{121,203}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{121,203}}</string>
-				<key>sourceSize</key>
-				<string>{121,203}</string>
-			</dict>
-			<key>AvatarSkel_gracev009ac2gs00000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{746,956},{246,232}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{246,232}}</string>
-				<key>sourceSize</key>
-				<string>{246,232}</string>
-			</dict>
 			<key>AvatarSkel_gracev1hiyvk48w0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{994,956},{89,43}}</string>
+				<string>{{71,180},{89,43}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -810,49 +147,10 @@
 				<key>sourceSize</key>
 				<string>{89,43}</string>
 			</dict>
-			<key>AvatarSkel_gracevdwm4jhs570000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1085,956},{121,203}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{121,203}}</string>
-				<key>sourceSize</key>
-				<string>{121,203}</string>
-			</dict>
-			<key>AvatarSkel_gracew82wab9r520000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1208,956},{197,147}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{197,147}}</string>
-				<key>sourceSize</key>
-				<string>{197,147}</string>
-			</dict>
-			<key>AvatarSkel_gracewtts0dumw90000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1407,956},{232,232}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{232,232}}</string>
-				<key>sourceSize</key>
-				<string>{232,232}</string>
-			</dict>
 			<key>AvatarSkel_gracex1k8pg6ath0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{1641,956},{99,46}}</string>
+				<string>{{0,225},{99,46}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -862,36 +160,10 @@
 				<key>sourceSize</key>
 				<string>{99,46}</string>
 			</dict>
-			<key>AvatarSkel_gracex6iv8f3hgw0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{1742,956},{121,203}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{121,203}}</string>
-				<key>sourceSize</key>
-				<string>{121,203}</string>
-			</dict>
-			<key>AvatarSkel_gracex7rh6samuc0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{0,1190},{232,232}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{232,232}}</string>
-				<key>sourceSize</key>
-				<string>{232,232}</string>
-			</dict>
 			<key>AvatarSkel_gracexxckrvlmol0000</key>
 			<dict>
 				<key>frame</key>
-				<string>{{234,1190},{95,42}}</string>
+				<string>{{101,225},{95,42}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -901,32 +173,6 @@
 				<key>sourceSize</key>
 				<string>{95,42}</string>
 			</dict>
-			<key>AvatarSkel_gracey4ot4cgugc0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{331,1190},{369,223}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{369,223}}</string>
-				<key>sourceSize</key>
-				<string>{369,223}</string>
-			</dict>
-			<key>AvatarSkel_graceyvamwdalvj0000</key>
-			<dict>
-				<key>frame</key>
-				<string>{{702,1190},{121,203}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false/>
-				<key>sourceColorRect</key>
-				<string>{{0,0},{121,203}}</string>
-				<key>sourceSize</key>
-				<string>{121,203}</string>
-			</dict>
 		</dict>
 		<key>metadata</key>
 		<dict>
@@ -935,7 +181,7 @@
 			<key>realTextureFileName</key>
 			<string>AvatarSkel_graceeffect.png</string>
 			<key>size</key>
-			<string>{2048,2048}</string>
+			<string>{256,512}</string>
 			<key>textureFileName</key>
 			<string>AvatarSkel_graceeffect.png</string>
 		</dict>

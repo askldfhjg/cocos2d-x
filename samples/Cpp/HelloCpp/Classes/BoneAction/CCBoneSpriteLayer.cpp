@@ -9,16 +9,9 @@
 USING_NS_CC;
 using namespace cocos2d::extension;
 
+
 CCBoneSpriteLayer::~CCBoneSpriteLayer(void)
 {
-	if(m_bone)
-	{
-		m_bone->removeAllObjects();
-	}
-	if(m_effect)
-	{
-		m_effect->removeAllObjects();
-	}
 	CC_SAFE_RELEASE(m_bone);
 	CC_SAFE_RELEASE(m_effect);
 }
@@ -121,6 +114,7 @@ void CCBoneSpriteLayer::resetBoneTexture(const char *textureName, const char *eq
 		return;
 	}
 	Json *source = Json_getItem(root, equipName);
+	int type = Json_getItem(source, "type")->valueint;
 	source = Json_getItem(source, "part");
 	if(!source)
 	{
@@ -137,11 +131,18 @@ void CCBoneSpriteLayer::resetBoneTexture(const char *textureName, const char *eq
 			{
 				continue;
 			}
+			CC_SAFE_DELETE(tmpBone->m_weightList[type]);
+			tmpBone->m_weightList[type] = NULL;
 			tmpBone->removeFromParentAndCleanup(false);
-			if(tmpBone->m_pic != NULL)
+
+			if(tmpBone->m_weightList[0])
 			{
-				tmpBone->setDisplayFrame(tmpBone->m_pic);
-				tmpBone->setAnchorPoint(tmpBone->m_startArch);
+				CCSpriteFrameCache *cache = CCSpriteFrameCache::sharedSpriteFrameCache();
+				tmpBone->setDisplayFrame(cache->spriteFrameByName(tmpBone->m_weightList[0]->pic));
+				CCRect rect = tmpBone->getTextureRect();
+				float archX = (tmpBone->m_weightList[0]->leftOffset + tmpBone->getLeftOffset()) / rect.size.width;
+				float archY = (tmpBone->m_weightList[0]->topOffset + tmpBone->getTopOffset()) / rect.size.height;
+				tmpBone->setAnchorPoint(ccp(archX , 1- archY));
 				this->addChild(tmpBone, tmpBone->m_startZOrder);
 			}
 		}
@@ -172,7 +173,10 @@ void CCBoneSpriteLayer::changeBoneTexture(const char *textureName, const char *e
 	}
 	int isFull = Json_getItem(root, "full")->valueint;
 	int type = Json_getItem(source, "type")->valueint;
+	int prevent = Json_getItem(source, "prevent")->valueint;
 	source = Json_getItem(source, "part");
+	int *boneOrderList = CCBoneSpriteConfig::getBoneOrder();
+	int boneOrderLen = CCBoneSpriteConfig::getBoneOrderLen();
 	if(m_bone != NULL && m_bone->count() > 0)
     {
         CCObject* child;
@@ -186,84 +190,71 @@ void CCBoneSpriteLayer::changeBoneTexture(const char *textureName, const char *e
 			}
 			tmpBone->removeFromParentAndCleanup(false);
 			int fCount = Json_getSize(info);
-			if(fCount <= 0)
-			{
-				if(tmpBone->m_pic != NULL)
-				{
-					tmpBone->setDisplayFrame(tmpBone->m_pic);
-					tmpBone->setAnchorPoint(tmpBone->m_startArch);
-					this->addChild(tmpBone, tmpBone->m_startZOrder);
-				}
-			}
-			else
-			{
-				const char *pic = Json_getItemAt(info, 0)->valuestring;
-				float leftOffset = Json_getItemAt(info, 1)->valuefloat;
-				float topOffset = Json_getItemAt(info, 2)->valuefloat;
+			int shareBone = Json_getItemAt(info, 0)->valueint;
 
-				if(fCount == 4)
+			CCBonePicWeight *tp = NULL;
+			if(fCount > 1)
+			{
+				const char *pic = Json_getItemAt(info, 1)->valuestring;
+				float leftOffset = Json_getItemAt(info, 2)->valuefloat;
+				float topOffset = Json_getItemAt(info, 3)->valuefloat;
+				tp = new CCBonePicWeight();
+				tp->pic = pic;
+				tp->topOffset = topOffset;
+				tp->leftOffset = leftOffset;
+				tp->isFull = isFull;
+				tp->prevent = prevent;
+			}
+			CC_SAFE_DELETE(tmpBone->m_weightList[type]);
+			tmpBone->m_weightList[type] = tp;
+			tmpBone->m_preventList[type] = prevent; 
+			bool found = false;
+			for(int i = 0; i <boneOrderLen;i++)
+			{
+				int order = boneOrderList[i];
+				if(tmpBone->m_weightList[order])
 				{
-					int weight = Json_getItemAt(info, 3)->valueint;
-					if(tmpBone->m_picNowWeight && tmpBone->m_picLowWeight)
+					if(!shareBone && order != type)
 					{
-						if(tmpBone->m_picNowWeight->type != type && tmpBone->m_picLowWeight->type != type)
-						{
-							continue;
-						}
+						continue;
 					}
-					CCBonePicWeight *weightInfo = new CCBonePicWeight();
-					weightInfo->pic = pic;
-					weightInfo->topOffset = topOffset;
-					weightInfo->leftOffset = leftOffset;
-					weightInfo->weight = weight;
-					weightInfo->isFull = isFull;
-					weightInfo->type = type;
-					if(tmpBone->m_picNowWeight)
+					if(tmpBone->m_weightList[order]->isFull)
 					{
-						if(type != tmpBone->m_picNowWeight->type && weight < tmpBone->m_picNowWeight->weight)
-						{
-							CC_SAFE_DELETE(tmpBone->m_picLowWeight);
-							tmpBone->m_picLowWeight = weightInfo;
-							continue;
-						}
-					}
-					if(!tmpBone->m_picNowWeight)
-					{
-						tmpBone->m_picNowWeight = weightInfo;
+						tmpBone->setDisplayFrame(cache->spriteFrameByName(tmpBone->m_weightList[order]->pic));
 					}
 					else
 					{
-						if(type == tmpBone->m_picNowWeight->type)
-						{
-							CC_SAFE_DELETE(tmpBone->m_picNowWeight);
-							tmpBone->m_picNowWeight = weightInfo;
-						}
-						else
-						{
-							tmpBone->m_picLowWeight = tmpBone->m_picNowWeight;
-							tmpBone->m_picNowWeight = weightInfo;
-						}
+						std::string tt = CCBoneSpriteConfig::getEquipUrl()+std::string(tmpBone->m_weightList[order]->pic);
+						CCTexture2D * texture = CCTextureCache::sharedTextureCache()->addImage(tt.c_str());
+						tmpBone->changeTexture(texture);
 					}
-				}
-
-
-				if(isFull)
-				{
-					tmpBone->setDisplayFrame(cache->spriteFrameByName(pic));
+					CCRect rect = tmpBone->getTextureRect();
+					float archX = (tmpBone->m_weightList[order]->leftOffset + tmpBone->getLeftOffset()) / rect.size.width;
+					float archY = (tmpBone->m_weightList[order]->topOffset + tmpBone->getTopOffset()) / rect.size.height;
+					tmpBone->setAnchorPoint(ccp(archX , 1- archY));
+					this->addChild(tmpBone, tmpBone->m_startZOrder);
+					found = true;
+					break;
 				}
 				else
 				{
-					std::string tt = CCBoneSpriteConfig::getEquipUrl()+std::string(pic);
-					CCTexture2D * texture = CCTextureCache::sharedTextureCache()->addImage(tt.c_str());
-					tmpBone->changeTexture(texture);
+					if(tmpBone->m_preventList[order])
+					{
+						found = true;
+						break;
+					}
 				}
+			}
+
+			if(tmpBone->m_weightList[0] && !found)
+			{
+				tmpBone->setDisplayFrame(cache->spriteFrameByName(tmpBone->m_weightList[0]->pic));
 				CCRect rect = tmpBone->getTextureRect();
-				float archX = (leftOffset + tmpBone->getLeftOffset()) / rect.size.width;
-				float archY = (topOffset + tmpBone->getTopOffset()) / rect.size.height;
+				float archX = (tmpBone->m_weightList[0]->leftOffset + tmpBone->getLeftOffset()) / rect.size.width;
+				float archY = (tmpBone->m_weightList[0]->topOffset + tmpBone->getTopOffset()) / rect.size.height;
 				tmpBone->setAnchorPoint(ccp(archX , 1- archY));
 				this->addChild(tmpBone, tmpBone->m_startZOrder);
 			}
-			
 		}
 	}
 }
@@ -290,6 +281,8 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 
 	CCSpriteBatchNode *batchNode = NULL;
 	Json* skl = NULL;
+	int type = 0;
+	int prevent = 1;
 	bool haveSkl = false;
 	if(defaultSkl)
 	{
@@ -297,7 +290,11 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 		if(skl)
 		{
 			skl = Json_getItem(skl, defaultSkl);
+			type = Json_getItem(skl, "type")->valueint;
+			prevent = Json_getItem(skl, "prevent")->valueint;
 			skl = Json_getItem(skl, "part");
+
+			
 			if(skl)
 			{
 				haveSkl = true;
@@ -393,11 +390,11 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 			if(info)
 			{
 				int fCount = Json_getSize(info);
-				if(fCount > 0)
+				if(fCount > 1)
 				{
-					const char *pic = Json_getItemAt(info, 0)->valuestring;
-					float picLeftOffset = Json_getItemAt(info, 1)->valuefloat;
-					float picTopOffset = Json_getItemAt(info, 2)->valuefloat;
+					const char *pic = Json_getItemAt(info, 1)->valuestring;
+					float picLeftOffset = Json_getItemAt(info, 2)->valuefloat;
+					float picTopOffset = Json_getItemAt(info, 3)->valuefloat;
 
 					heads = CCBones::createWithSpriteFrame(cache->spriteFrameByName(pic), tmpString);
 
@@ -405,8 +402,15 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 					float archX = (picLeftOffset + leftOffset) / rect.size.width;
 					float archY = (picTopOffset + topOffset) / rect.size.height;
 					heads->setAnchorPoint(ccp(archX , 1- archY));
-					heads->setStartArch(ccp(archX , 1- archY));
 					havePic = true;
+
+					CCBonePicWeight *tp = new CCBonePicWeight();
+					tp->pic = pic;
+					tp->topOffset = picTopOffset;
+					tp->leftOffset = picLeftOffset;
+					tp->isFull = 1;
+					tp->prevent = prevent;
+					heads->m_weightList[type] = tp;
 				}
 			}
 		}
@@ -451,6 +455,7 @@ bool CCBoneSpriteLayer::init(const char *animationName, const char *defaultSkl, 
 			}
 		}
 		heads->m_boneData = animation->frame->find(CCString::create(heads->getName()))->second;
+		heads->m_preventList[type] = prevent; 
 		m_bone->addObject(heads);
 	}
 	this->ignoreAnchorPointForPosition(true);

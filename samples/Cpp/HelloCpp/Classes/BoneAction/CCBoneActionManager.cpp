@@ -301,53 +301,63 @@ void CCBoneActionManager::clearBoneData(CCBoneActionData *data)
 {
 	Json_dispose(data->label);
 	Json_dispose(data->skl);
-	Json_dispose(data->effectOrder);
-	if(data->effect->size())
+	if(data->effectOrder)
 	{
-		char_effect::iterator iter;
-		for (iter = data->effect->begin(); iter != data->effect->end();)
+		Json_dispose(data->effectOrder);
+	}
+	if(data->effect)
+	{
+		if(data->effect->size())
 		{
-			CC_SAFE_RELEASE(iter->first);
-			if(iter->second->info)
+			char_effect::iterator iter;
+			for (iter = data->effect->begin(); iter != data->effect->end();)
 			{
-				if(iter->second->info->size() > 0)
+				CC_SAFE_RELEASE(iter->first);
+				if(iter->second->info)
 				{
-					int_json::iterator iter2;
-					for (iter2 = iter->second->info->begin(); iter2 != iter->second->info->end();)
+					if(iter->second->info->size() > 0)
 					{
-						CC_SAFE_DELETE_ARRAY(iter2->second->pic);
-						CC_SAFE_DELETE(iter2->second);
-						iter->second->info->erase(iter2++);
+						int_json::iterator iter2;
+						for (iter2 = iter->second->info->begin(); iter2 != iter->second->info->end();)
+						{
+							CC_SAFE_DELETE_ARRAY(iter2->second->pic);
+							CC_SAFE_DELETE(iter2->second);
+							iter->second->info->erase(iter2++);
+						}
 					}
 				}
+				CC_SAFE_DELETE(iter->second->info);
+				CC_SAFE_DELETE(iter->second);
+				data->effect->erase(iter++);
 			}
-			CC_SAFE_DELETE(iter->second->info);
-			CC_SAFE_DELETE(iter->second);
-			data->effect->erase(iter++);
 		}
+		CC_SAFE_DELETE(data->effect);
 	}
-	CC_SAFE_DELETE(data->effect);
-	if(data->effectMotion->size() > 0)
+	if(data->effectMotion)
 	{
-		char_frame::iterator iter2;
-		for (iter2 = data->effectMotion->begin(); iter2 != data->effectMotion->end();)
+		if(data->effectMotion->size() > 0)
 		{
-			if(iter2->second->size() > 0)
+			char_frame::iterator iter2;
+			for (iter2 = data->effectMotion->begin(); iter2 != data->effectMotion->end();)
 			{
-				int_json::iterator iter3;
-				for (iter3 = iter2->second->begin(); iter3 != iter2->second->end();)
+				if(iter2->second->size() > 0)
 				{
-					CC_SAFE_DELETE_ARRAY(iter3->second->pic);
-					CC_SAFE_DELETE(iter3->second);
-					iter2->second->erase(iter3++);
+					int_json::iterator iter3;
+					for (iter3 = iter2->second->begin(); iter3 != iter2->second->end();)
+					{
+						CC_SAFE_DELETE_ARRAY(iter3->second->pic);
+						CC_SAFE_DELETE(iter3->second);
+						iter2->second->erase(iter3++);
+					}
 				}
+				CC_SAFE_RELEASE(iter2->first);
+				CC_SAFE_DELETE(iter2->second);
+				data->effectMotion->erase(iter2++);
 			}
-			CC_SAFE_RELEASE(iter2->first);
-			CC_SAFE_DELETE(iter2->second);
-			data->effectMotion->erase(iter2++);
 		}
+		CC_SAFE_DELETE(data->effectMotion);
 	}
-	CC_SAFE_DELETE(data->effectMotion);
+
 	if(data->frame->size() > 0)
 	{
 		char_frame::iterator iter2;

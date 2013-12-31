@@ -221,7 +221,7 @@ void FightScene::afterAttack(CCObject *dd)
 	//def->changeBoneTexture("6322_armor_resM", "6322_armor_resM");
 	//def->changeBoneTexture("6323_armor_resM", "6323_armor_resM");
 	def->setPosition(ccp(500, 0));
-	def->setScale(0.2f);
+	def->setScale(0.6f);
 	this->addChild(def, 3);
 
 	def->setBoneAction("mon_idle");
@@ -288,7 +288,7 @@ void FightScene::checkSkl()
 				std::string fgg = std::string(str);
 				if(fgg == "AvatarEquip_defultM.equip" || fgg == "test01_mon_res.equip" || fgg == "AvatarDefult_M.equip")
 				{
-					continue;
+					//continue;
 				}
 				size_t last = 0;
 				size_t index = fgg.find_first_of(".",last);

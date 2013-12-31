@@ -60,6 +60,7 @@ private:
 	Json *m_label;
 	bool isBatch;
 	bool isEffect;
+	int *orderList;
 };
 
 #endif //__LAYER_BONE_SPRITE_H__

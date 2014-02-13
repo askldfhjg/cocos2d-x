@@ -100,5 +100,8 @@
     <ClInclude Include="..\Classes\BoneAction\CCBones.h">
       <Filter>Classes\BoneAction</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\BoneAction\ccShader_PositionTextureOutline_frag.h">
+      <Filter>Classes\BoneAction</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

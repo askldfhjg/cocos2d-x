@@ -32,7 +32,7 @@ FightScene::~FightScene(void)
 
 bool FightScene::init()
 {
-	if (!CCLayerColor::initWithColor(ccc4(215, 215, 215, 255)))
+	if (!CCLayerColor::initWithColor(ccc4(255, 255, 255, 255)))
 	//if (!CCLayerColor::initWithColor(ccc4(0, 0, 0, 255)))
 	//if (!CCLayer::init())
     {
@@ -122,10 +122,17 @@ bool FightScene::init()
 	this->addChild(motionLayer);
     
 
-	/*CCSprite *ff = CCSprite::create("pic/CloseNormal.png");
-	ff->setAnchorPoint(ccp(0.3, 0.8));
-	ff->setPosition(ccp(400, 400));
-	addChild(ff, 666);*/
+	CCBones *fff = CCBones::create(std::string("ffffff"));
+	CCTexture2D * texture = CCTextureCache::sharedTextureCache()->addImage("pic/equip/1101_sword_res.png");
+	fff->changeTexture(texture);
+	fff->setAnchorPoint(ccp(0.5, 0.5));
+	fff->setPosition(ccp(500, 370));
+	this->addChild(fff);
+
+	CCSprite *ff = CCSprite::create("pic/equip/1101_sword_res.png");
+	ff->setAnchorPoint(ccp(0.5, 0.5));
+	ff->setPosition(ccp(500, 370));
+	addChild(ff);
 	return true;
 }
 
@@ -217,11 +224,14 @@ void FightScene::afterAttack(CCObject *dd)
 	hpBar = CCSprite::create("pic/hpbar.png");
 	hpBar->setAnchorPoint(ccp(0.5, 0.5));
 	hpBar->retain();
-	def = CCBoneSpriteLayer::create(ff->getCString(), "AvatarDefult_M");
+	//def = CCBoneSpriteLayer::create(ff->getCString(), "AvatarDefult_M");
+	def = CCBoneSpriteLayer::create(ff->getCString(), ff->getCString());
 	//def->changeBoneTexture("6322_armor_resM", "6322_armor_resM");
 	//def->changeBoneTexture("6323_armor_resM", "6323_armor_resM");
 	def->setPosition(ccp(500, 0));
 	def->setScale(0.6f);
+
+	//def->runAction(CCRepeatForever::create(def->createAction("AvatarSkel_walk")), false);
 	this->addChild(def, 3);
 
 	def->setBoneAction("mon_idle");

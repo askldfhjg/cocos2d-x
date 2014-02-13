@@ -144,6 +144,7 @@
     <ClInclude Include="..\Classes\BoneAction\CCLayerAction.h" />
     <ClInclude Include="..\Classes\BoneAction\ccShader_PositionTextureBrightnessColor_frag.h" />
     <ClInclude Include="..\Classes\BoneAction\ccShader_PositionTextureBrightnessColor_vert.h" />
+    <ClInclude Include="..\Classes\BoneAction\ccShader_PositionTextureOutline_frag.h" />
     <ClInclude Include="..\Classes\BoneAction\Function.h" />
     <ClInclude Include="..\Classes\FightScene.h" />
     <ClInclude Include="..\Classes\LoadingScene.h" />
